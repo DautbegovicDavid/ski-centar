@@ -1,29 +1,35 @@
 ﻿using skiCentar.Model;
-using System.Diagnostics;
+using skiCentar.Services.Database;
 
 namespace skiCentar.Services
 {
     public class ProizvodiService : IProizvodiService
     {
-        public List<Proizvod> List = new List<Proizvod>()
+        public SkiCenterContext Context { get; set; }
+        public ProizvodiService(SkiCenterContext context)
         {
-            new Proizvod()
-            {
-                id = 1,
-                Naziv="Laptop",
-                Cijena = 100
-            },
-             new Proizvod()
-            {
-                id = 2,
-                Naziv = "Monitor",
-                Cijena = 200
-            },
-        };
-        public virtual List<Proizvod> GetList()
+            Context = context;
+        }
+
+
+        public virtual List<Model.Resort> GetList()
         {
-            Debugger.Launch();
-            return List;
+            return null;
+
+            //var bus = RabbitHutch.CreateBus("host=localhost");
+
+            //bus.PubSub.Publish(new Proizvod()
+            //{
+            //    id = 2,
+            //    Naziv = "Monitor",
+            //    Cijena = 200
+            //});
+            //Debugger.Launch();
+        }
+
+        List<Proizvod> IProizvodiService.GetList()
+        {
+            throw new NotImplementedException();
         }
     }
 }
