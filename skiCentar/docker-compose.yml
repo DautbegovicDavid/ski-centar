@@ -1,0 +1,36 @@
+version: '3'
+services:
+#mssql docker
+  skicentar-sql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=QWElkj132!
+      - MSSQL_PID=Developer
+    ports:
+      - 1401:1433
+    expose:
+      - 1433
+    networks:
+      - skicentarnet
+
+  skicentar-api:
+    restart: unless-stopped
+    build:
+      context: .
+    environment:
+      - ConnectionStrings:DefaultConnection=Server=skicentar-sql,1433;Database=skicentar2024;User=sa;Password=QWElkj132!;ConnectRetryCount=0; TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 49153:49153
+    networks:
+      - skicentarnet
+    links:
+      - skicentar-sql
+    depends_on:
+      - skicentar-sql
+      
+networks:
+  skicentarnet:
+    driver: bridge      

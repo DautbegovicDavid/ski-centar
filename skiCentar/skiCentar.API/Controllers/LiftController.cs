@@ -8,30 +8,10 @@ namespace skiCentar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LiftController : ControllerBase
+    public class LiftController : BaseCRUDController<Lift, LiftSearchObject, LiftInsertRequest, LiftInsertRequest>
     {
-        protected ILiftService _service;
-
-        public LiftController(ILiftService service)
+        public LiftController(ILiftService service) : base(service)
         {
-            _service = service;
-        }
-
-        [HttpGet]
-        public PagedResult<Lift> GetList([FromQuery] LiftSearchObject searchObject)
-        {
-            return _service.GetList(searchObject);
-        }
-        [HttpPost]
-        public Lift Insert(LiftInsertRequest request)
-        {
-            return _service.Insert(request);
-        }
-
-        [HttpPut("{id}")]
-        public Lift Update(int id, LiftInsertRequest request)
-        {
-            return _service.Update(id, request);
         }
     }
 }

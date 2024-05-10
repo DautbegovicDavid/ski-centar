@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skiCentar.Model", "skiCenta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skiCentar.Services", "skiCentar.Services\skiCentar.Services.csproj", "{5D4FAB14-AE19-4C56-AF82-11575556345C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skiCentar.Subscriber", "skiCentar.Subscriber\skiCentar.Subscriber.csproj", "{7DC5A801-42B1-4E7F-B6FC-CD3C648CD6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skiCentar.Subscriber", "skiCentar.Subscriber\skiCentar.Subscriber.csproj", "{7DC5A801-42B1-4E7F-B6FC-CD3C648CD6F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3E3B7F9-69BC-44B2-8ACB-8C543F090E51}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

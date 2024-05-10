@@ -5,7 +5,7 @@ using skiCentar.Services.Database;
 
 namespace skiCentar.Services
 {
-    public class BaseService<TModel, TSearch, TDbEntity> : IService<TModel, TSearch> where TSearch : BaseSearchObject where TDbEntity : class where TModel : class
+    public abstract class BaseService<TModel, TSearch, TDbEntity> : IService<TModel, TSearch> where TSearch : BaseSearchObject where TDbEntity : class where TModel : class
     {
         public SkiCenterContext Context { get; set; }
         public IMapper Mapper { get; set; }
@@ -21,7 +21,9 @@ namespace skiCentar.Services
             List<TModel> result = new List<TModel>();
 
             var query = Context.Set<TDbEntity>().AsQueryable();
+
             query = AddFilter(search, query);
+
             int count = query.Count();
 
             if (search.Page.HasValue && search.PageSize.HasValue)
@@ -39,7 +41,7 @@ namespace skiCentar.Services
             return pagedResult;
         }
 
-        public virtual IQueryable<TDbEntity> AddFilter(TSearch search, IQueryable<TDbEntity> query)
+        public virtual IQueryable<TDbEntity> AddFilter(TSearch searchObject, IQueryable<TDbEntity> query)
         {
             return query;
         }

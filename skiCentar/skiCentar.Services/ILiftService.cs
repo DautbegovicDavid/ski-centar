@@ -4,10 +4,8 @@ using skiCentar.Model.SearchObjects;
 
 namespace skiCentar.Services
 {
-    public interface ILiftService
+    public interface ILiftService : ICRUDService<Lift, LiftSearchObject, LiftInsertRequest, LiftInsertRequest>
     {
-        PagedResult<Lift> GetList(LiftSearchObject searchObject);
-        Lift Insert(LiftInsertRequest request);
-        Lift Update(int id, LiftInsertRequest request);
+
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace skiCentar.Services.Database;
 
@@ -47,9 +45,9 @@ public partial class SkiCenterContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.; TrustServerCertificate=true;Initial Catalog=ski_center; trusted_connection=true");
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Data Source=.; TrustServerCertificate=true;Initial Catalog=ski_center; trusted_connection=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -448,6 +446,54 @@ public partial class SkiCenterContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("name");
         });
+
+        base.OnModelCreating(modelBuilder);
+
+        //
+        if (!modelBuilder.Model.FindEntityType(typeof(LiftType)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<LiftType>().HasData(
+            new LiftType { Name = "Sjedeznica" },
+            new LiftType { Name = "Gondola" },
+            new LiftType { Name = "Sidro" },
+            new LiftType { Name = "Pokretna staza" },
+            new LiftType { Name = "Tanjir" },
+            new LiftType { Name = "Rukohvat" }
+            );
+        }
+
+        if (!modelBuilder.Model.FindEntityType(typeof(PoiCategory)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<PoiCategory>().HasData(
+            new PoiCategory { Name = "Ski kasa" },
+            new PoiCategory { Name = "Ski skola" },
+            new PoiCategory { Name = "Ski Rental" },
+            new PoiCategory { Name = "Hitna" },
+            new PoiCategory { Name = "WC" },
+            new PoiCategory { Name = "Parking" },
+            new PoiCategory { Name = "Restoran" },
+            new PoiCategory { Name = "Kafic" }
+            );
+        }
+
+        if (!modelBuilder.Model.FindEntityType(typeof(TrailDifficulty)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<TrailDifficulty>().HasData(
+            new TrailDifficulty { Name = "Pocetnicke staza", Color = "Green" },
+            new TrailDifficulty { Name = "Staze za srednje vjestine", Color = "Blue" },
+            new TrailDifficulty { Name = "Napredne staza", Color = "Crvena" },
+            new TrailDifficulty { Name = "Ekspertne staze", Color = "Black" }
+            );
+        }
+
+        if (!modelBuilder.Model.FindEntityType(typeof(UserRole)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<UserRole>().HasData(
+            new UserRole { Name = "Admin" },
+            new UserRole { Name = "Uposlenik" },
+            new UserRole { Name = "Korisnik" }
+            );
+        }
 
         OnModelCreatingPartial(modelBuilder);
     }
