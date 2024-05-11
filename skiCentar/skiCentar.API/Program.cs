@@ -43,7 +43,6 @@ using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<SkiCenterContext>();
     //dataContext.Database.EnsureCreated(); ne treba nam
-
     dataContext.Database.Migrate();
 }
 

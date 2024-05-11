@@ -23,6 +23,19 @@ namespace skiCentar.Services.Migrations
                     table.PrimaryKey("PK__lift_typ__3213E83F09F8F725", x => x.id);
                 });
 
+            migrationBuilder.InsertData(
+                table: "lift_type",
+                columns: new[] { "name" },
+                values: new object[,]
+                {
+                    { "Sjedeznica" },
+                    { "Gondola" },
+                    { "Sidro" },
+                    { "Pokretna staza" },
+                    { "Tanjir" },
+                    { "Rukohvat" }
+                });
+
             migrationBuilder.CreateTable(
                 name: "poi_category",
                 columns: table => new
@@ -67,14 +80,14 @@ namespace skiCentar.Services.Migrations
                 });
 
             migrationBuilder.InsertData(
-       table: "TrailDifficulty",
-       columns: new[] { "Name", "Color" },
-       values: new object[,]
-       {
-            { "Beginner", "Green" },
-            { "Intermediate", "Blue" },
-            { "Advanced", "Black" }
-       });
+                table: "trail_difficulty",
+                columns: new[] { "name", "color" },
+                values: new object[,]
+                {
+                    { "Beginner", "Green" },
+                    { "Intermediate", "Blue" },
+                    { "Advanced", "Black" }
+                });
 
             migrationBuilder.CreateTable(
                 name: "user_details",
@@ -102,6 +115,16 @@ namespace skiCentar.Services.Migrations
                 {
                     table.PrimaryKey("PK__user_rol__3213E83FD6D48D1E", x => x.id);
                 });
+
+            migrationBuilder.InsertData(
+              table: "user_role",
+              columns: new[] { "name" },
+              values: new object[,]
+              {
+                    { "Admin" },
+                    { "Uposlenik" },
+                    { "Korinsik" }
+              });
 
             migrationBuilder.CreateTable(
                 name: "daily_weather",
