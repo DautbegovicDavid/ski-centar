@@ -1,0 +1,6 @@
+@skiCentar.EmailSender_HostAddress = http://localhost:5157
+
+GET {{skiCentar.EmailSender_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

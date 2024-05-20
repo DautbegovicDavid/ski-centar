@@ -1,4 +1,5 @@
-﻿using skiCentar.Model;
+﻿using EasyNetQ;
+using skiCentar.Model;
 using skiCentar.Services.Database;
 
 namespace skiCentar.Services
@@ -29,6 +30,14 @@ namespace skiCentar.Services
 
         List<Proizvod> IProizvodiService.GetList()
         {
+            var bus = RabbitHutch.CreateBus("host=localhost");
+
+            bus.PubSub.Publish(new Proizvod()
+            {
+                id = 2,
+                Naziv = "Monitor",
+                Cijena = 200
+            });
             throw new NotImplementedException();
         }
     }

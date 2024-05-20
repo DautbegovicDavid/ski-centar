@@ -6,6 +6,6 @@ namespace skiCentar.Services
 {
     public interface ILiftService : ICRUDService<Lift, LiftSearchObject, LiftInsertRequest, LiftInsertRequest>
     {
-
+        public Lift Activate(int id);
     }
 }

@@ -1,6 +1,22 @@
 version: '3'
 services:
+
 #mssql docker
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 5672
+    networks:
+      - skicentarnet
+
   skicentar-sql:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     restart: unless-stopped
@@ -14,6 +30,25 @@ services:
       - 1433
     networks:
       - skicentarnet
+
+  mailing-service:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.emailsender
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USERNAME=quest
+      - RABBITMQ_PASSWORD=quest
+      - RABBITMQ_VIRTUALHOST=/
+    depends_on:
+      - rabbitmq
+      - skicentar-sql
+      - skicentar-api
+    networks:
+      - skicentarnet
+    ports:
+      - 7101:80
 
   skicentar-api:
     restart: unless-stopped

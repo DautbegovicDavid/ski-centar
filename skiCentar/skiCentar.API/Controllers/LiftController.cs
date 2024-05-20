@@ -13,5 +13,10 @@ namespace skiCentar.API.Controllers
         public LiftController(ILiftService service) : base(service)
         {
         }
+        [HttpPut("{id}/activate")]
+        public Model.Lift Activate(int id)
+        {
+            return (_service as ILiftService).Activate(id);
+        }
     }
 }

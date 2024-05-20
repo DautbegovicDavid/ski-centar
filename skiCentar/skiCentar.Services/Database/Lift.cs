@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class Lift
 {
@@ -16,6 +13,8 @@ public partial class Lift
     public int? ResortId { get; set; }
 
     public bool? IsFunctional { get; set; }
+
+    public string? StateMachine { get; set; }
 
     public virtual ICollection<LiftLocation> LiftLocations { get; } = new List<LiftLocation>();
 

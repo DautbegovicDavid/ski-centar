@@ -1,6 +1,6 @@
 ﻿namespace skiCentar.Model.SearchObjects
 {
-    public class ResortSearchObject
+    public class ResortSearchObject : BaseSearchObject
     {
         public string? NameGte { get; set; }
         public string? LocationGte { get; set; }

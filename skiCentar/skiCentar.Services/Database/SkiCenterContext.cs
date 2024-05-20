@@ -99,6 +99,7 @@ public partial class SkiCenterContext : DbContext
                 .IsRequired()
                 .HasDefaultValueSql("((1))")
                 .HasColumnName("is_functional");
+            entity.Property(e => e.StateMachine).HasColumnName("state_machine");
             entity.Property(e => e.LiftTypeId).HasColumnName("lift_type_id");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)

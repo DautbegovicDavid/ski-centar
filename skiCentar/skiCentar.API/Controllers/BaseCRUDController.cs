@@ -9,25 +9,21 @@ namespace skiCentar.API.Controllers
     [ApiController]
     public class BaseCRUDController<TModel, TSearch, TInsert, TUpdate> : BaseController<TModel, TSearch> where TSearch : BaseSearchObject where TModel : class
     {
+        protected new ICRUDService<TModel, TSearch, TInsert, TUpdate> _service; // redeklarisali smo service posto znam koji je. New keywor dnam pomogao
         public BaseCRUDController(ICRUDService<TModel, TSearch, TInsert, TUpdate> service) : base(service)
         {
+            _service = service;
         }
-
-        //[HttpGet]
-        //public PagedResult<TModel> GetList([FromQuery] TSearch searchObject)
-        //{
-        //    return _service.GetPaged(searchObject);
-        //}
         [HttpPost]
         public TModel Insert(TInsert request)
         {
-            return (_service as ICRUDService<TModel, TSearch, TInsert, TUpdate>).Insert(request);
+            return _service.Insert(request);
         }
 
         [HttpPut("{id}")]
         public TModel Update(int id, TUpdate request)
         {
-            return (_service as ICRUDService<TModel, TSearch, TInsert, TUpdate>).Update(id, request);
+            return _service.Update(id, request);
         }
     }
 }

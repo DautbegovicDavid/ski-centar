@@ -16,6 +16,8 @@ namespace skiCentar.Model
 
         public bool? IsFunctional { get; set; }
 
+        public string? StateMachine { get; set; }
+
         public virtual ICollection<LiftLocation> LiftLocations { get; } = new List<LiftLocation>();
 
         public virtual ICollection<LiftMaintenance> LiftMaintenances { get; } = new List<LiftMaintenance>();

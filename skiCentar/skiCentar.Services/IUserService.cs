@@ -2,7 +2,6 @@
 {
     public interface IUserService
     {
-        List<Model.Resort> GetList();
 
     }
 }

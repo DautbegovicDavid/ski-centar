@@ -126,6 +126,9 @@ namespace skiCentar.Services.Migrations
                         .HasColumnType("int")
                         .HasColumnName("resort_id");
 
+                    b.Property<string>("StateMachine")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id")
                         .HasName("PK__lift__3213E83F0CC826DF");
 
