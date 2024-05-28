@@ -3,7 +3,7 @@ using SendGrid.Helpers.Mail;
 
 public class EmailService
 {
-    private readonly string apiKey = "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";
+    private readonly string apiKey = "xyz";
 
     public async Task SendVerificationEmailAsync(string email, string verificationLink)
     {
