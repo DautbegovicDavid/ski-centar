@@ -3,11 +3,11 @@ using SendGrid.Helpers.Mail;
 
 public class EmailService
 {
-    private readonly string apiKey = "xyz";
+    private readonly string notApiKey = null;
 
     public async Task SendVerificationEmailAsync(string email, string verificationLink)
     {
-        var client = new SendGridClient(apiKey);
+        var client = new SendGridClient(notApiKey);
         var from = new EmailAddress("david.dautbegovic@edu.fit.ba", "David");
         var subject = "Please verify your email address";
         var to = new EmailAddress(email);
