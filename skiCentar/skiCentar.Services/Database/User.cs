@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class User
 {
@@ -18,6 +15,8 @@ public partial class User
     public int? UserRoleId { get; set; }
 
     public int? UserDetailsId { get; set; }
+
+    public bool? IsVerified { get; set; }
 
     public virtual ICollection<SkiAccident> SkiAccidents { get; } = new List<SkiAccident>();
 

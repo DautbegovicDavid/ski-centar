@@ -21,7 +21,7 @@ namespace EmailVerificationApi.Controllers
                 return BadRequest("Email is required.");
             }
 
-            var verificationLink = $"https://localhost:5000/verify?token=token={Guid.NewGuid()}";
+            var verificationLink = $"https://localhost:5000/verify?token={Guid.NewGuid()}";
             await _emailService.SendVerificationEmailAsync(email, verificationLink);
 
             return Ok("Verification email sent.");

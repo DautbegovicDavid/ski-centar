@@ -379,6 +379,9 @@ public partial class SkiCenterContext : DbContext
             entity.Property(e => e.LastLoginDate)
                 .HasColumnType("datetime")
                 .HasColumnName("last_login_date");
+            entity.Property(e => e.IsVerified)
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("is_verified");
             entity.Property(e => e.Password)
                 .HasMaxLength(100)
                 .IsUnicode(false)

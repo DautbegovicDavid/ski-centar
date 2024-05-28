@@ -16,6 +16,8 @@ namespace skiCentar.Model
 
         public int? UserDetailsId { get; set; }
 
+        public bool? IsVerified { get; set; }
+
         public virtual UserDetail? UserDetails { get; set; }
 
         public virtual UserRole? UserRole { get; set; }

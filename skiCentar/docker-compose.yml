@@ -3,7 +3,7 @@ services:
 
 #mssql docker
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.13-management
     container_name: rabbitmq
     restart: unless-stopped
     environment:
@@ -38,8 +38,8 @@ services:
       dockerfile: Dockerfile.emailsender
     environment:
       - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_USERNAME=quest
-      - RABBITMQ_PASSWORD=quest
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
       - RABBITMQ_VIRTUALHOST=/
     depends_on:
       - rabbitmq

@@ -1,21 +1,20 @@
 # Use the official .NET image as a base
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 80
  
 # Use the SDK image for build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["skiCentar.EmailSender/skiCentar.EmailSender.csproj", "skiCentar.EmailSender/"]
-RUN dotnet restore "skiCentar.EmailSender/skiCentar.EmailSender.csproj"
+COPY ["skiCentar.EmailSenderService/skiCentar.EmailSenderService.csproj", "skiCentar.EmailSenderService/"]
+RUN dotnet restore "skiCentar.EmailSenderService/skiCentar.EmailSenderService.csproj"
 COPY . .
-WORKDIR "/src/skiCentar.EmailSender"
-RUN dotnet build "skiCentar.EmailSender.csproj" -c Release -o /app/build
+WORKDIR "/src/skiCentar.EmailSenderService"
+RUN dotnet build "skiCentar.EmailSenderService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "skiCentar.EmailSender.csproj" -c Release -o /app/publish
+RUN dotnet publish "skiCentar.EmailSenderService.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "skiCentar.EmailSender.dll"]
+ENTRYPOINT ["dotnet", "skiCentar.EmailSenderService.dll"]

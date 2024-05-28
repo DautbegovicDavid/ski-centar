@@ -127,7 +127,8 @@ namespace skiCentar.Services.Migrations
                         .HasColumnName("resort_id");
 
                     b.Property<string>("StateMachine")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("state_machine");
 
                     b.HasKey("Id")
                         .HasName("PK__lift__3213E83F0CC826DF");
@@ -537,6 +538,12 @@ namespace skiCentar.Services.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("email");
+
+                    b.Property<bool?>("IsVerified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasColumnName("is_verified")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime")

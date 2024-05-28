@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EasyNetQ;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using skiCentar.Model;
@@ -35,6 +36,10 @@ namespace skiCentar.Services
 
             Context.Users.Add(user);
             Context.SaveChangesAsync();
+            //works for subscriber app on local
+            var bus = RabbitHutch.CreateBus("host=localhost");//host=rabbitmq za lokalni development
+
+            bus.PubSub.Publish("WAZZA");
 
             return Task.FromResult(new ServiceResult { Success = true, Message = "User registered successfully." });
         }

@@ -1,5 +1,4 @@
-﻿using EasyNetQ;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using skiCentar.Model;
 using skiCentar.Services;
 
@@ -24,15 +23,16 @@ namespace skiCentar.API.Controllers
             var result = await _service.Register(request);
             if (result.Success)
             {
-                _rabbitMQService.Publish("emailQueue", "New user registered: " + request.Email);
-                var bus = RabbitHutch.CreateBus("host=rabbitmq");
+                //var bus = RabbitHutch.CreateBus("host=localhost");
 
-                bus.PubSub.Publish(new Proizvod()
-                {
-                    id = 2,
-                    Naziv = "Monitor",
-                    Cijena = 200
-                });
+                //bus.PubSub.Publish(new Proizvod()
+                //{
+                //    id = 2,
+                //    Naziv = "Monitor",
+                //    Cijena = 200
+                //});
+                //_rabbitMQService.Publish("emailQueue", "New user registered: " + request.Email);
+
                 return Ok(new { message = result.Message });
 
             }

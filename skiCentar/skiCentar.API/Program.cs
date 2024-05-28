@@ -16,6 +16,8 @@ builder.Services.AddTransient<IProizvodiService, ProizvodiService>();
 builder.Services.AddTransient<ILiftService, LiftService>();
 builder.Services.AddTransient<ILiftTypeService, LiftTypeService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
+builder.Services.AddTransient<IUserService, UserService>();
+
 
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 

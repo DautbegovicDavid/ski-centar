@@ -3,6 +3,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<EmailService>();
 
+builder.Services.AddHostedService<EmailConsumerService>();
+
 
 builder.Services.AddControllers();
 
@@ -11,7 +13,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHostedService<EmailConsumerService>();
 
 var app = builder.Build();
 
