@@ -45,6 +45,8 @@ public partial class SkiCenterContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<UserVerification> UserVerifications { get; set; }
+
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
     //        => optionsBuilder.UseSqlServer("Data Source=.; TrustServerCertificate=true;Initial Catalog=ski_center; trusted_connection=true");
@@ -380,7 +382,7 @@ public partial class SkiCenterContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("last_login_date");
             entity.Property(e => e.IsVerified)
-                .HasDefaultValueSql("((1))")
+                .HasDefaultValueSql("((0))")
                 .HasColumnName("is_verified");
             entity.Property(e => e.Password)
                 .HasMaxLength(100)
@@ -449,6 +451,31 @@ public partial class SkiCenterContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<UserVerification>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__user_ver__3213E83DB5BAFCDC");
+
+            entity.ToTable("user_verification");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.Property(e => e.VerificationCode)
+               .HasMaxLength(256)
+               .IsUnicode(false)
+               .HasColumnName("verification_code")
+               .IsRequired();
+            entity.Property(e => e.Email)
+               .HasMaxLength(100)
+               .IsUnicode(false)
+               .HasColumnName("email")
+               .IsRequired();
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserVerifications)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__user_ver__user_id__2C3393D0");
         });
 
         base.OnModelCreating(modelBuilder);

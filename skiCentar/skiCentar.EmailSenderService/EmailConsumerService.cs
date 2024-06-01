@@ -1,4 +1,5 @@
 using EasyNetQ;
+using skiCentar.Model.Notification;
 
 namespace skiCentar.EmailSenderService;
 public class EmailConsumerService : BackgroundService
@@ -38,12 +39,11 @@ public class EmailConsumerService : BackgroundService
         var bus = RabbitHutch.CreateBus("host=localhost");
         Console.WriteLine($"listening:");
 
-        await bus.PubSub.SubscribeAsync<string>("seminarski rad", async msg =>
+        await bus.PubSub.SubscribeAsync<EmailNotification>("EmailNotification", async notification =>
         {
-            Console.WriteLine($"Received message: {msg}");
-
-            string recipientEmail = "dautbeg7@gmail.com"; // Replace with the recipient's email from msg if available
-            string token = Guid.NewGuid().ToString();
+            Console.WriteLine($"Received message: {notification.Email} , {notification.VerificationCode}");
+            string recipientEmail = notification.Email; // Replace with the recipient's email from msg if available
+            string token = notification.VerificationCode;
             string verificationLink = $"https://dautbegovicdavid.github.io/ski-center-verification-page/?id={token}";
             await _emailService.SendVerificationEmailAsync(recipientEmail, verificationLink);
 

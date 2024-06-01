@@ -3,12 +3,14 @@ using SendGrid.Helpers.Mail;
 
 public class EmailService
 {
-    private readonly string notApiKey = null;
+    private readonly string _apiKey = Environment.GetEnvironmentVariable("EMAIL_APIKEY") ?? "nejma";
+    private readonly string _emailSender = Environment.GetEnvironmentVariable("EMAIL_SENDER") ?? "david.dautbegovic@edu.fit.ba";
 
     public async Task SendVerificationEmailAsync(string email, string verificationLink)
     {
-        var client = new SendGridClient(notApiKey);
-        var from = new EmailAddress("david.dautbegovic@edu.fit.ba", "David");
+
+        var client = new SendGridClient(_apiKey);
+        var from = new EmailAddress(_emailSender, "SKI CENTAR BIH");
         var subject = "Please verify your email address";
         var to = new EmailAddress(email);
         var plainTextContent = $"Please verify your email by clicking on the following link: {verificationLink}";
@@ -23,6 +25,7 @@ public class EmailService
         }
         else
         {
+            Console.WriteLine(response);
             Console.WriteLine("Failed to send email.");
             // Additional error handling could go here
         }

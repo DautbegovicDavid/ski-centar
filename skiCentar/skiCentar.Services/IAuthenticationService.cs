@@ -6,6 +6,7 @@ namespace skiCentar.Services
     {
         Task<ServiceResult> Login(UserLogin request);
         Task<ServiceResult> Register(UserLogin request);
+        Task<ServiceResult> VerifyUser(VerifyUser request);
 
     }
 }

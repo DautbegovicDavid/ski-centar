@@ -7,7 +7,7 @@ public partial class UserDetail
     public string Name { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
-    public virtual ICollection<User> Users { get; } = new List<User>();
 
+    public virtual ICollection<User> Users { get; } = new List<User>();
 
 }

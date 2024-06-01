@@ -1,46 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
-import 'package:skicentar_desktop/models/lift.dart';
+import 'package:skicentar_desktop/models/resort.dart';
 import 'package:skicentar_desktop/models/search_result.dart';
-import 'package:skicentar_desktop/providers/lift_provider.dart';
+import 'package:skicentar_desktop/providers/resort_provider.dart';
 
-class LiftListScreen extends StatefulWidget {
-  const LiftListScreen({super.key});
+class ResortListScreen extends StatefulWidget {
+  const ResortListScreen({super.key});
 
   @override
-  State<LiftListScreen> createState() => _LiftListScreenState();
+  State<ResortListScreen> createState() => _ResortListScreenState();
 }
 
-class _LiftListScreenState extends State<LiftListScreen> {
-  SearchResult<Lift>? result = null;
-  // LiftProvider provider = new LiftProvider();
-
-  late LiftProvider provider;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    provider = context.read<LiftProvider>();
-
-    provider.get(filter: {});
-  }
-
+class _ResortListScreenState extends State<ResortListScreen> {
+  SearchResult<Resort>? result = null;
+  
+  ResortProvider provider = ResortProvider();
 
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-        "Lifts",
+        "Resorts",
         Container(
             child: Column(
           children: [_buildSearch(), _buildResultView()],
         )),
-        false);
+        true
+        );
   }
 
   TextEditingController _ftsEditingController = TextEditingController();
   TextEditingController _sifraController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    result = await provider.get(filter: null);
+          setState(() {
+      });
+  }
 
   Widget _buildSearch() {
     return Padding(
@@ -93,19 +94,21 @@ class _LiftListScreenState extends State<LiftListScreen> {
             width: double.infinity,
             child: DataTable(
               columns: [
-                DataColumn(label: Text("ID"), numeric: true),
-                DataColumn(label: Text("NAME")),
-                DataColumn(label: Text("Functional"))
+                DataColumn(label: Text("Id"), numeric: true),
+                DataColumn(label: Text("Name")),
+                DataColumn(label: Text("Location - City")),
+                DataColumn(label: Text("Elevation (m)")),
+                DataColumn(label: Text("SKI work hours")),
+
+
               ],
               rows: result?.result
                       .map((m) => DataRow(cells: [
                             DataCell(Text(m.id.toString())),
                             DataCell(Text(m.name!)),
-                            DataCell(Text(m.isFunctional != null
-                                ? m.isFunctional == true
-                                    ? "Yes"
-                                    : "No"
-                                : "Not Active")),
+                            DataCell(Text(m.location!)),
+                            DataCell(Text(m.elevation!.toString())),
+                            DataCell(Text(m.skiWorkHours!)),
                           ]))
                       .toList()
                       .cast<DataRow>() ??

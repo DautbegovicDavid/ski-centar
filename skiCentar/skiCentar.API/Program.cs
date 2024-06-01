@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using skiCentar.API.Filters;
 using skiCentar.Services;
 using skiCentar.Services.Database;
 using skiCentar.Services.LiftStateMachine;
@@ -11,22 +12,19 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IResortService, ResortService>();
-
 builder.Services.AddTransient<IProizvodiService, ProizvodiService>();
 builder.Services.AddTransient<ILiftService, LiftService>();
 builder.Services.AddTransient<ILiftTypeService, LiftTypeService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
 builder.Services.AddTransient<IUserService, UserService>();
-
-
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
-
 
 //state machine
 builder.Services.AddTransient<BaseLiftState>();
 builder.Services.AddTransient<InitialLiftState>();
 builder.Services.AddTransient<DraftLiftState>();
 builder.Services.AddTransient<ActiveLiftState>();
+builder.Services.AddTransient<HiddenLiftState>();
 
 //rabbit mq
 builder.Services.AddScoped<IRabbitMQService, RabbitMQService>();
@@ -50,7 +48,10 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers(x =>
+{
+    x.Filters.Add<ExceptionFilter>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddEndpointsApiExplorer();

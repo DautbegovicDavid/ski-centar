@@ -25,4 +25,6 @@ public partial class User
     public virtual UserRole? UserRole { get; set; }
 
     public virtual ICollection<Resort> Resorts { get; } = new List<Resort>();
+
+    public virtual ICollection<UserVerification> UserVerifications { get; } = new List<UserVerification>();
 }

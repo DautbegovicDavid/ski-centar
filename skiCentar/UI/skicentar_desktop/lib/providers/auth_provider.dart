@@ -13,7 +13,7 @@ class AuthProvider {
   static const String _loginEndpoint = '/login';
 
   Future<dynamic> login(String email, String password) async {
-    final response =await  ApiHelper.post(
+    final response = await  ApiHelper.post(
         _baseUrl!, _loginEndpoint,LoginModel(email: email, password: password));
 
     var isValidResposne = AuthHelper.isValidResponse(response);

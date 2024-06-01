@@ -17,29 +17,18 @@ namespace skiCentar.API.Controllers
             _rabbitMQService = rabbitMQService;
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UserLogin request)
         {
             var result = await _service.Register(request);
             if (result.Success)
             {
-                //var bus = RabbitHutch.CreateBus("host=localhost");
-
-                //bus.PubSub.Publish(new Proizvod()
-                //{
-                //    id = 2,
-                //    Naziv = "Monitor",
-                //    Cijena = 200
-                //});
-                //_rabbitMQService.Publish("emailQueue", "New user registered: " + request.Email);
-
                 return Ok(new { message = result.Message });
-
             }
             return BadRequest(new { message = result.Message });
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] UserLogin request)
         {
             var result = await _service.Login(request);
@@ -50,5 +39,16 @@ namespace skiCentar.API.Controllers
 
             return Unauthorized(new { message = result.Message });
         }
+        [HttpPost("VerifyUser")]
+        public async Task<IActionResult> VerifyUser([FromBody] VerifyUser request)
+        {
+            var result = await _service.VerifyUser(request);
+            if (result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+            return BadRequest(new { message = result.Message });
+        }
+
     }
 }

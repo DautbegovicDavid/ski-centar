@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:skicentar_desktop/utils/auth.helper.dart';
 
 class ApiHelper {
-
   static bool isValidResponse(Response response) {
     if (response.statusCode < 299) {
       return true;
@@ -15,8 +14,11 @@ class ApiHelper {
     }
   }
 
-  static  Map<String, String> CreateHeaders(String token) {
-    var header = {"Content-Type": "application/json", "Authorization": token};
+  static Map<String, String> CreateHeaders(String token) {
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    };
     return header;
   }
 
@@ -29,5 +31,4 @@ class ApiHelper {
     );
     return response;
   }
-  
 }

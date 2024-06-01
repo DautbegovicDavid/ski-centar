@@ -3,18 +3,19 @@ using skiCentar.Services.Database;
 
 namespace skiCentar.Services.LiftStateMachine
 {
-    public class ActiveLiftState : BaseLiftState
+    public class HiddenLiftState : BaseLiftState
     {
-        public ActiveLiftState(SkiCenterContext context, IMapper mapper, IServiceProvider serviceProvider) : base(context, mapper, serviceProvider)
+        public HiddenLiftState(SkiCenterContext context, IMapper mapper, IServiceProvider serviceProvider) : base(context, mapper, serviceProvider)
         {
         }
-        public override Model.Lift Hide(int id)
+
+        public override Model.Lift Edit(int id)
         {
             var set = Context.Set<Lift>();
 
             var entity = set.Find(id);
 
-            entity.StateMachine = "hidden";
+            entity.StateMachine = "draft";
 
             Context.SaveChanges();
 
@@ -23,7 +24,7 @@ namespace skiCentar.Services.LiftStateMachine
 
         public override List<string> AllowedActions(Lift entity)
         {
-            return new List<string> { nameof(Hide) };
+            return new List<string> { nameof(Edit) };
         }
 
     }

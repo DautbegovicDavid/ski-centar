@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:skicentar_desktop/providers/lift_provider.dart';
 import 'package:skicentar_desktop/screens/login_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => LiftProvider()),
+    ],
+    child: const MyApp(),
+  ));
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -41,6 +41,8 @@ services:
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
       - RABBITMQ_VIRTUALHOST=/
+      - EMAIL_APIKEY=nejma
+      - EMAIL_SENDER=david.dautbegovic@edu.fit.ba
     depends_on:
       - rabbitmq
       - skicentar-sql

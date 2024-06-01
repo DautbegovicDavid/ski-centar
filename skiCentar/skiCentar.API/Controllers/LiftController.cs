@@ -18,5 +18,20 @@ namespace skiCentar.API.Controllers
         {
             return (_service as ILiftService).Activate(id);
         }
+        [HttpPut("{id}/edit")]
+        public Model.Lift Edit(int id)
+        {
+            return (_service as ILiftService).Edit(id);
+        }
+        [HttpPut("{id}/hide")]
+        public Model.Lift Hide(int id)
+        {
+            return (_service as ILiftService).Hide(id);
+        }
+        [HttpGet("{id}/allowedActions")]
+        public List<string> AllowedActions(int id)
+        {
+            return (_service as ILiftService).AllowedActions(id);
+        }
     }
 }
