@@ -6,12 +6,15 @@ part 'user.g.dart';
 @JsonSerializable()
 class User{
   int? id;
+  int? userRoleId;
   String? email;
   UserRole? userRole;
+  DateTime? registrationDate;
+  bool? isVerified;
   
   User({this.id,this.email,this.userRole});
 
-  factory User.FromJson(Map<String,dynamic> json) => _$UserFromJson(json);
+  factory User.fromJson(Map<String,dynamic> json) => _$UserFromJson(json);
 
   Map<String,dynamic> toJson() => _$UserToJson(this);
 }

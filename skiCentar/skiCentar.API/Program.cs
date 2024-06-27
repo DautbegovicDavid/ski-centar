@@ -16,8 +16,15 @@ builder.Services.AddTransient<IProizvodiService, ProizvodiService>();
 builder.Services.AddTransient<ILiftService, LiftService>();
 builder.Services.AddTransient<ILiftTypeService, LiftTypeService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
+builder.Services.AddTransient<ITrailService, TrailService>();
+builder.Services.AddTransient<ITrailDifficultyService, TrailDifficultyService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddTransient<IPointOfInterestCategoryService, PointOfInterestCategoryService>();
+builder.Services.AddTransient<IPointOfInterestService, PointOfInterestService>();
+builder.Services.AddTransient<IDailyWeatherService, DailyWeatherService>();
+
+
 
 //state machine
 builder.Services.AddTransient<BaseLiftState>();

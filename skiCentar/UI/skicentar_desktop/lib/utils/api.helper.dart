@@ -1,7 +1,7 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:skicentar_desktop/utils/auth.helper.dart';
 
 class ApiHelper {
   static bool isValidResponse(Response response) {
@@ -14,7 +14,7 @@ class ApiHelper {
     }
   }
 
-  static Map<String, String> CreateHeaders(String token) {
+  static Map<String, String> createHeaders(String token) {
     var header = {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token"

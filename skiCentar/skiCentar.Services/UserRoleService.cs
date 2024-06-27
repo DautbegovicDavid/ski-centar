@@ -5,7 +5,7 @@ using skiCentar.Services.Database;
 
 namespace skiCentar.Services
 {
-    public class UserRoleService : BaseCRUDService<Model.UserRole, BaseSearchObject, Database.UserRole, BaseNameRequest, BaseNameRequest>, IUserRoleService
+    public class UserRoleService : BaseCRUDService<Model.UserRole, BaseSearchObject, UserRole, BaseNameRequest, BaseNameRequest>, IUserRoleService
     {
         public UserRoleService(SkiCenterContext context, IMapper mapper) : base(context, mapper)
         {

@@ -6,20 +6,18 @@ import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_desktop/utils/auth.helper.dart';
 
 abstract class BaseProvider<T> with ChangeNotifier {
-  static String? _baseUrl;
+  static String? baseUrl;
   String _endpoint = "";
-  
+
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
-    _baseUrl = const String.fromEnvironment("baseUrl",
+    baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "http://localhost:5160/api/");
   }
 
   Future<SearchResult<T>> get({dynamic filter}) async {
     String token = await AuthHelper.getToken();
-    print(filter);
-    var url = "$_baseUrl$_endpoint";
-    print(url);
+    var url = "$baseUrl$_endpoint";
     if (filter != null) {
       var queryString = getQueryString(filter);
       url = "$url?$queryString";
@@ -48,8 +46,27 @@ abstract class BaseProvider<T> with ChangeNotifier {
     // print("response: ${response.request} ${response.statusCode}, ${response.body}");
   }
 
-  Future<T> insert(dynamic request) async {
-    var url = "$_baseUrl$_endpoint";
+  Future<T> getById(int id) async {
+    var url = "$baseUrl$_endpoint/$id";
+    String token = await AuthHelper.getToken();
+
+    var uri = Uri.parse(url);
+    var headers = createHeaders(token);
+
+    var response = await http.get(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw Exception("Unknown error");
+    }
+  }
+
+  Future<T> insert(dynamic request, {String? endpoint}) async {
+    var url = (endpoint != null && endpoint.isNotEmpty)
+        ? "$baseUrl$endpoint"
+        : "$baseUrl$_endpoint";
     String token = await AuthHelper.getToken();
 
     var uri = Uri.parse(url);
@@ -62,12 +79,12 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
-      throw new Exception("Unknown error");
+      throw Exception("Unknown error");
     }
   }
 
   Future<T> update(int id, [dynamic request]) async {
-    var url = "$_baseUrl$_endpoint/$id";
+    var url = "$baseUrl$_endpoint/$id";
     String token = await AuthHelper.getToken();
     var uri = Uri.parse(url);
     var headers = createHeaders(token);
@@ -79,7 +96,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
-      throw new Exception("Unknown error");
+      throw Exception("Unknown error");
     }
   }
 
@@ -87,19 +104,33 @@ abstract class BaseProvider<T> with ChangeNotifier {
     throw Exception("Method not implemented");
   }
 
+  Future<void> putWithoutBody(String url) async {
+    String token = await AuthHelper.getToken();
+    var uri = Uri.parse(url);
+    var headers = createHeaders(token);
+
+    var response = await http.put(uri, headers: headers);
+    if (!isValidResponse(response)) {
+      throw Exception("Unknown error");
+    }
+  }
+
   bool isValidResponse(Response response) {
     if (response.statusCode < 299) {
       return true;
     } else if (response.statusCode == 401) {
-      throw new Exception("Unauthorized");
+      throw Exception("Unauthorized");
     } else {
       print(response.body);
-      throw new Exception("Something bad happened please try again");
+      throw Exception("Something bad happened please try again");
     }
   }
 
   Map<String, String> createHeaders(String token) {
-    var header = {"Content-Type": "application/json", "Authorization": token};
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": 'Bearer $token'
+    };
     return header;
   }
 

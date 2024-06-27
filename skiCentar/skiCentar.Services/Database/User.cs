@@ -1,4 +1,7 @@
-﻿namespace skiCentar.Services.Database;
+﻿using System;
+using System.Collections.Generic;
+
+namespace skiCentar.Services.Database;
 
 public partial class User
 {
@@ -18,13 +21,15 @@ public partial class User
 
     public bool? IsVerified { get; set; }
 
-    public virtual ICollection<SkiAccident> SkiAccidents { get; } = new List<SkiAccident>();
+    public virtual ICollection<SkiAccident> SkiAccidents { get; set; } = new List<SkiAccident>();
+
+    public virtual ICollection<TicketPurchase> TicketPurchases { get; set; } = new List<TicketPurchase>();
 
     public virtual UserDetail? UserDetails { get; set; }
 
     public virtual UserRole? UserRole { get; set; }
 
-    public virtual ICollection<Resort> Resorts { get; } = new List<Resort>();
+    public virtual ICollection<UserVerification> UserVerifications { get; set; } = new List<UserVerification>();
 
-    public virtual ICollection<UserVerification> UserVerifications { get; } = new List<UserVerification>();
+    public virtual ICollection<Resort> Resorts { get; set; } = new List<Resort>();
 }

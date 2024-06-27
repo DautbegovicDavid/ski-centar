@@ -8,7 +8,7 @@ class AuthProvider {
   static String? _baseUrl;
   AuthProvider() {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5160/api/Authentication");
+        defaultValue: "http://10.0.2.2:5160/api/Authentication");
   }
 
   static const String _loginEndpoint = '/login';

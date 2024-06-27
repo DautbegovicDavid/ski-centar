@@ -8,7 +8,7 @@ namespace skiCentar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LiftController : BaseCRUDController<Lift, LiftSearchObject, LiftInsertRequest, LiftInsertRequest>
+    public class LiftController : BaseCRUDController<Lift, LiftSearchObject, LiftUpsertRequest, LiftUpsertRequest>
     {
         public LiftController(ILiftService service) : base(service)
         {

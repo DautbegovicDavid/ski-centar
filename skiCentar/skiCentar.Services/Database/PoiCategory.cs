@@ -9,5 +9,5 @@ public partial class PoiCategory
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<PointOfInterest> PointOfInterests { get; } = new List<PointOfInterest>();
+    public virtual ICollection<PointOfInterest> PointOfInterests { get; set; } = new List<PointOfInterest>();
 }

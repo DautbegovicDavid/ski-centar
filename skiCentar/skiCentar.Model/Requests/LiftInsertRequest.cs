@@ -1,6 +1,8 @@
-﻿namespace skiCentar.Model.Requests
+﻿using System.Collections.Generic;
+
+namespace skiCentar.Model.Requests
 {
-    public class LiftInsertRequest
+    public class LiftUpsertRequest
     {
         public string Name { get; set; } = null!;
 
@@ -11,5 +13,7 @@
         public int? ResortId { get; set; }
 
         public bool? IsFunctional { get; set; }
+
+        public List<LiftLocationUpsertRequest> LiftLocations { get; set; } = new List<LiftLocationUpsertRequest>();
     }
 }

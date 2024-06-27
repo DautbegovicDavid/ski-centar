@@ -8,7 +8,7 @@ class LiftProvider {
   static String? _baseUrl;
   LiftProvider() {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5160/api/");
+        defaultValue: "http://10.0.2.2:5160/api/");
   }
 
   Future<dynamic> get() async {

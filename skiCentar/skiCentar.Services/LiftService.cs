@@ -9,7 +9,7 @@ using System.Linq.Dynamic.Core;
 
 namespace skiCentar.Services
 {
-    public class LiftService : BaseCRUDService<Model.Lift, LiftSearchObject, Database.Lift, LiftInsertRequest, LiftInsertRequest>, ILiftService
+    public class LiftService : BaseCRUDService<Model.Lift, LiftSearchObject, Database.Lift, LiftUpsertRequest, LiftUpsertRequest>, ILiftService
     {
         ILogger<LiftService> _logger;
         public BaseLiftState BaseLiftState { get; set; }
@@ -32,19 +32,34 @@ namespace skiCentar.Services
 
             if (searchObject.isResortIncluded == true)
             {
-                query = query.Include(x => x.Resort).Include(x => x.Resort);
+                query = query.Include(x => x.Resort);
             }
+
+            if (searchObject.areLiftLocationsIncluded == true)
+            {
+                query = query.Include(x => x.LiftLocations);
+            }
+
+            if (searchObject.resortId > 0)
+            {
+                query = query.Where(x => x.ResortId == searchObject.resortId);
+            }
+            if (searchObject.liftTypeId > 0)
+            {
+                query = query.Where(x => x.LiftTypeId == searchObject.liftTypeId);
+            }
+
 
             return query;
         }
 
-        public override Model.Lift Insert(LiftInsertRequest request)
+        public override Model.Lift Insert(LiftUpsertRequest request)
         {
             var state = BaseLiftState.CreateState("initial");
             return state.Insert(request);
         }
 
-        public override Model.Lift Update(int id, LiftInsertRequest request)
+        public override Model.Lift Update(int id, LiftUpsertRequest request)
         {
             var entity = GetById(id);
             var state = BaseLiftState.CreateState(entity.StateMachine);

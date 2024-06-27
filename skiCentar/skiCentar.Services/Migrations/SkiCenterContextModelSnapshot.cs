@@ -50,7 +50,7 @@ namespace skiCentar.Services.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("Date")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("date");
 
                     b.Property<decimal?>("Humidity")
@@ -406,7 +406,7 @@ namespace skiCentar.Services.Migrations
                         .HasDefaultValueSql("((1))");
 
                     b.Property<decimal?>("Length")
-                        .HasColumnType("decimal(5, 2)")
+                        .HasColumnType("decimal(10, 2)")
                         .HasColumnName("length");
 
                     b.Property<string>("Name")
@@ -543,7 +543,7 @@ namespace skiCentar.Services.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("is_verified")
-                        .HasDefaultValueSql("((1))");
+                        .HasDefaultValueSql("((0))");
 
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime")

@@ -6,6 +6,6 @@ class ResortProvider extends BaseProvider<Resort> {
 
   @override
   Resort fromJson(data) {
-    return Resort.FromJson(data);
+    return Resort.fromJson(data);
   }
 }

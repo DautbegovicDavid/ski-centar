@@ -61,7 +61,7 @@ public partial class SkiCenterContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Date)
-                .HasColumnType("date")
+                .HasColumnType("datetime")
                 .HasColumnName("date");
             entity.Property(e => e.Humidity)
                 .HasColumnType("decimal(5, 2)")
@@ -289,7 +289,7 @@ public partial class SkiCenterContext : DbContext
                 .HasDefaultValueSql("((1))")
                 .HasColumnName("is_functional");
             entity.Property(e => e.Length)
-                .HasColumnType("decimal(5, 2)")
+                .HasColumnType("decimal(10, 2)")
                 .HasColumnName("length");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)

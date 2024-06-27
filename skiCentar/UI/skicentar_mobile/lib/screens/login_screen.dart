@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                          height: 200,
+                          height: 210,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -46,7 +46,8 @@ class LoginPage extends StatelessWidget {
                                 controller: _emailController,
                                 decoration: const InputDecoration(
                                     labelText: "Username",
-                                    suffixIcon: Icon(Icons.email)),
+                                    suffixIcon: Icon(Icons.email),
+                                  ),
                               ),
                               TextField(
                                 controller: _passwordController,
@@ -62,7 +63,9 @@ class LoginPage extends StatelessWidget {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.blue[400]),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white),
+                               minimumSize: MaterialStateProperty.all(Size(200,40))
+                                  ),
                           onPressed: () async {
                             AuthProvider provider = AuthProvider();
                             try {

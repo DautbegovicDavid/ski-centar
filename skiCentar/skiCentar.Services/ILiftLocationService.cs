@@ -7,7 +7,7 @@ namespace skiCentar.Services
     internal interface ILiftLocationService
     {
         List<LiftLocation> GetList(LiftSearchObject searchObject);
-        Lift Insert(LiftInsertRequest request);
-        Lift Update(int id, LiftInsertRequest request);
+        Lift Insert(LiftUpsertRequest request);
+        Lift Update(int id, LiftUpsertRequest request);
     }
 }

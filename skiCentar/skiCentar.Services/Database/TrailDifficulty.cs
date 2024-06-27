@@ -11,5 +11,5 @@ public partial class TrailDifficulty
 
     public string Color { get; set; } = null!;
 
-    public virtual ICollection<Trail> Trails { get; } = new List<Trail>();
+    public virtual ICollection<Trail> Trails { get; set; } = new List<Trail>();
 }

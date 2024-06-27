@@ -27,7 +27,6 @@ public class EmailService
         {
             Console.WriteLine(response);
             Console.WriteLine("Failed to send email.");
-            // Additional error handling could go here
         }
     }
 }

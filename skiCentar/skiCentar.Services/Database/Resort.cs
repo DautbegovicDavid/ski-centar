@@ -15,13 +15,13 @@ public partial class Resort
 
     public string SkiWorkHours { get; set; } = null!;
 
-    public virtual ICollection<DailyWeather> DailyWeathers { get; } = new List<DailyWeather>();
+    public virtual ICollection<DailyWeather> DailyWeathers { get; set; } = new List<DailyWeather>();
 
-    public virtual ICollection<Lift> Lifts { get; } = new List<Lift>();
+    public virtual ICollection<Lift> Lifts { get; set; } = new List<Lift>();
 
-    public virtual ICollection<PointOfInterest> PointOfInterests { get; } = new List<PointOfInterest>();
+    public virtual ICollection<PointOfInterest> PointOfInterests { get; set; } = new List<PointOfInterest>();
 
-    public virtual ICollection<Trail> Trails { get; } = new List<Trail>();
+    public virtual ICollection<Trail> Trails { get; set; } = new List<Trail>();
 
-    public virtual ICollection<User> Users { get; } = new List<User>();
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

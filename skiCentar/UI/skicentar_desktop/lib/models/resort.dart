@@ -9,10 +9,10 @@ class Resort{
   String? location;
   int? elevation;
   String? skiWorkHours;
-  
+
   Resort({this.id,this.name});
 
-  factory Resort.FromJson(Map<String,dynamic> json) => _$ResortFromJson(json);
+  factory Resort.fromJson(Map<String,dynamic> json) => _$ResortFromJson(json);
 
   Map<String,dynamic> toJson() => _$ResortToJson(this);
 }

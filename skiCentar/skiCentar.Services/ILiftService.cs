@@ -4,7 +4,7 @@ using skiCentar.Model.SearchObjects;
 
 namespace skiCentar.Services
 {
-    public interface ILiftService : ICRUDService<Lift, LiftSearchObject, LiftInsertRequest, LiftInsertRequest>
+    public interface ILiftService : ICRUDService<Lift, LiftSearchObject, LiftUpsertRequest, LiftUpsertRequest>
     {
         public Lift Activate(int id);
         public Lift Edit(int id);

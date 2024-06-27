@@ -21,9 +21,9 @@ public partial class Trail
 
     public virtual Resort? Resort { get; set; }
 
-    public virtual ICollection<SkiAccident> SkiAccidents { get; } = new List<SkiAccident>();
+    public virtual ICollection<SkiAccident> SkiAccidents { get; set; } = new List<SkiAccident>();
 
-    public virtual ICollection<TrailLocation> TrailLocations { get; } = new List<TrailLocation>();
+    public virtual ICollection<TrailLocation> TrailLocations { get; set; } = new List<TrailLocation>();
 
-    public virtual ICollection<TrailMaintenance> TrailMaintenances { get; } = new List<TrailMaintenance>();
+    public virtual ICollection<TrailMaintenance> TrailMaintenances { get; set; } = new List<TrailMaintenance>();
 }

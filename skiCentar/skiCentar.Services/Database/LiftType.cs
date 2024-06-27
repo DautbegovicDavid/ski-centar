@@ -1,4 +1,7 @@
-﻿namespace skiCentar.Services.Database;
+﻿using System;
+using System.Collections.Generic;
+
+namespace skiCentar.Services.Database;
 
 public partial class LiftType
 {
@@ -6,5 +9,5 @@ public partial class LiftType
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Lift> Lifts { get; } = new List<Lift>();
+    public virtual ICollection<Lift> Lifts { get; set; } = new List<Lift>();
 }

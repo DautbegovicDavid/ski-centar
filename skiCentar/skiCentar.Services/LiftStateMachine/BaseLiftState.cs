@@ -18,12 +18,12 @@ namespace skiCentar.Services.LiftStateMachine
             Mapper = mapper;
             ServiceProvider = serviceProvider;
         }
-        public virtual Model.Lift Insert(LiftInsertRequest request)
+        public virtual Model.Lift Insert(LiftUpsertRequest request)
         {
             throw new UserException("Method not allowed");
         }
 
-        public virtual Model.Lift Update(int id, LiftInsertRequest request)
+        public virtual Model.Lift Update(int id, LiftUpsertRequest request)
         {
             throw new UserException("Method not allowed");
         }

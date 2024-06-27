@@ -10,7 +10,7 @@ namespace skiCentar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : BaseCRUDController<Model.User, BaseSearchObject, UserUpsertRequest, UserUpsertRequest>
+    public class UserController : BaseCRUDController<Model.User, UserSearchObject, UserUpsertRequest, UserUpsertRequest>
     {
         public UserController(IUserService service) : base(service)
         {

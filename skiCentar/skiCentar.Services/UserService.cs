@@ -7,13 +7,51 @@ using skiCentar.Services.Database;
 
 namespace skiCentar.Services
 {
-    public class UserService : BaseCRUDService<Model.User, BaseSearchObject, Database.User, UserUpsertRequest, UserUpsertRequest>, IUserService
+    public class UserService : BaseCRUDService<Model.User, UserSearchObject, User, UserUpsertRequest, UserUpsertRequest>, IUserService
     {
         ILogger<UserService> _logger;
         public UserService(SkiCenterContext context, IMapper mapper, ILogger<UserService> logger) : base(context, mapper)
         {
             _logger = logger;
         }
+        public override IQueryable<User> AddFilter(UserSearchObject searchObject, IQueryable<User> query)
+        {
+            var filteredQuery = base.AddFilter(searchObject, query);
+            if (searchObject.areUserDetailsIncluded)
+            {
+                filteredQuery = query.Include(x => x.UserDetails);
+            }
+
+            if (searchObject.isUserRoleIncluded)
+            {
+                filteredQuery = query.Include(x => x.UserRole);
+            }
+
+            if (searchObject.userRoleId > 0)
+            {
+                filteredQuery = filteredQuery.Where(x => x.UserRoleId == searchObject.userRoleId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchObject.emailGte))
+            {
+                filteredQuery = filteredQuery.Where(x => x.Email.StartsWith(searchObject.emailGte));
+            }
+
+            if (searchObject.dateRegisteredFrom != DateTime.MinValue)
+            {
+                filteredQuery = filteredQuery.Where(x => x.RegistrationDate >= searchObject.dateRegisteredFrom);
+            }
+
+            if (searchObject.dateRegisteredTo != DateTime.MinValue)
+            {
+                var toDate = searchObject.dateRegisteredTo.Date.AddDays(1).AddTicks(-1);
+                filteredQuery = filteredQuery.Where(x => x.RegistrationDate <= toDate);
+            }
+
+
+            return filteredQuery;
+        }
+
 
         public Model.User AddEmployee(EmployeeUpsertRequest request)
         {

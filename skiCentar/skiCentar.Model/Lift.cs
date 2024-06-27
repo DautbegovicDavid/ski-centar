@@ -18,7 +18,7 @@ namespace skiCentar.Model
 
         public string? StateMachine { get; set; }
 
-        public virtual ICollection<LiftLocation> LiftLocations { get; } = new List<LiftLocation>();
+        public virtual ICollection<LiftLocation> LiftLocations { get; set; }
 
         public virtual ICollection<LiftMaintenance> LiftMaintenances { get; } = new List<LiftMaintenance>();
 

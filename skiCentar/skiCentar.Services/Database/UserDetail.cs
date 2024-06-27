@@ -1,4 +1,7 @@
-﻿namespace skiCentar.Services.Database;
+﻿using System;
+using System.Collections.Generic;
+
+namespace skiCentar.Services.Database;
 
 public partial class UserDetail
 {
@@ -8,6 +11,5 @@ public partial class UserDetail
 
     public string LastName { get; set; } = null!;
 
-    public virtual ICollection<User> Users { get; } = new List<User>();
-
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

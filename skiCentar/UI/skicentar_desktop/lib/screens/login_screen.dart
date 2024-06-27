@@ -1,4 +1,3 @@
-import 'package:easy_loader/easy_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:skicentar_desktop/providers/auth_provider.dart';
 import 'package:skicentar_desktop/screens/lift_list_screen.dart';
@@ -6,8 +5,8 @@ import 'package:skicentar_desktop/screens/lift_list_screen.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,6 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('WELCOME TO SKI CENTER',
             style: TextStyle(color: Colors.white)),
-        surfaceTintColor: Colors.red,
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -69,18 +67,19 @@ class LoginPage extends StatelessWidget {
                               try {
                                 await provider.login(_emailController.text,
                                     _passwordController.text);
+                                if (!context.mounted) return;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LiftListScreen()));
+                                    builder: (context) => const LiftListScreen()));
                               } on Exception catch (e) {
                                 showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                        title: Text("Error"),
+                                        title: const Text("Error"),
                                         actions: [
                                           TextButton(
                                               onPressed: () =>
                                                   Navigator.pop(context),
-                                              child: Text("OK"))
+                                              child: const Text("OK"))
                                         ],
                                         content: Text(e.toString())));
                               }
@@ -90,10 +89,6 @@ class LoginPage extends StatelessWidget {
                     ),
                   ))),
         ),
-        if (false)
-          const EasyLoader(
-              image: AssetImage("assets/images/logo.png"),
-              backgroundColor: Colors.red)
       ]),
     );
   }

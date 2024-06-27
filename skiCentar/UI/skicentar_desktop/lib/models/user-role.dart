@@ -9,7 +9,7 @@ class UserRole{
   
   UserRole({this.id,this.name});
 
-  factory UserRole.FromJson(Map<String,dynamic> json) => _$UserRoleFromJson(json);
+  factory UserRole.fromJson(Map<String,dynamic> json) => _$UserRoleFromJson(json);
 
   Map<String,dynamic> toJson() => _$UserRoleToJson(this);
 }

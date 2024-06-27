@@ -1,18 +1,28 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:skicentar_desktop/models/daily_weather.dart';
 import 'package:skicentar_desktop/models/user.dart';
 import 'package:skicentar_desktop/providers/user_provider.dart';
+import 'package:skicentar_desktop/screens/daily_weather_add_screen.dart';
+import 'package:skicentar_desktop/screens/daily_weather_list_screen.dart';
+import 'package:skicentar_desktop/screens/lift_add_screen.dart';
 import 'package:skicentar_desktop/screens/lift_list_screen.dart';
 import 'package:skicentar_desktop/screens/login_screen.dart';
+import 'package:skicentar_desktop/screens/poi_add_screen.dart';
+import 'package:skicentar_desktop/screens/poi_list_screen.dart';
+import 'package:skicentar_desktop/screens/resort_add_screen.dart';
 import 'package:skicentar_desktop/screens/resort_list_screen.dart';
+import 'package:skicentar_desktop/screens/trail_add_screen.dart';
+import 'package:skicentar_desktop/screens/trail_list_screen.dart';
+import 'package:skicentar_desktop/screens/user_add_screen.dart';
 import 'package:skicentar_desktop/screens/user_list_screen.dart';
 
 class MasterScreen extends StatefulWidget {
-  MasterScreen(this.title, this.child, this.hasBackRoute, {super.key});
+  MasterScreen(this.title, this.child, this.hasBackRoute, this.showAddButton,
+      {super.key});
   String title;
   bool hasBackRoute = false;
   Widget child;
+  bool showAddButton = true;
 
   UserProvider userProvider = UserProvider();
 
@@ -22,7 +32,6 @@ class MasterScreen extends StatefulWidget {
 
 class _MasterScreenState extends State<MasterScreen> {
   User? user;
-
   @override
   void initState() {
     super.initState();
@@ -40,28 +49,67 @@ class _MasterScreenState extends State<MasterScreen> {
     }
   }
 
+  void toggleShowAddButton() {
+    setState(() {
+      widget.showAddButton = !widget.showAddButton;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.blue,
+            iconTheme: const IconThemeData(
+              color: Colors.white, // Change your color here
+            ),
             title: Row(
               children: [
                 if (widget.hasBackRoute)
                   IconButton(
-                    icon: Icon(Icons.arrow_back_ios_sharp),
-                    color: Colors.white,
+                    icon: const Icon(Icons.arrow_back_ios_sharp),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   widget.title,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                Spacer(),
-                ElevatedButton(onPressed: () => {}, child: Text("Add"))
+                const Spacer(),
+                if (widget.showAddButton)
+                  ElevatedButton(
+                      onPressed: () {
+                        if (widget.title == "Lifts") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const LiftAddScreen()));
+                        }
+                        if (widget.title == "Ski Tracks") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TrailAddScreen()));
+                        }
+                        if (widget.title == "Resorts") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ResortAddScreen()));
+                        }
+                        if (widget.title == "Users") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const UserAddScreen()));
+                        }
+                        if (widget.title == "Point of Interests") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const PoiAddScreen()));
+                        }
+                        if (widget.title == "Weather conditions") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const DailyWeatherAddScreen()));
+                        }  else {
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(builder: (context) => const MarkersPage()))
+                        }
+                      },
+                      child: const Text("Add"))
               ],
             )),
         drawer: Drawer(
@@ -69,7 +117,7 @@ class _MasterScreenState extends State<MasterScreen> {
             children: <Widget>[
               DrawerHeader(
                 decoration: const BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.blueGrey,
                 ),
                 child: user == null
                     ? const Center(child: CircularProgressIndicator())
@@ -86,7 +134,7 @@ class _MasterScreenState extends State<MasterScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               const Text(
                                 "Ski Centri BiH",
                                 style: TextStyle(
@@ -96,7 +144,7 @@ class _MasterScreenState extends State<MasterScreen> {
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Text(
                             '${user!.email}',
                             style: const TextStyle(
@@ -111,7 +159,7 @@ class _MasterScreenState extends State<MasterScreen> {
                               fontSize: 12,
                             ),
                           ),
-                          Spacer()
+                          const Spacer()
                         ],
                       ),
               ),
@@ -120,7 +168,7 @@ class _MasterScreenState extends State<MasterScreen> {
                 title: const Text("Resorts"),
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => ResortListScreen()));
+                      builder: (context) => const ResortListScreen()));
                 },
               ),
               ListTile(
@@ -128,7 +176,7 @@ class _MasterScreenState extends State<MasterScreen> {
                 title: const Text("Lifts"),
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => LiftListScreen()));
+                      builder: (context) => const LiftListScreen()));
                 },
               ),
               ListTile(
@@ -136,7 +184,23 @@ class _MasterScreenState extends State<MasterScreen> {
                 title: const Text("Ski Tracks"),
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => LiftListScreen()));
+                      builder: (context) => const TrailListScreen()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.place),
+                title: const Text("Point of Interests"),
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const PoiListScreen()));
+                },
+              ),
+               ListTile(
+                leading: const Icon(Icons.cloudy_snowing),
+                title: const Text("Weather conditions"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const DailyWeatherListScreen()));
                 },
               ),
               ListTile(
@@ -144,7 +208,7 @@ class _MasterScreenState extends State<MasterScreen> {
                 title: const Text("Users"),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => UserListScreen()));
+                      builder: (context) => const UserListScreen()));
                 },
               ),
               Expanded(child: Container()),
@@ -152,9 +216,9 @@ class _MasterScreenState extends State<MasterScreen> {
                 leading: const Icon(Icons.logout_rounded),
                 title: const Text("Log out"),
                 onTap: () {
-                  // Navigator.pop(context);
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      (Route<dynamic> route) => false);
                 },
               ),
             ],

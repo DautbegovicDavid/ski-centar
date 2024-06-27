@@ -10,6 +10,6 @@
 
         public decimal? LocationY { get; set; }
 
-        public virtual Lift? Lift { get; set; }
+        //public virtual Lift? Lift { get; set; }
     }
 }
