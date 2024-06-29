@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
         title: const Text('WELCOME TO SKI CENTER',
             style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).primaryColorDark,
       ),
       body: Stack(children: [
         Center(
@@ -56,12 +56,7 @@ class LoginPage extends StatelessWidget {
                                 )
                               ],
                             )),
-                        ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.blue[400]),
-                                foregroundColor:
-                                    MaterialStateProperty.all(Colors.white)),
+                        FilledButton(
                             onPressed: () async {
                               AuthProvider provider = AuthProvider();
                               try {

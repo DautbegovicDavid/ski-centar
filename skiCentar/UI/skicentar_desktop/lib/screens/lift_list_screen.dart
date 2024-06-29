@@ -111,12 +111,8 @@ class _LiftListScreenState extends State<LiftListScreen> {
                     setState(() {});
                   },
                 ),
-              ElevatedButton(
+              FilledButton(
                 onPressed: _search,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
                 child: const Text("Search"),
               ),
             ],

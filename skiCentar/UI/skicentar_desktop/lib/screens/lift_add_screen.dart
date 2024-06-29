@@ -151,7 +151,7 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             children: [
               DropdownField(
@@ -182,6 +182,7 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
               ),
             ],
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -244,14 +245,8 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
         if (!hideSaveButton && widget.lift == null) ...[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                onPressed: _saveLift,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Colors.blueAccent, // background (button) color
-                  foregroundColor: Colors.white, // foreground (text) color
-                ),
-                child: const Text("Save")),
+            child:
+                FilledButton(onPressed: _saveLift, child: const Text("Save")),
           ),
         ]
       ],

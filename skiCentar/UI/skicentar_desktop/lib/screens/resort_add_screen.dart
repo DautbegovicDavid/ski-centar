@@ -70,7 +70,7 @@ class _ResortAddScreenState extends State<ResortAddScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             children: [
               InputField(
@@ -87,6 +87,7 @@ class _ResortAddScreenState extends State<ResortAddScreen> {
               ),
             ],
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -98,7 +99,7 @@ class _ResortAddScreenState extends State<ResortAddScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
+          child: FilledButton(
               onPressed: () async {
                 _formKey.currentState?.saveAndValidate();
                 try {

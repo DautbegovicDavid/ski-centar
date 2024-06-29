@@ -110,12 +110,8 @@ class _PoiListScreenState extends State<PoiListScreen> {
                     setState(() {});
                   },
                 ),
-              ElevatedButton(
+              FilledButton(
                 onPressed: _search,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
                 child: const Text("Search"),
               ),
             ],

@@ -157,7 +157,7 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -185,7 +185,7 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -215,12 +215,8 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
+          child: FilledButton(
               onPressed: _save,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-              ),
               child: const Text("Save")),
         ),
       ],

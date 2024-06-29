@@ -50,7 +50,7 @@ class _ResortListScreenState extends State<ResortListScreen> {
     return Card(
       margin: const EdgeInsets.all(10.0),
       elevation: 2.0,
-      // surfaceTintColor: Colors.white,
+      surfaceTintColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: FormBuilder(
@@ -86,12 +86,8 @@ class _ResortListScreenState extends State<ResortListScreen> {
                     setState(() {});
                   },
                 ),
-              ElevatedButton(
+              FilledButton(
                 onPressed: _search,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
                 child: const Text("Search"),
               ),
             ],

@@ -139,7 +139,7 @@ class _PoiAddScreenState extends State<PoiAddScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             children: [
               DropdownField(
@@ -165,6 +165,7 @@ class _PoiAddScreenState extends State<PoiAddScreen> {
               ),
             ],
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -176,12 +177,8 @@ class _PoiAddScreenState extends State<PoiAddScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
+          child: FilledButton(
               onPressed: _saveLift,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-              ),
               child: const Text("Save")),
         ),
       ],

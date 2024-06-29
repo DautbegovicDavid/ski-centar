@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/models/user.dart';
+import 'package:skicentar_desktop/providers/theme_provider.dart';
 import 'package:skicentar_desktop/providers/user_provider.dart';
 import 'package:skicentar_desktop/screens/daily_weather_add_screen.dart';
 import 'package:skicentar_desktop/screens/daily_weather_list_screen.dart';
@@ -30,9 +32,13 @@ class MasterScreen extends StatefulWidget {
 }
 
 class _MasterScreenState extends State<MasterScreen> {
+  
+  late ThemeProvider themeProvider;
   User? user;
+
   @override
   void initState() {
+    themeProvider = context.read<ThemeProvider>();
     super.initState();
     _fetchUser();
   }
@@ -58,9 +64,9 @@ class _MasterScreenState extends State<MasterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColorDark,
             iconTheme: const IconThemeData(
-              color: Colors.white, // Change your color here
+              color: Colors.white,
             ),
             title: Row(
               children: [
@@ -141,6 +147,16 @@ class _MasterScreenState extends State<MasterScreen> {
                                   color: Colors.white,
                                   fontSize: 26,
                                 ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                icon: Icon(
+                                    themeProvider.themeMode == ThemeMode.light
+                                        ? Icons.dark_mode
+                                        : Icons.light_mode),
+                                onPressed: () {
+                                  themeProvider.toggleTheme();
+                                },
                               ),
                             ],
                           ),

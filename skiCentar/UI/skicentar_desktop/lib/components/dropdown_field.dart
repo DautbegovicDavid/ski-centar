@@ -28,18 +28,16 @@ class DropdownField extends StatelessWidget {
               vertical: 8.0, horizontal: 14.0), // Adjust padding as needed
           labelStyle: const TextStyle(fontSize: 16),
           filled: true,
-          fillColor: Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            borderSide: const BorderSide(color: Colors.grey),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            borderSide: const BorderSide(color: Colors.grey),
+            borderSide: BorderSide(color: Theme.of(context).secondaryHeaderColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            borderSide: const BorderSide(color: Colors.blue),
+            borderSide: BorderSide(color: Theme.of(context).focusColor),
           ),
         ),
         items: items,

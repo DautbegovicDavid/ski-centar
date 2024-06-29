@@ -34,23 +34,19 @@ class InputField extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
           labelStyle: const TextStyle(fontSize: 16),
           filled: true,
-          fillColor: Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            // borderSide: BorderSide.none,
-            borderSide: const BorderSide(color: Colors.grey),
 
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            // borderSide: BorderSide.none,
-            borderSide: const BorderSide(color: Colors.grey),
+            borderSide: BorderSide(color: Theme.of(context).secondaryHeaderColor),
 
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-            borderSide: const BorderSide(color: Colors.blue),
-          ),// Adjust the padding as needed
+            borderSide: BorderSide(color: Theme.of(context).primaryColorLight),
+          ),
         ),
         validator: FormBuilderValidators.compose(validators ?? []),
       ),

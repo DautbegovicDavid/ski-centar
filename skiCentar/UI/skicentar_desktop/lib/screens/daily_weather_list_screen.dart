@@ -73,6 +73,7 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
     return Card(
       margin: const EdgeInsets.all(10.0),
       elevation: 2.0,
+          surfaceTintColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: FormBuilder(
@@ -125,12 +126,8 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
                     setState(() {});
                   },
                 ),
-              ElevatedButton(
+              FilledButton(
                 onPressed: _search,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
                 child: const Text("Search"),
               ),
             ],
