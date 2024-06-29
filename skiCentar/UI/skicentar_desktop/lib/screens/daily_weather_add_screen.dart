@@ -13,7 +13,6 @@ import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_desktop/providers/daily_weather_provider.dart';
 import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/utils/utils.dart';
-
 import '../components/dropdown_field.dart';
 
 class DailyWeatherAddScreen extends StatefulWidget {
@@ -61,7 +60,6 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
 
   Future _save() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
-      print(_formKey.currentState?.value);
       var formValues =
           Map<String, dynamic>.from(_formKey.currentState?.value ?? {});
 
@@ -76,9 +74,8 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
         if (!context.mounted) return;
         showCustomSnackBar(context, Icons.check, Colors.green,
             'Weather conditions saved successfully!');
-        Navigator.of(context).pop();
+        Navigator.pop(context);
       } catch (e) {
-        print(e);
         showCustomSnackBar(context, Icons.error, Colors.red,
             'Failed to save weather conditions. Please try again.');
       }
@@ -106,13 +103,18 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InputField(
                 name: "temperature",
                 labelText: "Temperature",
                 suffixText: '°C',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validators: [FormBuilderValidators.required()],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d{0,2}(.\d{0,2})?$'))
+                ],
               ),
               const SizedBox(width: 10),
               InputField(
@@ -120,7 +122,10 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
                 labelText: "Precipitation",
                 suffixText: 'mm',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d{0,2}(,\d{0,2})?$'))
+                ],
               ),
             ],
           ),
@@ -145,7 +150,10 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
                 labelText: "Wind Speed",
                 suffixText: 'km/h',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(3)
+                ],
               ),
             ],
           ),
@@ -158,7 +166,10 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
                 labelText: "Humidity",
                 suffixText: '%',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(2)
+                ],
               ),
               const SizedBox(width: 10),
               InputField(
@@ -167,7 +178,10 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
                 suffixText: 'cm',
                 validators: [FormBuilderValidators.required()],
                 keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(3)
+                ],
               ),
             ],
           ),
@@ -177,10 +191,9 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
             children: [
               const DatePickerField(
                 name: "date",
-                // initialValue: DateTime.now(),
                 labelText: "Date time",
                 dateFormat: 'MM/dd/yyyy hh:mm',
-                // enabled: false,
+                enabled: false,
               ),
               const SizedBox(width: 10),
               InputField(
@@ -205,8 +218,8 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
           child: ElevatedButton(
               onPressed: _save,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent, // background (button) color
-                foregroundColor: Colors.white, // foreground (text) color
+                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
               ),
               child: const Text("Save")),
         ),

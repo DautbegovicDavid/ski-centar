@@ -51,15 +51,22 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
     provider = context.read<DailyWeatherProvider>();
     resortProvider = context.read<ResortProvider>();
     super.initState();
+    provider.addListener(_onProviderChange);
+    _fetchData();
+  }
+
+  void _onProviderChange() {
     _fetchData();
   }
 
   Future<void> _fetchData() async {
     result = await provider.get(filter: null);
-    print(result?.result);
     var resorts = await resortProvider.get(filter: null);
-    _resorts = resorts.result;
-    setState(() {});
+    if (mounted) {
+      setState(() {
+        _resorts = resorts.result;
+      });
+    }
   }
 
   Widget _buildSearch() {
@@ -165,9 +172,13 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
               .map((m) => DataRow(cells: [
                     DataCell(Text(m.id.toString())),
                     DataCell(Text(formatter.format(m.date!))),
-                    DataCell(Text(m.temperature?.toString() ?? '')),
-                    DataCell(Text(m.snowHeight?.toString() ?? '')),
-                    DataCell(Text(m.precipitation?.toString() ?? '')),
+                    DataCell(Text(
+                        m.temperature != null ? '${m.temperature} °C' : '')),
+                    DataCell(
+                        Text(m.snowHeight != null ? '${m.snowHeight} cm' : '')),
+                    DataCell(Text(m.precipitation != null
+                        ? '${m.precipitation} mm'
+                        : '')),
                     DataCell(Text(m.weatherCondition ?? '')),
                     DataCell(
                       ElevatedButton(

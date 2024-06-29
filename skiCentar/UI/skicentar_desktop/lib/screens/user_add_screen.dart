@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/components/dropdown_field.dart';
@@ -7,11 +6,9 @@ import 'package:skicentar_desktop/components/form_wrapper.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
 import 'package:skicentar_desktop/components/toggle_field.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
-import 'package:skicentar_desktop/models/lift-type.dart';
 import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_desktop/models/user-role.dart';
 import 'package:skicentar_desktop/models/user.dart';
-import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/user_provider.dart';
 import 'package:skicentar_desktop/providers/user_role_provider.dart';
 import 'package:skicentar_desktop/utils/utils.dart';

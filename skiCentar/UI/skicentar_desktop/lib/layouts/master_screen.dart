@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skicentar_desktop/models/daily_weather.dart';
 import 'package:skicentar_desktop/models/user.dart';
 import 'package:skicentar_desktop/providers/user_provider.dart';
 import 'package:skicentar_desktop/screens/daily_weather_add_screen.dart';
@@ -103,8 +102,9 @@ class _MasterScreenState extends State<MasterScreen> {
                         }
                         if (widget.title == "Weather conditions") {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const DailyWeatherAddScreen()));
-                        }  else {
+                              builder: (context) =>
+                                  const DailyWeatherAddScreen()));
+                        } else {
                           // Navigator.of(context).push(
                           //   MaterialPageRoute(builder: (context) => const MarkersPage()))
                         }
@@ -128,7 +128,7 @@ class _MasterScreenState extends State<MasterScreen> {
                             children: [
                               ClipOval(
                                 child: Image.asset(
-                                  'assets/images/logo-small.png', // Path to your custom image
+                                  'assets/images/logo-small.png',
                                   height: 50.0,
                                   width: 50.0,
                                   fit: BoxFit.cover,
@@ -195,7 +195,7 @@ class _MasterScreenState extends State<MasterScreen> {
                       builder: (context) => const PoiListScreen()));
                 },
               ),
-               ListTile(
+              ListTile(
                 leading: const Icon(Icons.cloudy_snowing),
                 title: const Text("Weather conditions"),
                 onTap: () {
