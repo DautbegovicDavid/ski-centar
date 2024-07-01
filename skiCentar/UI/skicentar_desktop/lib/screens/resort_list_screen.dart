@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
 import 'package:skicentar_desktop/components/table_wrapper.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
@@ -17,7 +18,7 @@ class ResortListScreen extends StatefulWidget {
 }
 
 class _ResortListScreenState extends State<ResortListScreen> {
-  ResortProvider provider = ResortProvider();
+  late ResortProvider provider;
   SearchResult<Resort>? result;
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -37,7 +38,9 @@ class _ResortListScreenState extends State<ResortListScreen> {
 
   @override
   void initState() {
+    provider = context.read<ResortProvider>();
     super.initState();
+    provider.addListener(_fetchData);
     _fetchData();
   }
 

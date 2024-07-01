@@ -29,8 +29,8 @@ class _LiftListScreenState extends State<LiftListScreen> {
   List<LiftType> _liftTypes = [];
 
   late LiftProvider provider;
-  ResortProvider resortProvider = ResortProvider();
-  LiftTypeProvider liftTypeProvider = LiftTypeProvider();
+  late ResortProvider resortProvider;
+  late LiftTypeProvider liftTypeProvider;
 
   var filter = {
     'isResortIncluded': true,
@@ -39,13 +39,16 @@ class _LiftListScreenState extends State<LiftListScreen> {
   };
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     provider = context.read<LiftProvider>();
-    fetchData();
+    resortProvider = context.read<ResortProvider>();
+    liftTypeProvider = context.read<LiftTypeProvider>();
+    super.initState();
+    provider.addListener(_fetchData);
+    _fetchData();
   }
 
-  Future fetchData() async {
+  Future _fetchData() async {
     result = await provider.get(filter: filter);
     var resorts = await resortProvider.get(filter: {});
     _resorts = resorts.result;

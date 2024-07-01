@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/components/date_picker_field.dart';
 import 'package:skicentar_desktop/components/dropdown_field.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
@@ -13,7 +14,6 @@ import 'package:skicentar_desktop/providers/user_provider.dart';
 import 'package:skicentar_desktop/providers/user_role_provider.dart';
 import 'package:skicentar_desktop/screens/user_add_screen.dart';
 import 'package:skicentar_desktop/utils/utils.dart';
-// import 'package:skicentar_desktop/components/custom_date_time_picker.dart';  // Import the new custom widget
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
@@ -23,8 +23,8 @@ class UserListScreen extends StatefulWidget {
 }
 
 class _UserListScreenState extends State<UserListScreen> {
-  UserProvider provider = UserProvider();
-  UserRoleProvider userRoleProvider = UserRoleProvider();
+  late UserProvider provider;
+  late UserRoleProvider userRoleProvider;
   SearchResult<User>? result;
   List<UserRole> _userRoles = [];
 
@@ -46,7 +46,10 @@ class _UserListScreenState extends State<UserListScreen> {
 
   @override
   void initState() {
+    provider = context.read<UserProvider>();
+    userRoleProvider = context.read<UserRoleProvider>();
     super.initState();
+    provider.addListener(_fetchData);
     _fetchData();
   }
 

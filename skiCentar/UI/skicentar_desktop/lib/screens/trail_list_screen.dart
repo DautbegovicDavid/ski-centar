@@ -24,9 +24,8 @@ class TrailListScreen extends StatefulWidget {
 class _TrailListScreenState extends State<TrailListScreen> {
   SearchResult<Trail>? result;
   late TrailProvider provider;
-
-  ResortProvider resortProvider = ResortProvider();
-  TrailDifficultyProvider trailDifficultyProvider = TrailDifficultyProvider();
+  late ResortProvider resortProvider;
+  late TrailDifficultyProvider trailDifficultyProvider;
 
   final _formKey = GlobalKey<FormBuilderState>();
   final Map<String, dynamic> _initialValue = {};
@@ -40,13 +39,16 @@ class _TrailListScreenState extends State<TrailListScreen> {
   List<TrailDifficulty> _trailDifficulties = [];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     provider = context.read<TrailProvider>();
-    fetchData();
+    resortProvider = context.read<ResortProvider>();
+    trailDifficultyProvider = context.read<TrailDifficultyProvider>();
+    super.initState();
+    provider.addListener(_fetchData);
+    _fetchData();
   }
 
-  Future fetchData() async {
+  Future _fetchData() async {
     result = await provider.get(filter: filter);
     var resorts = await resortProvider.get(filter: {});
     _resorts = resorts.result;
@@ -160,7 +162,7 @@ class _TrailListScreenState extends State<TrailListScreen> {
                     DataCell(Text(m.resort?.name ?? m.resortId.toString())),
                     DataCell(
                         Text(m.difficulty?.name ?? m.difficultyId!.toString())),
-                    DataCell(Text(m.isFunctional! ? "Yes": "No")),
+                    DataCell(Text(m.isFunctional! ? "Yes" : "No")),
                     DataCell(Text(m.length!.toString())),
                     DataCell(
                       ElevatedButton(

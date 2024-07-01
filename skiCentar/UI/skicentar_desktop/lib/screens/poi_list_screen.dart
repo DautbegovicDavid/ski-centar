@@ -29,22 +29,25 @@ class _PoiListScreenState extends State<PoiListScreen> {
   List<PoiCategory> _poiCategories = [];
 
   late PoiProvider provider;
-  ResortProvider resortProvider = ResortProvider();
-  PoiCategoryProvider poiCategoryProvider = PoiCategoryProvider();
+  late ResortProvider resortProvider;
+  late PoiCategoryProvider poiCategoryProvider;
 
   var filter = {
     'isResortIncluded': true,
     'isCategoryIncluded': true,
   };
-
+  
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     provider = context.read<PoiProvider>();
-    fetchData();
+    resortProvider = context.read<ResortProvider>();
+    poiCategoryProvider = context.read<PoiCategoryProvider>();
+    super.initState();
+    provider.addListener(_fetchData);
+    _fetchData();
   }
 
-  Future fetchData() async {
+  Future _fetchData() async {
     result = await provider.get(filter: filter);
     var resorts = await resortProvider.get(filter: {});
     _resorts = resorts.result;

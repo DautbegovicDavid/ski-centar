@@ -113,7 +113,8 @@ class _DailyWeatherAddScreenState extends State<DailyWeatherAddScreen> {
                 validators: [FormBuilderValidators.required()],
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d{0,2}(.\d{0,2})?$'))
+                      RegExp(r'^\d{0,2}(.\d{0,2})?$')),
+                      LengthLimitingTextInputFormatter(3)
                 ],
               ),
               const SizedBox(width: 10),

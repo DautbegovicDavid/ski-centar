@@ -37,6 +37,7 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
   SearchResult<Resort>? resortsResult;
   List<LatLng> addedLocations = [];
   List<String> allowedActions = [];
+  bool hideSaveButton = false;
 
   @override
   void initState() {
@@ -76,12 +77,20 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
     }
     setState(() {
       loaded = true;
+      updateHideSaveButton();
     });
   }
 
   Future getAllowedActions() async {
     allowedActions = await liftProvider.getAllowedActions(widget.lift!.id!);
-    setState(() {});
+    setState(() {
+      updateHideSaveButton();
+    });
+  }
+
+  void updateHideSaveButton() {
+    hideSaveButton = allowedActions.length == 1 &&
+        (allowedActions.contains('Edit') || allowedActions.contains('Hide'));
   }
 
   Future _saveLift() async {
@@ -127,8 +136,6 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
   }
 
   Widget _buildForm() {
-    bool hideSaveButton = allowedActions.length == 1 &&
-        (allowedActions.contains('Edit') || allowedActions.contains('Hide'));
     return FormBuilder(
       key: _formKey,
       initialValue: _initialValue,
@@ -138,7 +145,8 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
         children: [
           Row(
             children: [
-              const InputField(
+              // ignore: prefer_const_constructors
+              InputField(
                 name: "name",
                 labelText: "Name",
               ),
@@ -176,7 +184,8 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
                     [],
               ),
               const SizedBox(width: 10),
-              const ToggleField(
+              // ignore: prefer_const_constructors
+              ToggleField(
                 name: "isFunctional",
                 title: "Functional",
               ),
@@ -189,8 +198,6 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
   }
 
   Widget _saveRow() {
-    bool hideSaveButton = allowedActions.length == 1 &&
-        (allowedActions.contains('Edit') || allowedActions.contains('Hide'));
     return Row(
       children: [
         const Spacer(),
@@ -216,25 +223,18 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
                 switch (action.toLowerCase()) {
                   case 'activate':
                     await liftProvider.activate(widget.lift!.id!);
-                    await getAllowedActions();
                     break;
                   case 'update':
                     await _saveLift();
-                    await getAllowedActions();
                     break;
                   case 'hide':
                     await liftProvider.hide(widget.lift!.id!);
-                    await getAllowedActions();
                     break;
                   case 'edit':
                     await liftProvider.edit(widget.lift!.id!);
-                    ;
-                    await getAllowedActions();
                     break;
-                  default:
-                    buttonColor = Colors.grey;
                 }
-                // Implement action-specific functionality here
+                await getAllowedActions();
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: buttonColor, foregroundColor: Colors.white),
