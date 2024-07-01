@@ -19,12 +19,12 @@ namespace skiCentar.Services
             var filteredQuery = base.AddFilter(searchObject, query);
             if (searchObject.areUserDetailsIncluded)
             {
-                filteredQuery = query.Include(x => x.UserDetails);
+                filteredQuery = filteredQuery.Include(x => x.UserDetails);
             }
 
             if (searchObject.isUserRoleIncluded)
             {
-                filteredQuery = query.Include(x => x.UserRole);
+                filteredQuery = filteredQuery.Include(x => x.UserRole);
             }
 
             if (searchObject.userRoleId > 0)

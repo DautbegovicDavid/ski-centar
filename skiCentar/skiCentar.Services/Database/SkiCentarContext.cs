@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace skiCentar.Services.Database;
 
-public partial class SkiCentarContext : DbContext
+public partial class SkiCenterContext : DbContext
 {
-    public SkiCentarContext()
+    public SkiCenterContext()
     {
     }
 
-    public SkiCentarContext(DbContextOptions<SkiCentarContext> options)
+    public SkiCenterContext(DbContextOptions<SkiCenterContext> options)
         : base(options)
     {
     }
@@ -41,6 +39,8 @@ public partial class SkiCentarContext : DbContext
 
     public virtual DbSet<TicketType> TicketTypes { get; set; }
 
+    public virtual DbSet<TicketTypeSeniority> TicketTypeSeniorities { get; set; }
+
     public virtual DbSet<Trail> Trails { get; set; }
 
     public virtual DbSet<TrailDifficulty> TrailDifficulties { get; set; }
@@ -57,9 +57,9 @@ public partial class SkiCentarContext : DbContext
 
     public virtual DbSet<UserVerification> UserVerifications { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.; TrustServerCertificate=true;Database=ski_centar; trusted_connection=true");
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Data Source=.; TrustServerCertificate=true;Database=ski_centar; trusted_connection=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -397,6 +397,20 @@ public partial class SkiCentarContext : DbContext
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
+            entity.Property(e => e.TicketTypeSeniorityId).HasColumnName("ticket_type_seniority_id");
+
+            entity.HasOne(d => d.TicketTypeSeniority).WithMany(p => p.TicketTypes)
+                .HasForeignKey(d => d.TicketTypeSeniorityId)
+                .HasConstraintName("FK_ticket_type_ticket_type_seniority");
+        });
+
+        modelBuilder.Entity<TicketTypeSeniority>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ticket_t__3213E83F6EE6FBB4");
+
+            entity.ToTable("ticket_type_seniority");
+
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Seniority)
                 .HasMaxLength(50)
                 .HasColumnName("seniority");

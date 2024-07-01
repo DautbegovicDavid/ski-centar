@@ -23,8 +23,8 @@ builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IPointOfInterestCategoryService, PointOfInterestCategoryService>();
 builder.Services.AddTransient<IPointOfInterestService, PointOfInterestService>();
 builder.Services.AddTransient<IDailyWeatherService, DailyWeatherService>();
-
-
+builder.Services.AddTransient<ITicketTypeSeniorityService, TicketTypeSeniorityService>();
+builder.Services.AddTransient<ITicketTypeService, TicketTypeService>();
 
 //state machine
 builder.Services.AddTransient<BaseLiftState>();
