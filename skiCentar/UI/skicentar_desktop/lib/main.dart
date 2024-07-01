@@ -7,6 +7,8 @@ import 'package:skicentar_desktop/providers/poi_category_provider.dart';
 import 'package:skicentar_desktop/providers/poi_provider.dart';
 import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/theme_provider.dart';
+import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
+import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
 import 'package:skicentar_desktop/providers/trail_difficulty.provider.dart';
 import 'package:skicentar_desktop/providers/trail_provider.dart';
 import 'package:skicentar_desktop/providers/user_provider.dart';
@@ -26,6 +28,8 @@ void main() {
       ChangeNotifierProvider(create: (_) => PoiProvider()),
       ChangeNotifierProvider(create: (_) => PoiCategoryProvider()),
       ChangeNotifierProvider(create: (_) => DailyWeatherProvider()),
+      ChangeNotifierProvider(create: (_) => TicketTypeProvider()),
+      ChangeNotifierProvider(create: (_) => TicketTypeSeniorityProvider()),
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ],
     child: const MyApp(),

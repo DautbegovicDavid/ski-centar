@@ -12,6 +12,8 @@ import 'package:skicentar_desktop/screens/poi_add_screen.dart';
 import 'package:skicentar_desktop/screens/poi_list_screen.dart';
 import 'package:skicentar_desktop/screens/resort_add_screen.dart';
 import 'package:skicentar_desktop/screens/resort_list_screen.dart';
+import 'package:skicentar_desktop/screens/ticket_type_add_screen.dart';
+import 'package:skicentar_desktop/screens/ticket_type_list_screen.dart';
 import 'package:skicentar_desktop/screens/trail_add_screen.dart';
 import 'package:skicentar_desktop/screens/trail_list_screen.dart';
 import 'package:skicentar_desktop/screens/user_add_screen.dart';
@@ -110,7 +112,13 @@ class _MasterScreenState extends State<MasterScreen> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   const DailyWeatherAddScreen()));
-                        } else {
+                        }
+                         if (widget.title == "Tickets") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const TicketTypeAddScreen()));
+                        } 
+                         else {
                           // Navigator.of(context).push(
                           //   MaterialPageRoute(builder: (context) => const MarkersPage()))
                         }
@@ -217,6 +225,14 @@ class _MasterScreenState extends State<MasterScreen> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const DailyWeatherListScreen()));
+                },
+              ),
+               ListTile(
+                leading: const Icon(Icons.confirmation_num_rounded),
+                title: const Text("Tickets"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const TicketTypeListScreen()));
                 },
               ),
               ListTile(

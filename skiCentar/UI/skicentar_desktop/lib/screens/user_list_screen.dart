@@ -57,7 +57,9 @@ class _UserListScreenState extends State<UserListScreen> {
     result = await provider.get(filter: filter);
     var userRoles = await userRoleProvider.get(filter: {});
     _userRoles = userRoles.result;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Widget _buildSearch() {
@@ -164,7 +166,7 @@ class _UserListScreenState extends State<UserListScreen> {
                     DataCell(Text(m.id.toString())),
                     DataCell(Text(m.email!)),
                     DataCell(Text(formatter.format(m.registrationDate!))),
-                    DataCell(Text(m.userRole?.name ?? "nejma")),
+                    DataCell(Text(m.userRole?.name ?? "")),
                     DataCell(Text(m.isVerified! ? "Yes" : "No")),
                     DataCell(
                       ElevatedButton(

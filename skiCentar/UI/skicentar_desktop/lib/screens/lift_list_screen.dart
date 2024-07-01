@@ -54,7 +54,9 @@ class _LiftListScreenState extends State<LiftListScreen> {
     _resorts = resorts.result;
     var liftTypes = await liftTypeProvider.get(filter: {});
     _liftTypes = liftTypes.result;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

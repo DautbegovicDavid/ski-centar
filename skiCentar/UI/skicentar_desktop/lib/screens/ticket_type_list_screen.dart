@@ -2,33 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:skicentar_desktop/components/dropdown_field.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
 import 'package:skicentar_desktop/components/table_wrapper.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
-import 'package:skicentar_desktop/models/resort.dart';
 import 'package:skicentar_desktop/models/search_result.dart';
-import 'package:skicentar_desktop/providers/resort_provider.dart';
-import 'package:skicentar_desktop/screens/resort_add_screen.dart';
+import 'package:skicentar_desktop/models/ticket_type.dart';
+import 'package:skicentar_desktop/models/ticket_type_seniority.dart';
+import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
+import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
+import 'package:skicentar_desktop/screens/ticket_type_add_screen.dart';
 
-class ResortListScreen extends StatefulWidget {
-  const ResortListScreen({super.key});
+class TicketTypeListScreen extends StatefulWidget {
+  const TicketTypeListScreen({super.key});
 
   @override
-  State<ResortListScreen> createState() => _ResortListScreenState();
+  State<TicketTypeListScreen> createState() => _TicketTypeListScreenState();
 }
 
-class _ResortListScreenState extends State<ResortListScreen> {
-  late ResortProvider provider;
-  SearchResult<Resort>? result;
+class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
+  late TicketTypeProvider provider;
+  late TicketTypeSeniorityProvider ticketTypeSeniorityProvider;
+  SearchResult<TicketType>? result;
+  List<TicketTypeSeniority> _ticketTypeSeniorities = [];
 
   final _formKey = GlobalKey<FormBuilderState>();
-  var filter = {'NameGTE': null, 'elevationFrom': null, 'elevationTo': null};
+  var filter = {};
   final Map<String, dynamic> _initialValue = {};
 
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-        "Resorts",
+        "Tickets",
         Column(
           children: [_buildSearch(), _buildResultView()],
         ),
@@ -38,14 +43,17 @@ class _ResortListScreenState extends State<ResortListScreen> {
 
   @override
   void initState() {
-    provider = context.read<ResortProvider>();
+    provider = context.read<TicketTypeProvider>();
+    ticketTypeSeniorityProvider = context.read<TicketTypeSeniorityProvider>();
     super.initState();
     provider.addListener(_fetchData);
     _fetchData();
   }
 
   Future<void> _fetchData() async {
-    result = await provider.get(filter: null);
+    result = await provider.get(filter: filter);
+    var seniorities = await ticketTypeSeniorityProvider.get(filter: {});
+    _ticketTypeSeniorities = seniorities.result;
     if (mounted) {
       setState(() {});
     }
@@ -63,21 +71,26 @@ class _ResortListScreenState extends State<ResortListScreen> {
           initialValue: _initialValue,
           child: Row(
             children: [
-              const InputField(
-                name: "NameGTE",
-                labelText: "Name",
+              DropdownField(
+                name: "TicketTypeSeniorityId",
+                labelText: "Seniority",
+                items: _ticketTypeSeniorities
+                    .map((item) => DropdownMenuItem<String>(
+                        value: item.id.toString(),
+                        child: Text(item.seniority ?? "")))
+                    .toList(),
               ),
               const SizedBox(width: 12),
               InputField(
-                name: "elevationFrom",
-                labelText: "Elevation from",
+                name: "PriceFrom",
+                labelText: "Price from",
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               const SizedBox(width: 12),
               InputField(
-                name: "elevationTo",
-                labelText: "Elevation to",
+                name: "PriceTo",
+                labelText: "Price to",
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
@@ -104,16 +117,17 @@ class _ResortListScreenState extends State<ResortListScreen> {
 
   Future<void> _search() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
-      var formValues = _formKey.currentState?.value ?? {};
+      var formValues =
+          Map<String, dynamic>.from(_formKey.currentState?.value ?? {});
       result = await provider.get(filter: formValues);
       setState(() {});
     }
   }
 
-  void navigateToEditPage(BuildContext context, Resort resort) {
+  void navigateToEditPage(BuildContext context, TicketType ticketType) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ResortAddScreen(resort: resort)),
+      MaterialPageRoute(builder: (context) => TicketTypeAddScreen(ticketType: ticketType)),
     );
   }
 
@@ -121,19 +135,17 @@ class _ResortListScreenState extends State<ResortListScreen> {
     return TableWrapper(
       columns: const [
         DataColumn(label: Text("Id"), numeric: true),
-        DataColumn(label: Text("Name")),
-        DataColumn(label: Text("Location - City")),
-        DataColumn(label: Text("Elevation (m)")),
-        DataColumn(label: Text("SKI work hours")),
+        DataColumn(label: Text("Price")),
+        DataColumn(label: Text("Seniority")),
+        DataColumn(label: Text("Full day")),
         DataColumn(label: Text("Actions")),
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
                     DataCell(Text(m.id.toString())),
-                    DataCell(Text(m.name!)),
-                    DataCell(Text(m.location!)),
-                    DataCell(Text(m.elevation!.toString())),
-                    DataCell(Text(m.skiWorkHours!)),
+                    DataCell(Text(m.price.toString())),
+                    DataCell(Text(m.ticketTypeSeniority?.seniority ?? "")),
+                    DataCell(Text(m.fullDay! ? "Yes" : "No")),
                     DataCell(
                       ElevatedButton(
                         onPressed: () => navigateToEditPage(context, m),

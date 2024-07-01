@@ -36,7 +36,7 @@ class _PoiListScreenState extends State<PoiListScreen> {
     'isResortIncluded': true,
     'isCategoryIncluded': true,
   };
-  
+
   @override
   void initState() {
     provider = context.read<PoiProvider>();
@@ -53,7 +53,9 @@ class _PoiListScreenState extends State<PoiListScreen> {
     _resorts = resorts.result;
     var liftTypes = await poiCategoryProvider.get(filter: {});
     _poiCategories = liftTypes.result;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

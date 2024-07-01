@@ -54,7 +54,9 @@ class _TrailListScreenState extends State<TrailListScreen> {
     _resorts = resorts.result;
     var trailDifficulties = await trailDifficultyProvider.get(filter: {});
     _trailDifficulties = trailDifficulties.result;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
