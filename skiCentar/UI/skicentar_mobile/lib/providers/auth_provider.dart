@@ -1,7 +1,7 @@
 import 'package:skicentar_mobile/models/login_model.dart';
 import 'package:skicentar_mobile/models/register_model.dart';
-import 'package:skicentar_mobile/utils/api.helper.dart';
-import 'package:skicentar_mobile/utils/auth.helper.dart';
+import 'package:skicentar_mobile/utils/api_helper.dart';
+import 'package:skicentar_mobile/utils/auth_helper.dart';
 
 class AuthProvider {
   

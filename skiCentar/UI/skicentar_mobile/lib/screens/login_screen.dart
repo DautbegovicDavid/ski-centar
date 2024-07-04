@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:skicentar_mobile/layouts/master_screen.dart';
 import 'package:skicentar_mobile/providers/auth_provider.dart';
-import 'package:skicentar_mobile/screens/lift_list_screen.dart';
 import 'package:skicentar_mobile/screens/register_screen.dart';
 
 class LoginPage extends StatelessWidget {
@@ -73,7 +73,7 @@ class LoginPage extends StatelessWidget {
                                   _passwordController.text);
                               if (!context.mounted) return;
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => LiftListScreen()));
+                                  builder: (context) => MasterScreen()));
                             } on Exception catch (e) {
                               showDialog(
                                   context: context,
@@ -93,11 +93,11 @@ class LoginPage extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           text: 'New to platform? ',
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           children: <TextSpan>[
                             TextSpan(
                               text: 'Create account',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.blue,
                                 decoration: TextDecoration.underline,
                               ),

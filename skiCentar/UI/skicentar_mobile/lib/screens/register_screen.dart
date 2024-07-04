@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skicentar_mobile/providers/auth_provider.dart';
-import 'package:skicentar_mobile/screens/lift_list_screen.dart';
+import 'package:skicentar_mobile/screens/home_screen.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -60,7 +60,7 @@ class RegisterPage extends StatelessWidget {
                                 await provider.register(_emailController.text);
                                      if (!context.mounted) return;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LiftListScreen()));
+                                    builder: (context) => HomeScreen()));
                               } on Exception catch (e) {
                                 showDialog(
                                     context: context,

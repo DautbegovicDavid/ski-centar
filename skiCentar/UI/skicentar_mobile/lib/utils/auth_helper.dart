@@ -1,16 +1,13 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-// Create storage
 class AuthHelper {
 
   static String? _baseUrl;
   AuthHelper() {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5160/api/");
+        defaultValue: "http://10.0.2.2:5160/api/");
   }
 
   static bool isValidResponse(Response response) {
@@ -24,7 +21,6 @@ class AuthHelper {
   }
 
   static Future setToken(Response response) async {
-// Write value
     final prefs = await SharedPreferences.getInstance();
     final data = jsonDecode(response.body);
     await prefs.setString('token', data['token']);
@@ -33,6 +29,11 @@ class AuthHelper {
   static Future<String> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token')!;
+  }
+
+  static Future<void> clearToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
 
   Future<void> logout() async {

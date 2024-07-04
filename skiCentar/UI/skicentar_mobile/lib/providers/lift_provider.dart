@@ -1,29 +1,50 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-import 'package:skicentar_mobile/utils/api.helper.dart';
-import 'package:skicentar_mobile/utils/auth.helper.dart';
+import 'package:http/http.dart';
+import 'package:skicentar_mobile/models/lift.dart';
+import 'package:skicentar_mobile/providers/base_provider.dart';
+import 'package:skicentar_mobile/utils/auth_helper.dart';
 
-class LiftProvider {
-  static String? _baseUrl;
-  LiftProvider() {
-    _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:5160/api/");
+class LiftProvider extends BaseProvider<Lift> {
+  LiftProvider() : super("Lift");
+  
+  @override
+  Lift fromJson(data) {
+    return Lift.fromJson(data);
   }
 
-  Future<dynamic> get() async {
-    var url = "${_baseUrl}lift";
-    var uri = Uri.parse(url);
+  Future<List<String>> getAllowedActions(int id) async {
+    var url = "${BaseProvider.baseUrl}Lift/$id/allowedActions";
+    var response = await _geta(url);
+    var data = jsonDecode(response.body) as List<dynamic>;
+    return data.cast<String>();
+  }
+
+  Future<Response> _geta(String url) async {
     String token = await AuthHelper.getToken();
-    var response = await http.get(uri, headers: ApiHelper.CreateHeaders(token));
+    var uri = Uri.parse(url);
+    var headers = createHeaders(token);
 
-    if (ApiHelper.isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-      return data;
-    } else {
-      throw Exception("BELAJ");
+    var response = await http.get(uri, headers: headers);
+
+    if (!isValidResponse(response)) {
+      throw Exception("Unknown error");
     }
+    return response;
   }
 
+  Future<void> activate(int id) async {
+    var url = "${BaseProvider.baseUrl}Lift/$id/activate";
+    await putWithoutBody(url);
+  }
 
+  Future<void> hide(int id) async {
+    var url = "${BaseProvider.baseUrl}Lift/$id/hide";
+    await putWithoutBody(url);
+  }
+
+  Future<void> edit(int id) async {
+    var url = "${BaseProvider.baseUrl}Lift/$id/edit";
+    await putWithoutBody(url);
+  }
 }
