@@ -19,24 +19,24 @@ namespace skiCentar.Services
             {
                 query = query.Where(x => x.Name.StartsWith(searchObject.NameGTE));
             }
-            if (searchObject.isDifficultyIncluded == true)
+            if (searchObject.IsDifficultyIncluded == true)
             {
                 query = query.Include(x => x.Difficulty);
             }
 
-            if (searchObject.isResortIncluded == true)
+            if (searchObject.IsResortIncluded == true)
             {
                 query = query.Include(x => x.Resort);
             }
 
-            if (searchObject.areTrailLocationsIncluded == true)
+            if (searchObject.AreTrailLocationsIncluded == true)
             {
                 query = query.Include(x => x.TrailLocations);
             }
 
-            if (searchObject.resortId > 0)
+            if (searchObject.ResortId > 0)
             {
-                query = query.Where(x => x.ResortId == searchObject.resortId);
+                query = query.Where(x => x.ResortId == searchObject.ResortId);
             }
 
             if (searchObject.DifficultyId > 0)

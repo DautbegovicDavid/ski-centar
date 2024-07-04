@@ -8,9 +8,11 @@ import 'package:skicentar_desktop/components/form_wrapper.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
 import 'package:skicentar_desktop/components/toggle_field.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
+import 'package:skicentar_desktop/models/resort.dart';
 import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_desktop/models/ticket_type.dart';
 import 'package:skicentar_desktop/models/ticket_type_seniority.dart';
+import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
 import 'package:skicentar_desktop/utils/utils.dart';
@@ -28,12 +30,16 @@ class _TicketTypeAddScreenState extends State<TicketTypeAddScreen> {
   Map<String, dynamic> _initialValue = {};
   late TicketTypeProvider provider;
   late TicketTypeSeniorityProvider seniorityProvider;
+  late ResortProvider resortProvider;
+
   SearchResult<TicketTypeSeniority>? seniorities;
+  SearchResult<Resort>? resorts;
 
   @override
   void initState() {
     provider = context.read<TicketTypeProvider>();
     seniorityProvider = context.read<TicketTypeSeniorityProvider>();
+    resortProvider = context.read<ResortProvider>();
     super.initState();
     initForm();
   }
@@ -43,9 +49,12 @@ class _TicketTypeAddScreenState extends State<TicketTypeAddScreen> {
       'price': widget.ticketType?.price.toString() ?? '',
       'ticketTypeSeniorityId':
           widget.ticketType?.ticketTypeSeniorityId.toString(),
+           'resortId':
+          widget.ticketType?.toString(),
       'fullDay': widget.ticketType?.fullDay ?? false,
     };
     seniorities = await seniorityProvider.get();
+    resorts = await resortProvider.get();
     setState(() {});
   }
 
@@ -97,6 +106,18 @@ class _TicketTypeAddScreenState extends State<TicketTypeAddScreen> {
                         .map((item) => DropdownMenuItem<String>(
                             value: item.id.toString(),
                             child: Text(item.seniority ?? "")))
+                        .toList() ??
+                    [],
+              ),
+              const SizedBox(width: 10),
+               DropdownField(
+                validators: [FormBuilderValidators.required()],
+                name: "resortId",
+                labelText: "Resort",
+                items: resorts?.result
+                        .map((item) => DropdownMenuItem<String>(
+                            value: item.id.toString(),
+                            child: Text(item.name ?? "")))
                         .toList() ??
                     [],
               ),

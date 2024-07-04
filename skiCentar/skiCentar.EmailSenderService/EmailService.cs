@@ -8,7 +8,6 @@ public class EmailService
 
     public async Task SendVerificationEmailAsync(string email, string verificationLink)
     {
-
         var client = new SendGridClient(_apiKey);
         var from = new EmailAddress(_emailSender, "SKI CENTAR BIH");
         var subject = "Please verify your email address";

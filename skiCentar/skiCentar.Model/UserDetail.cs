@@ -1,4 +1,6 @@
-﻿namespace skiCentar.Model
+﻿using System;
+
+namespace skiCentar.Model
 {
     public class UserDetail
     {
@@ -8,6 +10,8 @@
         public string Name { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
+
+        public DateTime? DateOfBirth { get; set; }
 
     }
 }

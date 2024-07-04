@@ -25,6 +25,8 @@ builder.Services.AddTransient<IPointOfInterestService, PointOfInterestService>()
 builder.Services.AddTransient<IDailyWeatherService, DailyWeatherService>();
 builder.Services.AddTransient<ITicketTypeSeniorityService, TicketTypeSeniorityService>();
 builder.Services.AddTransient<ITicketTypeService, TicketTypeService>();
+builder.Services.AddTransient<IUserDetailService, UserDetailService>();
+
 
 //state machine
 builder.Services.AddTransient<BaseLiftState>();
@@ -97,10 +99,15 @@ builder.Services.AddSwaggerGen(c =>
 
 
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ?? builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<SkiCenterContext>(options =>
+//    options.UseSqlServer(connectionString)
+//);
+
 builder.Services.AddDbContext<SkiCenterContext>(options =>
     options.UseSqlServer(connectionString)
 );
+
 
 builder.Services.AddMapster();
 var app = builder.Build();

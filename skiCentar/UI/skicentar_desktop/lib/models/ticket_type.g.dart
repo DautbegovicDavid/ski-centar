@@ -11,10 +11,15 @@ TicketType _$TicketTypeFromJson(Map<String, dynamic> json) => TicketType(
       fullDay: json['fullDay'] as bool?,
       price: (json['price'] as num?)?.toDouble(),
       ticketTypeSeniorityId: (json['ticketTypeSeniorityId'] as num?)?.toInt(),
-    )..ticketTypeSeniority = json['ticketTypeSeniority'] == null
-        ? null
-        : TicketTypeSeniority.fromJson(
-            json['ticketTypeSeniority'] as Map<String, dynamic>);
+      resortId: (json['resortId'] as num?)?.toInt(),
+    )
+      ..ticketTypeSeniority = json['ticketTypeSeniority'] == null
+          ? null
+          : TicketTypeSeniority.fromJson(
+              json['ticketTypeSeniority'] as Map<String, dynamic>)
+      ..resort = json['resort'] == null
+          ? null
+          : Resort.fromJson(json['resort'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$TicketTypeToJson(TicketType instance) =>
     <String, dynamic>{
@@ -22,5 +27,7 @@ Map<String, dynamic> _$TicketTypeToJson(TicketType instance) =>
       'fullDay': instance.fullDay,
       'price': instance.price,
       'ticketTypeSeniority': instance.ticketTypeSeniority,
+      'resort': instance.resort,
       'ticketTypeSeniorityId': instance.ticketTypeSeniorityId,
+      'resortId': instance.resortId,
     };

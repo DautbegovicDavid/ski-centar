@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class Resort
 {
@@ -24,4 +21,7 @@ public partial class Resort
     public virtual ICollection<Trail> Trails { get; set; } = new List<Trail>();
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
+
+    public virtual ICollection<TicketType> TicketTypes { get; set; } = new List<TicketType>();
+
 }

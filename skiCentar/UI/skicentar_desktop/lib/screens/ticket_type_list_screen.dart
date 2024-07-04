@@ -6,9 +6,11 @@ import 'package:skicentar_desktop/components/dropdown_field.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
 import 'package:skicentar_desktop/components/table_wrapper.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
+import 'package:skicentar_desktop/models/resort.dart';
 import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_desktop/models/ticket_type.dart';
 import 'package:skicentar_desktop/models/ticket_type_seniority.dart';
+import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
 import 'package:skicentar_desktop/screens/ticket_type_add_screen.dart';
@@ -23,8 +25,10 @@ class TicketTypeListScreen extends StatefulWidget {
 class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
   late TicketTypeProvider provider;
   late TicketTypeSeniorityProvider ticketTypeSeniorityProvider;
+  late ResortProvider resortProvider;
   SearchResult<TicketType>? result;
   List<TicketTypeSeniority> _ticketTypeSeniorities = [];
+  List<Resort> _resorts = [];
 
   final _formKey = GlobalKey<FormBuilderState>();
   var filter = {};
@@ -45,6 +49,7 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
   void initState() {
     provider = context.read<TicketTypeProvider>();
     ticketTypeSeniorityProvider = context.read<TicketTypeSeniorityProvider>();
+    resortProvider = context.read<ResortProvider>();
     super.initState();
     provider.addListener(_fetchData);
     _fetchData();
@@ -53,7 +58,9 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
   Future<void> _fetchData() async {
     result = await provider.get(filter: filter);
     var seniorities = await ticketTypeSeniorityProvider.get(filter: {});
+    var resorts = await resortProvider.get(filter: {});
     _ticketTypeSeniorities = seniorities.result;
+    _resorts = resorts.result;
     if (mounted) {
       setState(() {});
     }
@@ -71,6 +78,16 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
           initialValue: _initialValue,
           child: Row(
             children: [
+               DropdownField(
+                name: "resortId",
+                labelText: "Resort",
+                items: _resorts
+                    .map((item) => DropdownMenuItem<String>(
+                        value: item.id.toString(),
+                        child: Text(item.name ?? "")))
+                    .toList(),
+              ),
+              const SizedBox(width: 12),
               DropdownField(
                 name: "TicketTypeSeniorityId",
                 labelText: "Seniority",
@@ -135,6 +152,7 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
     return TableWrapper(
       columns: const [
         DataColumn(label: Text("Id"), numeric: true),
+        DataColumn(label: Text("Resort")),
         DataColumn(label: Text("Price")),
         DataColumn(label: Text("Seniority")),
         DataColumn(label: Text("Full day")),
@@ -143,6 +161,7 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
       rows: result?.result
               .map((m) => DataRow(cells: [
                     DataCell(Text(m.id.toString())),
+                    DataCell(Text(m.resort?.name ?? "")),
                     DataCell(Text(m.price.toString())),
                     DataCell(Text(m.ticketTypeSeniority?.seniority ?? "")),
                     DataCell(Text(m.fullDay! ? "Yes" : "No")),

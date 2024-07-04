@@ -51,8 +51,8 @@ namespace skiCentar.Services
             Context.UserVerifications.Add(userVerification);
             await Context.SaveChangesAsync();
 
-            //works for subscriber app on local
-            var bus = RabbitHutch.CreateBus("host=localhost");//host=rabbitmq za lokalni development
+            var host = $"host={Environment.GetEnvironmentVariable("RABBITMQ_HOST")}";
+            var bus = RabbitHutch.CreateBus(host);
             var message = new EmailNotification { Email = request.Email, VerificationCode = verificationCode };
             Console.WriteLine(message);
             bus.PubSub.Publish(message);

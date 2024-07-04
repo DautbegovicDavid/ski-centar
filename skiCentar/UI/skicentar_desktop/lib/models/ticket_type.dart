@@ -1,5 +1,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:skicentar_desktop/models/resort.dart';
 import 'package:skicentar_desktop/models/ticket_type_seniority.dart';
 
 part 'ticket_type.g.dart';
@@ -9,9 +10,11 @@ class TicketType{
   bool? fullDay;
   double? price;
   TicketTypeSeniority? ticketTypeSeniority;
+  Resort? resort;
   int? ticketTypeSeniorityId;
-  
-  TicketType({this.id,this.fullDay,this.price,this.ticketTypeSeniorityId});
+  int? resortId;
+
+  TicketType({this.id,this.fullDay,this.price,this.ticketTypeSeniorityId,this.resortId});
 
   factory TicketType.fromJson(Map<String,dynamic> json) => _$TicketTypeFromJson(json);
 

@@ -9,6 +9,8 @@
 
         public decimal? PriceTo { get; set; }
 
+        public int? ResortId { get; set; }
+
         public int? TicketTypeSeniorityId { get; set; }
 
     }

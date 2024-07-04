@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class TicketType
 {
@@ -14,6 +11,10 @@ public partial class TicketType
     public int? TicketTypeSeniorityId { get; set; }
 
     public virtual TicketTypeSeniority? TicketTypeSeniority { get; set; }
+
+    public int? ResortId { get; set; }
+
+    public virtual Resort? Resort { get; set; }
 
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

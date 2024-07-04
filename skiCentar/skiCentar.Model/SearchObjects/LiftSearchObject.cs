@@ -3,13 +3,13 @@
     public class LiftSearchObject : BaseSearchObject
     {
         public string? NameGTE { get; set; } = null!;
-        public bool? isLiftTypeIncluded { get; set; }
-        public bool? isResortIncluded { get; set; }
-        public bool? areLiftLocationsIncluded { get; set; }
+        public bool? IsLiftTypeIncluded { get; set; }
+        public bool? IsResortIncluded { get; set; }
+        public bool? AreLiftLocationsIncluded { get; set; }
         public int? Capacity { get; set; }
         public bool? IsFunctional { get; set; }
-        public int? resortId { get; set; }
-        public int? liftTypeId { get; set; }
+        public int? ResortId { get; set; }
+        public int? LiftTypeId { get; set; }
 
     }
 }

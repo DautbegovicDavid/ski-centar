@@ -35,8 +35,8 @@ public class EmailConsumerService : BackgroundService
 
     private async Task Listen()
     {
-        var host = "host=rabbitmq";// alo lokalno ostavim lokal host , rabbitmq za docker
-        var bus = RabbitHutch.CreateBus("host=localhost");
+        var host = $"host={Environment.GetEnvironmentVariable("RABBITMQ_HOST")}";
+        var bus = RabbitHutch.CreateBus(host);
         Console.WriteLine($"listening:");
 
         await bus.PubSub.SubscribeAsync<EmailNotification>("EmailNotification", async notification =>

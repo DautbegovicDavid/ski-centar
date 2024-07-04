@@ -398,10 +398,15 @@ public partial class SkiCenterContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
             entity.Property(e => e.TicketTypeSeniorityId).HasColumnName("ticket_type_seniority_id");
+            entity.Property(e => e.ResortId).HasColumnName("resort_id");
 
             entity.HasOne(d => d.TicketTypeSeniority).WithMany(p => p.TicketTypes)
                 .HasForeignKey(d => d.TicketTypeSeniorityId)
                 .HasConstraintName("FK_ticket_type_ticket_type_seniority");
+
+            entity.HasOne(d => d.Resort).WithMany(p => p.TicketTypes)
+                .HasForeignKey(d => d.ResortId)
+                .HasConstraintName("FK_ticket_type_resort");
         });
 
         modelBuilder.Entity<TicketTypeSeniority>(entity =>
@@ -587,6 +592,9 @@ public partial class SkiCenterContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("last_name");
+            entity.Property(e => e.DateOfBirth)
+               .HasColumnType("datetime")
+               .HasColumnName("date_of_birth");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -629,6 +637,53 @@ public partial class SkiCenterContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__user_ver__user_id__2C3393D0");
         });
+        base.OnModelCreating(modelBuilder);
+
+        //
+        if (!modelBuilder.Model.FindEntityType(typeof(LiftType)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<LiftType>().HasData(
+            new LiftType { Name = "Sjedeznica" },
+            new LiftType { Name = "Gondola" },
+            new LiftType { Name = "Sidro" },
+            new LiftType { Name = "Pokretna staza" },
+            new LiftType { Name = "Tanjir" },
+            new LiftType { Name = "Rukohvat" }
+            );
+        }
+
+        if (!modelBuilder.Model.FindEntityType(typeof(PoiCategory)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<PoiCategory>().HasData(
+            new PoiCategory { Name = "Ski kasa" },
+            new PoiCategory { Name = "Ski skola" },
+            new PoiCategory { Name = "Ski Rental" },
+            new PoiCategory { Name = "Hitna" },
+            new PoiCategory { Name = "WC" },
+            new PoiCategory { Name = "Parking" },
+            new PoiCategory { Name = "Restoran" },
+            new PoiCategory { Name = "Kafic" }
+            );
+        }
+
+        if (!modelBuilder.Model.FindEntityType(typeof(TrailDifficulty)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<TrailDifficulty>().HasData(
+            new TrailDifficulty { Name = "Pocetnicke staza", Color = "Green" },
+            new TrailDifficulty { Name = "Staze za srednje vjestine", Color = "Blue" },
+            new TrailDifficulty { Name = "Napredne staza", Color = "Crvena" },
+            new TrailDifficulty { Name = "Ekspertne staze", Color = "Black" }
+            );
+        }
+
+        if (!modelBuilder.Model.FindEntityType(typeof(UserRole)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<UserRole>().HasData(
+            new UserRole { Name = "Admin" },
+            new UserRole { Name = "Uposlenik" },
+            new UserRole { Name = "Korisnik" }
+            );
+        }
 
         OnModelCreatingPartial(modelBuilder);
     }

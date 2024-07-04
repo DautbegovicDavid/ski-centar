@@ -9,7 +9,7 @@ namespace skiCentar.API.Controllers
     [ApiController]
     public class BaseCRUDController<TModel, TSearch, TInsert, TUpdate> : BaseController<TModel, TSearch> where TSearch : BaseSearchObject where TModel : class
     {
-        protected new ICRUDService<TModel, TSearch, TInsert, TUpdate> _service; // redeklarisali smo service posto znam koji je. New keywor dnam pomogao
+        protected new ICRUDService<TModel, TSearch, TInsert, TUpdate> _service;
         public BaseCRUDController(ICRUDService<TModel, TSearch, TInsert, TUpdate> service) : base(service)
         {
             _service = service;

@@ -7,5 +7,7 @@
         public decimal Price { get; set; }
 
         public int TicketTypeSeniorityId { get; set; }
+
+        public int ResortId { get; set; }
     }
 }

@@ -46,6 +46,11 @@ namespace skiCentar.Services
                 query = query.Where(x => x.Date <= toDate);
             }
 
+            if (searchObject.ResortId.HasValue)
+            {
+                query = query.Where(x => x.ResortId == searchObject.ResortId);
+            }
+
             query = query.Include(i => i.Resort);
 
             query = query.OrderByDescending(x => x.Date);

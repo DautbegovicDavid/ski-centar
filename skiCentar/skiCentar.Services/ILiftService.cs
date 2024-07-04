@@ -11,6 +11,5 @@ namespace skiCentar.Services
         public Lift Hide(int id);
         public List<string> AllowedActions(int id);
 
-
     }
 }

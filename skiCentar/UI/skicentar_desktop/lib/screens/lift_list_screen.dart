@@ -33,9 +33,9 @@ class _LiftListScreenState extends State<LiftListScreen> {
   late LiftTypeProvider liftTypeProvider;
 
   var filter = {
-    'isResortIncluded': true,
-    'isLiftTypeIncluded': true,
-    'areLiftLocationsIncluded': true,
+    'IsResortIncluded': true,
+    'IsLiftTypeIncluded': true,
+    'AreLiftLocationsIncluded': true,
   };
 
   @override
@@ -88,7 +88,7 @@ class _LiftListScreenState extends State<LiftListScreen> {
               ),
               const SizedBox(width: 12),
               DropdownField(
-                name: "liftTypeId",
+                name: "LiftTypeId",
                 labelText: "Lift type",
                 items: _liftTypes
                     .map((item) => DropdownMenuItem<String>(
@@ -98,7 +98,7 @@ class _LiftListScreenState extends State<LiftListScreen> {
               ),
               const SizedBox(width: 12),
               DropdownField(
-                name: "resortId",
+                name: "ResortId",
                 labelText: "Resort",
                 items: _resorts
                     .map((item) => DropdownMenuItem<String>(

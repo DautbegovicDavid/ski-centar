@@ -25,28 +25,28 @@ namespace skiCentar.Services
             {
                 query = query.Where(x => x.Name.StartsWith(searchObject.NameGTE));
             }
-            if (searchObject.isLiftTypeIncluded == true)
+            if (searchObject.IsLiftTypeIncluded == true)
             {
                 query = query.Include(x => x.LiftType);
             }
 
-            if (searchObject.isResortIncluded == true)
+            if (searchObject.IsResortIncluded == true)
             {
                 query = query.Include(x => x.Resort);
             }
 
-            if (searchObject.areLiftLocationsIncluded == true)
+            if (searchObject.AreLiftLocationsIncluded == true)
             {
                 query = query.Include(x => x.LiftLocations);
             }
 
-            if (searchObject.resortId > 0)
+            if (searchObject.ResortId > 0)
             {
-                query = query.Where(x => x.ResortId == searchObject.resortId);
+                query = query.Where(x => x.ResortId == searchObject.ResortId);
             }
-            if (searchObject.liftTypeId > 0)
+            if (searchObject.LiftTypeId > 0)
             {
-                query = query.Where(x => x.LiftTypeId == searchObject.liftTypeId);
+                query = query.Where(x => x.LiftTypeId == searchObject.LiftTypeId);
             }
 
 

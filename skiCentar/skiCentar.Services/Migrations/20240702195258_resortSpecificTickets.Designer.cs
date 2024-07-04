@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using skiCentar.Services.Database;
 
@@ -11,9 +12,11 @@ using skiCentar.Services.Database;
 namespace skiCentar.Services.Migrations
 {
     [DbContext(typeof(SkiCenterContext))]
-    partial class SkiCenterContextModelSnapshot : ModelSnapshot
+    [Migration("20240702195258_resortSpecificTickets")]
+    partial class resortSpecificTickets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -522,7 +525,7 @@ namespace skiCentar.Services.Migrations
 
                     b.Property<int?>("ResortId")
                         .HasColumnType("int")
-                        .HasColumnName("resort_id");
+                        .HasColumnName("ticket_type_resort_id");
 
                     b.Property<int?>("TicketTypeSeniorityId")
                         .HasColumnType("int")
@@ -762,10 +765,6 @@ namespace skiCentar.Services.Migrations
                         .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime")
-                        .HasColumnName("date_of_birth");
 
                     b.Property<string>("LastName")
                         .IsRequired()

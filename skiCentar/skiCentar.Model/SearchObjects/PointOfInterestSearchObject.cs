@@ -5,13 +5,13 @@
 
         public string? NameGTE { get; set; } = null!;
 
-        public bool? isCategoryIncluded { get; set; }
+        public bool? IsCategoryIncluded { get; set; }
 
-        public int? categoryId { get; set; }
+        public int? CategoryId { get; set; }
 
-        public bool? isResortIncluded { get; set; }
+        public bool? IsResortIncluded { get; set; }
 
-        public int? resortId { get; set; }
+        public int? ResortId { get; set; }
 
     }
 }

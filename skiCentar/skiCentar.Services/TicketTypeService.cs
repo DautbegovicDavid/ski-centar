@@ -41,8 +41,14 @@ namespace skiCentar.Services
             {
                 filteredQuery = filteredQuery.Where(x => x.TicketTypeSeniorityId == searchObject.TicketTypeSeniorityId);
             }
+            if (searchObject.ResortId.HasValue)
+            {
+                filteredQuery = filteredQuery.Where(x => x.ResortId == searchObject.ResortId);
+            }
 
             filteredQuery = filteredQuery.Include(x => x.TicketTypeSeniority);
+
+            filteredQuery = filteredQuery.Include(x => x.Resort);
 
             return filteredQuery;
         }

@@ -6,13 +6,11 @@ using skiCentar.Services;
 
 namespace skiCentar.API.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ResortController : BaseCRUDController<Resort, ResortSearchObject, ResortInsertRequest, ResortInsertRequest>
+    public class UserDetailController : BaseCRUDController<UserDetail, BaseSearchObject, UserDetailUpsertRequest, UserDetailUpsertRequest>
     {
-
-        public ResortController(IResortService service) : base(service)
+        public UserDetailController(IUserDetailService service) : base(service)
         {
         }
     }

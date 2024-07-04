@@ -1,14 +1,13 @@
 version: '3'
 services:
 
-#mssql docker
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmq
     restart: unless-stopped
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -21,11 +20,11 @@ services:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     restart: unless-stopped
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=QWElkj132!
-      - MSSQL_PID=Developer
+      - ACCEPT_EULA=${ACCEPT_EULA}
+      - SA_PASSWORD=${SA_PASSWORD}
+      - MSSQL_PID=${MSSQL_PID}
     ports:
-      - 1401:1433
+      - "1401:1433"
     expose:
       - 1433
     networks:
@@ -37,12 +36,12 @@ services:
       context: .
       dockerfile: Dockerfile.emailsender
     environment:
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - RABBITMQ_VIRTUALHOST=/
-      - EMAIL_APIKEY=nejma
-      - EMAIL_SENDER=david.dautbegovic@edu.fit.ba
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_VIRTUALHOST=${RABBITMQ_VIRTUALHOST}
+      - EMAIL_APIKEY=${EMAIL_APIKEY}
+      - EMAIL_SENDER=${EMAIL_SENDER}
     depends_on:
       - rabbitmq
       - skicentar-sql
@@ -50,17 +49,21 @@ services:
     networks:
       - skicentarnet
     ports:
-      - 7101:80
+      - "7101:80"
 
   skicentar-api:
     restart: unless-stopped
     build:
       context: .
     environment:
-      - ConnectionStrings:DefaultConnection=Server=skicentar-sql,1433;Database=skicentar2024;User=sa;Password=QWElkj132!;ConnectRetryCount=0; TrustServerCertificate=True
-      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION=${DB_CONNECTION_STRING}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_VIRTUALHOST=${RABBITMQ_VIRTUALHOST}
     ports:
-      - 49153:49153
+      - "49153:49153"
     networks:
       - skicentarnet
     links:
@@ -70,4 +73,4 @@ services:
       
 networks:
   skicentarnet:
-    driver: bridge      
+    driver: bridge
