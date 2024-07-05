@@ -30,7 +30,7 @@ Dotenv dotenv = Dotenv.configure().directory(rootProject.file('../../../').toStr
 
 android {
     namespace "com.example.skicentar_mobile"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -48,8 +48,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.skicentar_mobile"
-        minSdkVersion 20
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 

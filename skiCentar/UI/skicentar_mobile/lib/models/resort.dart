@@ -12,6 +12,8 @@ class Resort{
 
   Resort({this.id,this.name});
 
+  bool operator ==(o) => o is Resort && o.name == name && o.id == id;
+
   factory Resort.fromJson(Map<String,dynamic> json) => _$ResortFromJson(json);
 
   Map<String,dynamic> toJson() => _$ResortToJson(this);

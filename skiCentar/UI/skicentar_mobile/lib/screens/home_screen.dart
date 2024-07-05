@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/models/daily_weather.dart';
+import 'package:skicentar_mobile/models/lift.dart';
 import 'package:skicentar_mobile/models/poi_category.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/models/ticket_type.dart';
@@ -11,6 +12,11 @@ import 'package:skicentar_mobile/providers/poi_category_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_type_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
+import 'package:skicentar_mobile/providers/weather_provider.dart';
+import 'package:skicentar_mobile/screens/deatiled_ski_tracks_screen.dart';
+import 'package:skicentar_mobile/screens/detailed_ski_lifts_screen.dart';
+import 'package:skicentar_mobile/screens/detailed_weather_screen.dart';
+import 'package:skicentar_mobile/screens/payment_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,22 +26,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late DailyWeatherProvider weatherProvider;
+  late DailyWeatherProvider dailyWeatherProvider;
   late TicketTypeProvider ticketsProvider;
   late PoiCategoryProvider poiProvider;
   late LiftProvider liftProvider;
   late TrailProvider trailProvider;
   late ResortProvider resortProvider;
+  late WeatherProvider weatherProvider;
 
   SearchResult<DailyWeather>? weatherResult;
   SearchResult<TicketType>? ticketsResult;
   SearchResult<PoiCategory>? poiResult;
   SearchResult<Trail>? trailResult;
+  SearchResult<Lift>? liftResult;
+
+  Map<String, dynamic>? _weatherData;
+
+  bool loaded = false;
 
   @override
   void initState() {
     super.initState();
-    weatherProvider = context.read<DailyWeatherProvider>();
+    dailyWeatherProvider = context.read<DailyWeatherProvider>();
+    weatherProvider = context.read<WeatherProvider>();
     ticketsProvider = context.read<TicketTypeProvider>();
     liftProvider = context.read<LiftProvider>();
     poiProvider = context.read<PoiCategoryProvider>();
@@ -50,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchData() async {
-    weatherResult = await weatherProvider
+    weatherResult = await dailyWeatherProvider
         .get(filter: {'ResortId': resortProvider.selectedResort?.id});
     ticketsResult = await ticketsProvider.get(filter: {
       'resortId': resortProvider.selectedResort?.id,
@@ -62,9 +75,29 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     trailResult = await trailProvider.get(filter: {
       'resortId': resortProvider.selectedResort?.id,
+      'IsDifficultyIncluded': true
     });
+    liftResult = await liftProvider.get(filter: {
+      'IsLiftTypeIncluded': true,
+      'resortId': resortProvider.selectedResort?.id,
+    });
+    await _fetchWeather();
+    loaded = true;
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  Future<void> _fetchWeather() async {
+    try {
+      final data = await weatherProvider.fetchWeather(
+          resortProvider.selectedResort!.name!,
+          resortProvider.selectedResort!.location!);
+      setState(() {
+        _weatherData = data;
+      });
+    } catch (e) {
+      print('Error fetching weather: $e');
     }
   }
 
@@ -76,20 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionCard(
-              title: 'Weather',
-              icon: Icons.wb_sunny,
-              content: _buildWeatherSection(),
+            if(loaded)
+               _buildCard(
+              _buildWeatherSection(),
             ),
-            _buildSectionCard(
-              title: 'Ski Tracks: ${resortProvider.selectedResort?.skiWorkHours}',
-              icon: Icons.snowboarding,
-              content: _buildSkiTracksSection(),
+            _buildCard(
+              _buildSkiTracksSection(),
             ),
-            _buildSectionCard(
-              title: 'Ski tickets',
-              icon: Icons.confirmation_number,
-              content: _buildSkiTicketsSection(),
+            _buildCard(
+              _buildSkiLiftsSection(),
+            ),
+            _buildCard(
+              _buildSkiTicketsSection(),
             ),
             _buildSectionCard(
               title: 'POI',
@@ -105,7 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSectionCard(
       {required String title,
       required IconData icon,
-      required Widget content}) {
+      required Widget content,
+      VoidCallback? onPressed}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
@@ -113,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader(title, icon),
+            _buildSectionHeader(title, icon, onPressed),
             const SizedBox(height: 8),
             content,
           ],
@@ -122,7 +154,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon) {
+  Widget _buildCard(Widget content) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            content,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(
+      String title, IconData icon, VoidCallback? onPressed) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -137,9 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         TextButton(
-          onPressed: () {
-            // Handle "See more" tap
-          },
+          onPressed: onPressed,
           child: const Text('See more'),
         ),
       ],
@@ -157,9 +203,44 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(weather.weatherCondition.toString()),
-        Text("Wind Speed: ${weather.windSpeed.toString()}  km/h"),
-        Text("Snow Height: ${weather.snowHeight.toString()} cm"),
+        _buildSectionHeader(
+          'Weather',
+          Icons.sunny,
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailedWeatherScreen(
+                weather: weather,
+                weatherData: _weatherData!,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding:
+              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          child: Text(
+            weather.weatherCondition.toString(),
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          child: Text(
+            "Wind Speed: ${weather.windSpeed.toString()}  km/h",
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          child: Text(
+            "Snow Height: ${weather.snowHeight.toString()} cm",
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
       ],
     );
   }
@@ -186,12 +267,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: groupedTickets.entries.map((entry) {
+      children:[_buildSectionHeader(
+          'Ski tickets',
+          Icons.confirmation_num_rounded,
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentScreen(
+              ),
+            ),
+          ),
+        ),
+       ... groupedTickets.entries.map((entry) {
         return Padding(
             padding: const EdgeInsets.only(bottom: 2.0),
             child: Text("${entry.key}: ${entry.value.join('/')}KM",
                 style: const TextStyle(fontSize: 16)));
       }).toList(),
+      ]
     );
   }
 
@@ -235,6 +328,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _buildSectionHeader(
+          'Ski Tracks: ${resortProvider.selectedResort?.skiWorkHours}',
+          Icons.snowboarding,
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailedSkiTracksScreen(trails: trails),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
         Padding(
           padding:
               const EdgeInsets.only(bottom: 2.0), // Add padding between items
@@ -248,6 +352,55 @@ class _HomeScreenState extends State<HomeScreen> {
               const EdgeInsets.only(bottom: 2.0), // Add padding between items
           child: Text(
             'Number of closed tracks: $nonWorkingTracks',
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSkiLiftsSection() {
+    if (trailResult == null) {
+      return const CircularProgressIndicator();
+    }
+
+    final lifts = liftResult!.result;
+
+    if (liftResult!.result.isEmpty) {
+      return const Center(child: Text("No data"));
+    }
+
+    final workingLifts =
+        lifts.where((lift) => lift.isFunctional == true).length;
+    final nonWorkingLifts = lifts.length - workingLifts;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionHeader(
+          'Ski Lifts: ${resortProvider.selectedResort?.skiWorkHours}',
+          Icons.elevator,
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailedSkiLiftsScreen(lifts: lifts),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding:
+              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          child: Text(
+            'Number of open tracks: $workingLifts',
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          child: Text(
+            'Number of closed tracks: $nonWorkingLifts',
             style: const TextStyle(fontSize: 16),
           ),
         ),

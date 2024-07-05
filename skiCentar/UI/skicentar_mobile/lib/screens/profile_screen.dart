@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'registrationDate': user?.registrationDate ?? '',
         'name': user?.userDetails?.name ?? '',
         'lastName': user?.userDetails?.lastName ?? '',
-        'dateOfBirth': user?.userDetails?.dateOfBirth ?? '',
+        'dateOfBirth': user?.userDetails?.dateOfBirth,
       };
     });
   }
@@ -93,11 +93,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       key: _formKey,
       initialValue: _initialValue,
       child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
             elevation: 4,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   _buildLogoutButton(),
@@ -110,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 16),
                   const DatePickerField(
                     name: "registrationDate",
-                    labelText: "Registered ",
+                    labelText: "Registered",
                     enabled: false,
                   ),
                   const SizedBox(height: 20),

@@ -24,3 +24,8 @@ void showCustomSnackBar(BuildContext context, IconData icon,
     ),
   );
 }
+
+String formatDate(DateTime date) {
+  final DateFormat formatter = DateFormat.yMMMMd().add_jm(); // Adjust format as needed
+  return formatter.format(date);
+}

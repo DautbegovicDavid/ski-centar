@@ -2,21 +2,30 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/providers/daily_weather_provider.dart';
 import 'package:skicentar_mobile/providers/lift_provider.dart';
+import 'package:skicentar_mobile/providers/payment_provider.dart';
 import 'package:skicentar_mobile/providers/poi_category_provider.dart';
 import 'package:skicentar_mobile/providers/poi_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
+import 'package:skicentar_mobile/providers/ticket_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_type_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
 import 'package:skicentar_mobile/providers/user_detail_provider.dart';
 import 'package:skicentar_mobile/providers/user_provider.dart';
+import 'package:skicentar_mobile/providers/weather_provider.dart';
 import 'package:skicentar_mobile/screens/login_screen.dart';
 import 'package:skicentar_mobile/screens/user_verified_screen.dart';
 
-void main() {
-   runApp(MultiProvider(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "lib/config/.env");
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '';
+
+  runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => LiftProvider()),
       ChangeNotifierProvider(create: (_) => ResortProvider()),
@@ -27,13 +36,15 @@ void main() {
       ChangeNotifierProvider(create: (_) => TrailProvider()),
       ChangeNotifierProvider(create: (_) => UserProvider()),
       ChangeNotifierProvider(create: (_) => UserDetailProvider()),
+      ChangeNotifierProvider(create: (_) => WeatherProvider()),
+      ChangeNotifierProvider(create: (_) => PaymentProvider()),
+      ChangeNotifierProvider(create: (_) => TicketProvider()),
     ],
     child: const MyApp(),
   ));
 }
 
-class LiftTypeProvider {
-}
+class LiftTypeProvider {}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -60,12 +71,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void openAppLink(Uri uri) {
-    print(_navigatorKey.currentState);
     _navigatorKey.currentState?.pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => UserVerifiedPage(),
-        ),
-      );
+      MaterialPageRoute(
+        builder: (context) => const UserVerifiedPage(),
+      ),
+    );
   }
 
   @override

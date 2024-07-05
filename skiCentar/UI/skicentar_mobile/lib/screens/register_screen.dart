@@ -5,7 +5,7 @@ import 'package:skicentar_mobile/screens/home_screen.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 
-  TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

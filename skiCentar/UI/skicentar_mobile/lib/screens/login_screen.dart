@@ -1,14 +1,31 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/layouts/master_screen.dart';
 import 'package:skicentar_mobile/providers/auth_provider.dart';
+import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/screens/register_screen.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+    @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController =
+      TextEditingController(); // doubl echekc da nesto ne kehne
+
+  late UserProvider userProvider;
+
+  @override
+  void initState() {
+    super.initState();
+     userProvider = context.read<UserProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +33,6 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('WELCOME TO SKI CENTER',
             style: TextStyle(color: Colors.white)),
-        surfaceTintColor: Colors.red,
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -45,9 +61,9 @@ class LoginPage extends StatelessWidget {
                               TextField(
                                 controller: _emailController,
                                 decoration: const InputDecoration(
-                                    labelText: "Username",
-                                    suffixIcon: Icon(Icons.email),
-                                  ),
+                                  labelText: "Username",
+                                  suffixIcon: Icon(Icons.email),
+                                ),
                               ),
                               TextField(
                                 controller: _passwordController,
@@ -64,13 +80,14 @@ class LoginPage extends StatelessWidget {
                                   MaterialStateProperty.all(Colors.blue[400]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
-                               minimumSize: MaterialStateProperty.all(Size(200,40))
-                                  ),
+                              minimumSize:
+                                  MaterialStateProperty.all(Size(200, 40))),
                           onPressed: () async {
                             AuthProvider provider = AuthProvider();
                             try {
                               await provider.login(_emailController.text,
                                   _passwordController.text);
+                              await _fetchUser();
                               if (!context.mounted) return;
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => MasterScreen()));
@@ -103,11 +120,8 @@ class LoginPage extends StatelessWidget {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  // Handle the click event here
                                   Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => RegisterPage()));
-                                  print('Create account clicked');
-                                  // Navigate to the create account screen or perform any action
+                                      builder: (context) => RegisterPage()));
                                 },
                             ),
                           ],
@@ -118,5 +132,14 @@ class LoginPage extends StatelessWidget {
                 ))),
       ),
     );
+  }
+
+  Future<void> _fetchUser() async {
+    try {
+      final fetchedUser = await userProvider.getDetails();
+      userProvider.setUser(fetchedUser);
+    } catch (e) {
+      print('Failed to load user: $e');
+    }
   }
 }

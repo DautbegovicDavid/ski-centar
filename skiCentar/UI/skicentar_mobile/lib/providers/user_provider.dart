@@ -12,6 +12,16 @@ class UserProvider extends BaseProvider<User> {
 
   UserProvider() : super("User");
 
+  User? _currentUser;
+
+  User? get currentUser => _currentUser;
+
+  void setUser(User user) {
+    print("USER ->>>>> $user");
+    _currentUser = user;
+    notifyListeners();
+  }
+
   @override
   User fromJson(data) {
     return User.fromJson(data);
@@ -33,12 +43,11 @@ class UserProvider extends BaseProvider<User> {
 
   Future<User> createEmployee(dynamic obj) async {
     var endpoint = "User/employee";
-    return insert(obj,endpoint: endpoint);
+    return insert(obj, endpoint: endpoint);
   }
 
-    Future<User> updateEmployee(dynamic obj) async {
+  Future<User> updateEmployee(dynamic obj) async {
     var endpoint = "User/employee";
-    return insert(obj,endpoint: endpoint);
+    return insert(obj, endpoint: endpoint);
   }
-
 }

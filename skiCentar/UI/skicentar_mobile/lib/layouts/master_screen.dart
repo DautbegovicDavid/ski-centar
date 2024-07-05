@@ -34,6 +34,9 @@ class _MasterScreenState extends State<MasterScreen> {
 
   Future<void> _fetchData() async {
     resortResult = await resortProvider.get(filter: {});
+    if (resortProvider.selectedResort == null) {
+      resortProvider.selectResort(resortResult!.result.first);
+    }
     if (mounted) {
       setState(() {});
     }

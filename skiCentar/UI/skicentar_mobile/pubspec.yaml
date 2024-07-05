@@ -46,9 +46,10 @@ dependencies:
   flutter_form_builder: 9.1.0
   form_builder_validators: ^9.1.0
   intl: ^0.18.1
+  flutter_stripe: ^9.5.0+1
+  flutter_dotenv: ^5.1.0
 
 
-  
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/images/
+  - lib/config/.env
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
