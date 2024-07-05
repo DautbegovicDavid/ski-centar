@@ -34,7 +34,7 @@ namespace skiCentar.API.Controllers
             var result = await _service.Login(request);
             if (result.Success)
             {
-                return Ok(new { token = result.Message });
+                return Ok(result.Data);
             }
 
             return Unauthorized(new { message = result.Message });

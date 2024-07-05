@@ -3,8 +3,17 @@ using SendGrid.Helpers.Mail;
 
 public class EmailService
 {
-    private readonly string _apiKey = Environment.GetEnvironmentVariable("EMAIL_APIKEY") ?? "nejma";
-    private readonly string _emailSender = Environment.GetEnvironmentVariable("EMAIL_SENDER") ?? "david.dautbegovic@edu.fit.ba";
+    private readonly string _apiKey;
+    private readonly string _emailSender;
+
+    public EmailService(IConfiguration configuration)
+    {
+        _apiKey = Environment.GetEnvironmentVariable("EMAIL_APIKEY")
+                  ?? configuration["SendGrid:ApiKey"];
+        _emailSender = Environment.GetEnvironmentVariable("EMAIL_SENDER")
+                       ?? configuration["SendGrid:EmailSender"];
+    }
+
 
     public async Task SendVerificationEmailAsync(string email, string verificationLink)
     {

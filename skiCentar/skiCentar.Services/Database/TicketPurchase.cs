@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class TicketPurchase
 {
@@ -18,10 +15,6 @@ public partial class TicketPurchase
     public decimal TotalPrice { get; set; }
 
     public string? StripePaymentIntentId { get; set; }
-
-    public int PaymentStatusId { get; set; }
-
-    public virtual PaymentStatus PaymentStatus { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
 

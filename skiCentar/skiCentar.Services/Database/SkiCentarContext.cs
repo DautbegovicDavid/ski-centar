@@ -23,8 +23,6 @@ public partial class SkiCenterContext : DbContext
 
     public virtual DbSet<LiftType> LiftTypes { get; set; }
 
-    public virtual DbSet<PaymentStatus> PaymentStatuses { get; set; }
-
     public virtual DbSet<PoiCategory> PoiCategories { get; set; }
 
     public virtual DbSet<PointOfInterest> PointOfInterests { get; set; }
@@ -197,18 +195,6 @@ public partial class SkiCenterContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<PaymentStatus>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__payment___3213E83F5EC46707");
-
-            entity.ToTable("payment_status");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
-        });
-
         modelBuilder.Entity<PoiCategory>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__poi_cate__3213E83FDA520F22");
@@ -353,9 +339,6 @@ public partial class SkiCenterContext : DbContext
             entity.ToTable("ticket_purchase");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.PaymentStatusId)
-                .HasDefaultValueSql("((1))")
-                .HasColumnName("payment_status_id");
             entity.Property(e => e.PurchaseDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -369,11 +352,6 @@ public partial class SkiCenterContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("total_price");
             entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.PaymentStatus).WithMany(p => p.TicketPurchases)
-                .HasForeignKey(d => d.PaymentStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ticket_pu__payme__339FAB6E");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketPurchases)
                 .HasForeignKey(d => d.TicketId)

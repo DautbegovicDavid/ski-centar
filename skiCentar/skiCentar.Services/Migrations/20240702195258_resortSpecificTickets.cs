@@ -13,8 +13,6 @@ namespace skiCentar.Services.Migrations
             migrationBuilder.DropTable(
     name: "ticket_purchase");
 
-            migrationBuilder.DropTable(
-                name: "payment_status");
 
             migrationBuilder.DropTable(
                 name: "ticket");

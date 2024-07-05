@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class Ticket
 {

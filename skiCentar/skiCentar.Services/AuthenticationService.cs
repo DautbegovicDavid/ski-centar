@@ -27,7 +27,6 @@ namespace skiCentar.Services
         {
             if (Context.Users.Any(u => u.Email == request.Email))
                 return await Task.FromResult(new ServiceResult { Success = false, Message = "User already exists." });
-
             var user = new Database.User
             {
                 Email = request.Email,
@@ -74,7 +73,7 @@ namespace skiCentar.Services
             return Task.FromResult(new ServiceResult
             {
                 Success = true,
-                Message = tokenString
+                Data = new { token = tokenString }
             });
         }
 
@@ -88,7 +87,7 @@ namespace skiCentar.Services
             var userEntity = Context.Users.FirstOrDefault(e => e.Id == verificationEntity.UserId);
 
             if (userEntity == null)
-                return Task.FromResult(new ServiceResult { Success = false, Message = "Error" });
+                return Task.FromResult(new ServiceResult { Success = false, Data = new { message = "Error" } });
 
             userEntity.IsVerified = true;
 

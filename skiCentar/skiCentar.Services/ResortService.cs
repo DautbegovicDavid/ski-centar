@@ -35,7 +35,6 @@ namespace skiCentar.Services
                 filteredQuery = filteredQuery.Where(x => x.Elevation <= searchObject.ElevationTo);
             }
 
-            //ovo je samo za npr za proizvode
             if (!string.IsNullOrEmpty(searchObject.FTS))
             {
                 filteredQuery = filteredQuery.Where(x => x.Name.Contains(searchObject.FTS) || x.Location.Contains(searchObject.FTS));

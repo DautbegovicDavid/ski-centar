@@ -7,12 +7,13 @@ using skiCentar.API.Filters;
 using skiCentar.Services;
 using skiCentar.Services.Database;
 using skiCentar.Services.LiftStateMachine;
+using Stripe;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddTransient<IResortService, ResortService>();
-builder.Services.AddTransient<IProizvodiService, ProizvodiService>();
 builder.Services.AddTransient<ILiftService, LiftService>();
 builder.Services.AddTransient<ILiftTypeService, LiftTypeService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
@@ -26,19 +27,27 @@ builder.Services.AddTransient<IDailyWeatherService, DailyWeatherService>();
 builder.Services.AddTransient<ITicketTypeSeniorityService, TicketTypeSeniorityService>();
 builder.Services.AddTransient<ITicketTypeService, TicketTypeService>();
 builder.Services.AddTransient<IUserDetailService, UserDetailService>();
+builder.Services.AddTransient<ITicketService, TicketService>();
+builder.Services.AddTransient<IPaymentService, PaymentService>();
 
-
-//state machine
+// State machine
 builder.Services.AddTransient<BaseLiftState>();
 builder.Services.AddTransient<InitialLiftState>();
 builder.Services.AddTransient<DraftLiftState>();
 builder.Services.AddTransient<ActiveLiftState>();
 builder.Services.AddTransient<HiddenLiftState>();
 
-//rabbit mq
+// Register WeatherService using AddHttpClient
+builder.Services.AddHttpClient<WeatherService>();
+
+// RabbitMQ
 builder.Services.AddScoped<IRabbitMQService, RabbitMQService>();
 
-// Add services to the container.
+// Stripe configuration
+var stripeSecretKey = Environment.GetEnvironmentVariable("STRIPE_SECRET_KEY") ?? builder.Configuration["Stripe:SecretKey"];
+StripeConfiguration.ApiKey = stripeSecretKey;
+
+// Add services to the container
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,12 +66,13 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
 builder.Services.AddControllers(x =>
 {
     x.Filters.Add<ExceptionFilter>();
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -97,26 +107,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
-
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ?? builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<SkiCenterContext>(options =>
-//    options.UseSqlServer(connectionString)
-//);
-
 builder.Services.AddDbContext<SkiCenterContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
-
 builder.Services.AddMapster();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -133,7 +135,6 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<SkiCenterContext>();
-    //dataContext.Database.EnsureCreated(); ne treba nam
     dataContext.Database.Migrate();
 }
 
