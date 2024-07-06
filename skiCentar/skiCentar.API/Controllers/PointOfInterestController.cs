@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using skiCentar.Model.Requests;
 using skiCentar.Model.SearchObjects;
 using skiCentar.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace skiCentar.API.Controllers
 {

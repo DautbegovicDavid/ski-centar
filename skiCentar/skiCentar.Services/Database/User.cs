@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class User
 {
@@ -32,4 +29,6 @@ public partial class User
     public virtual ICollection<UserVerification> UserVerifications { get; set; } = new List<UserVerification>();
 
     public virtual ICollection<Resort> Resorts { get; set; } = new List<Resort>();
+    
+    public virtual ICollection<UserPoiInteraction> UserPoiInteractions { get; set; }
 }

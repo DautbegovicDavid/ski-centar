@@ -40,6 +40,7 @@ builder.Services.AddTransient<HiddenLiftState>();
 
 // Register WeatherService using AddHttpClient
 builder.Services.AddHttpClient<WeatherService>();
+builder.Services.AddTransient<RecommendationsService>();
 
 // RabbitMQ
 builder.Services.AddScoped<IRabbitMQService, RabbitMQService>();

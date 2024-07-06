@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class PointOfInterest
 {
@@ -22,4 +19,7 @@ public partial class PointOfInterest
     public virtual PoiCategory? Category { get; set; }
 
     public virtual Resort? Resort { get; set; }
+
+    public virtual ICollection<UserPoiInteraction> UserPoiInteractions { get; set; }
+
 }

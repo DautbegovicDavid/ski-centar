@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using skiCentar.Services.Database;
 
@@ -11,9 +12,11 @@ using skiCentar.Services.Database;
 namespace skiCentar.Services.Migrations
 {
     [DbContext(typeof(SkiCenterContext))]
-    partial class SkiCenterContextModelSnapshot : ModelSnapshot
+    [Migration("20240706203530_userInteractionsTable")]
+    partial class userInteractionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

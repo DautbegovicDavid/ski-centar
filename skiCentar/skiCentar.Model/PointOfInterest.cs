@@ -1,4 +1,6 @@
-﻿namespace skiCentar.Model
+﻿using System.Collections.Generic;
+
+namespace skiCentar.Model
 {
     public class PointOfInterest
     {
@@ -19,5 +21,9 @@
         public virtual PointOfInterestCategory? Category { get; set; }
 
         public virtual Resort? Resort { get; set; }
+
+        public ICollection<UserPoiInteraction> UserPoiInteractions { get; set; }
+
+
     }
 }

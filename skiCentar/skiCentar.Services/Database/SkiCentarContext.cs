@@ -55,9 +55,8 @@ public partial class SkiCenterContext : DbContext
 
     public virtual DbSet<UserVerification> UserVerifications { get; set; }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseSqlServer("Data Source=.; TrustServerCertificate=true;Database=ski_centar; trusted_connection=true");
+    public DbSet<UserPoiInteraction> UserPoiInteractions { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -243,6 +242,12 @@ public partial class SkiCenterContext : DbContext
             entity.HasOne(d => d.Resort).WithMany(p => p.PointOfInterests)
                 .HasForeignKey(d => d.ResortId)
                 .HasConstraintName("FK__point_of___resor__52593CB8");
+
+            entity.HasMany(d => d.UserPoiInteractions)
+                .WithOne(p => p.PointOfInterest)
+                .HasForeignKey(d => d.PoiId)
+                .HasConstraintName("FK__user_poi_interaction__poi_id");
+
         });
 
         modelBuilder.Entity<Resort>(entity =>
@@ -570,6 +575,11 @@ public partial class SkiCenterContext : DbContext
                         j.IndexerProperty<int>("UserId").HasColumnName("user_id");
                         j.IndexerProperty<int>("ResortId").HasColumnName("resort_id");
                     });
+
+            entity.HasMany(d => d.UserPoiInteractions)
+              .WithOne(p => p.User)
+              .HasForeignKey(d => d.UserId)
+              .HasConstraintName("FK__user_poi_interaction__user_id");
         });
 
         modelBuilder.Entity<UserDetail>(entity =>
@@ -628,6 +638,37 @@ public partial class SkiCenterContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__user_ver__user_id__2C3393D0");
         });
+        modelBuilder.Entity<UserPoiInteraction>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__user_poi_interaction__3213E83F8DDADEE6");
+
+            entity.ToTable("user_poi_interaction");
+
+            entity.HasIndex(e => e.UserId, "IX_user_poi_interaction_user_id");
+            entity.HasIndex(e => e.PoiId, "IX_user_poi_interaction_poi_id");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.PoiId).HasColumnName("poi_id");
+            entity.Property(e => e.InteractionType)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("interaction_type");
+            entity.Property(e => e.InteractionTimestamp)
+                .HasColumnType("datetime")
+                .HasColumnName("interaction_timestamp");
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.UserPoiInteractions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__user_poi_interaction__user_id__267ABA7A");
+
+            entity.HasOne(d => d.PointOfInterest)
+                .WithMany(p => p.UserPoiInteractions)
+                .HasForeignKey(d => d.PoiId)
+                .HasConstraintName("FK__user_poi_interaction__poi_id__267ABA7A");
+        });
+
         base.OnModelCreating(modelBuilder);
 
         //
@@ -642,6 +683,10 @@ public partial class SkiCenterContext : DbContext
             new LiftType { Name = "Rukohvat" }
             );
         }
+        modelBuilder.Entity<UserPoiInteraction>().HasData(
+        new UserPoiInteraction { Id = 1, UserId = 1, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+        new UserPoiInteraction { Id = 2, UserId = 2, PoiId = 2, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
+    );
 
         if (!modelBuilder.Model.FindEntityType(typeof(PoiCategory)).GetNavigations().Any())
         {
