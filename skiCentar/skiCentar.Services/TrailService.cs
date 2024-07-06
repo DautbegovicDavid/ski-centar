@@ -52,25 +52,17 @@ namespace skiCentar.Services
             var entity = Mapper.Map<Trail>(request);
             set.Add(entity);
             Context.SaveChanges();
-
-            if (request.TrailLocations != null)
-            {
-                var locationSet = Context.Set<TrailLocation>();
-                request.TrailLocations.ForEach(f =>
-                {
-                    f.TrailId = entity.Id;
-                    var locationEntity = Mapper.Map<TrailLocation>(f);
-                    locationSet.Add(locationEntity);
-                    Context.SaveChanges();
-
-                });
-            }
-
             return Mapper.Map<Model.Trail>(entity);
         }
 
         public override Model.Trail Update(int id, TrailUpsertRequest request)
         {
+            var locationSet = Context.Set<TrailLocation>();
+
+            var existingLocations = locationSet.Where(loc => loc.TrailId == id).ToList();
+
+            locationSet.RemoveRange(existingLocations);
+
             var set = Context.Set<Trail>();
 
             var entity = set.Find(id);
@@ -78,39 +70,6 @@ namespace skiCentar.Services
             Mapper.Map(request, entity);
 
             Context.SaveChanges();
-            if (request.TrailLocations != null)
-            {
-                var locationSet = Context.Set<TrailLocation>();
-
-                // Get existing locations for the lift
-                var existingLocations = locationSet.Where(l => l.TrailId == id).ToList();
-
-                // Process new locations from the request
-                foreach (var newLocation in request.TrailLocations)
-                {
-                    newLocation.TrailId = entity.Id;
-                    var existingLocation = existingLocations.FirstOrDefault(l => l.LocationX == newLocation.LocationX && l.LocationY == newLocation.LocationY);
-
-                    if (existingLocation == null)
-                    {
-                        // Add new location
-                        var locationEntity = Mapper.Map<TrailLocation>(newLocation);
-                        locationSet.Add(locationEntity);
-                    }
-                    else
-                    {
-                        // Update existing location
-                        Mapper.Map(newLocation, existingLocation);
-                    }
-                }
-
-                // Remove locations that are not in the new request
-                var newLocationsSet = new HashSet<(decimal?, decimal?)>(request.TrailLocations.Select(l => (l.LocationX, l.LocationY)));
-                var locationsToRemove = existingLocations.Where(l => !newLocationsSet.Contains((l.LocationX, l.LocationY))).ToList();
-                locationSet.RemoveRange(locationsToRemove);
-
-                Context.SaveChanges();
-            }
 
             return Mapper.Map<Model.Trail>(entity);
         }

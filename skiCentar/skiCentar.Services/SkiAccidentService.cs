@@ -53,8 +53,14 @@ namespace skiCentar.Services
             }
 
 
-            filteredQuery = filteredQuery.Include(x => x.Trail);
-            filteredQuery = filteredQuery.Include(x => x.User);
+            if (filteredQuery.Any(x => x.User != null))
+            {
+                filteredQuery = filteredQuery
+                    .Include(x => x.User)
+                    .ThenInclude(user => user.UserDetails);
+            }
+
+            filteredQuery = filteredQuery.OrderByDescending(x => x.Timestamp);
 
             return filteredQuery;
         }
