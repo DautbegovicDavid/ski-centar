@@ -20,7 +20,7 @@ namespace skiCentar.API.Controllers
         {
             return (_service as IUserService).VerifyUser(id);
         }
-
+        [Authorize]
         [HttpPost("employee")]
         public Model.User Employee([FromBody] EmployeeUpsertRequest request)
         {

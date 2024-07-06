@@ -71,7 +71,7 @@ class _AccidentsAddScreenState extends State<AccidentsAddScreen> {
 
   Future initForm() async {
     _initialValue = {
-      'peopleInvolved': widget.accident?.peopleInvolved.toString(),
+      'peopleInvolved': widget.accident?.peopleInvolved?.toString() ?? '',
       'isReporterInjured': widget.accident?.isReporterInjured,
       'timestamp': widget.accident?.timestamp,
       'isActive': widget.accident?.isActive,

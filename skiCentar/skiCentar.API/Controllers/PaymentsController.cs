@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using skiCentar.Model.Requests;
 using skiCentar.Services;
 using Stripe;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
+
 public class PaymentsController : ControllerBase
 {
     private readonly IConfiguration _configuration;

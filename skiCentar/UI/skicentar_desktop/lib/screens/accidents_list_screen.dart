@@ -151,7 +151,7 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
                     DataCell(Text(m.id.toString())),
                     DataCell(Text(m.timestamp != null ?  formatter.format(m.timestamp!) : 'No data')),
                     DataCell(Text(m.isActive! ? "Yes" : "No")),
-                    DataCell(Text(m.peopleInvolved.toString() ?? 'No data')),
+                    DataCell(Text(m.peopleInvolved?.toString() ?? 'No data')),
                     DataCell(Text(m.user?.userDetails != null &&
                             m.user?.userDetails?.name != null &&
                             m.user?.userDetails?.lastName != null
