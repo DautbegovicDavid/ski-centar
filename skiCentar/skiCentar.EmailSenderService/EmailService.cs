@@ -9,7 +9,8 @@ public class EmailService
     public EmailService(IConfiguration configuration)
     {
         _apiKey = Environment.GetEnvironmentVariable("EMAIL_APIKEY")
-                  ?? configuration["SendGrid:ApiKey"];
+            ?? configuration["SendGrid:ApiKey"];
+
         _emailSender = Environment.GetEnvironmentVariable("EMAIL_SENDER")
                        ?? configuration["SendGrid:EmailSender"];
     }
@@ -33,7 +34,6 @@ public class EmailService
         }
         else
         {
-            Console.WriteLine(response);
             Console.WriteLine("Failed to send email.");
         }
     }
