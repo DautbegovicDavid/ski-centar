@@ -109,10 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if(loaded)
-               _buildCard(
-              _buildWeatherSection(),
-            ),
+            if (loaded)
+              _buildCard(
+                _buildWeatherSection(),
+              ),
             _buildCard(
               _buildSkiTracksSection(),
             ),
@@ -265,27 +265,24 @@ class _HomeScreenState extends State<HomeScreen> {
       groupedTickets[seniority]!.add(ticket.price!);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:[_buildSectionHeader(
-          'Ski tickets',
-          Icons.confirmation_num_rounded,
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PaymentScreen(
-              ),
-            ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      _buildSectionHeader(
+        'Ski tickets',
+        Icons.confirmation_num_rounded,
+        () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(),
           ),
         ),
-       ... groupedTickets.entries.map((entry) {
+      ),
+      ...groupedTickets.entries.map((entry) {
         return Padding(
             padding: const EdgeInsets.only(bottom: 2.0),
             child: Text("${entry.key}: ${entry.value.join('/')}KM",
                 style: const TextStyle(fontSize: 16)));
       }).toList(),
-      ]
-    );
+    ]);
   }
 
   Widget _buildPOISection() {
