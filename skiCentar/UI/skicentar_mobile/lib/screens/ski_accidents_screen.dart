@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:skicentar_mobile/models/point_of_interest.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
-import 'package:skicentar_mobile/providers/poi_provider.dart';
+import 'package:skicentar_mobile/models/ski_accident.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
+import 'package:skicentar_mobile/providers/ski_accident_provider.dart';
 import 'package:skicentar_mobile/utils/icons_helper.dart';
 
-class PoiScreen extends StatefulWidget {
+class SkiAccidentsScreen extends StatefulWidget {
   @override
-  State<PoiScreen> createState() => _PoiScreenState();
+  State<SkiAccidentsScreen> createState() => _SkiAccidentsScreenState();
 }
 
-class _PoiScreenState extends State<PoiScreen> {
+class _SkiAccidentsScreenState extends State<SkiAccidentsScreen> {
   late GoogleMapController mapController;
 
   LatLng _center =
-      const LatLng(43.820, 18.313); // Center the map around a specific location
+      const LatLng(43.820, 18.313);
 
-  late PoiProvider poiProvider;
+  late SkiAccidentProvider accidentProvider;
   late ResortProvider resortProvider;
 
-  SearchResult<PointOfInterest>? pois;
+  SearchResult<SkiAccident>? accidents;
 
   Set<Marker> _markers = {};
 
@@ -30,7 +30,7 @@ class _PoiScreenState extends State<PoiScreen> {
   @override
   void initState() {
     super.initState();
-    poiProvider = context.read<PoiProvider>();
+    accidentProvider = context.read<SkiAccidentProvider>();
     resortProvider = context.read<ResortProvider>();
     resortProvider.addListener(_updateInfo);
     _fetchData();
@@ -41,9 +41,8 @@ class _PoiScreenState extends State<PoiScreen> {
   }
 
   Future<void> _fetchData() async {
-    pois = await poiProvider.get(filter: {
-      'ResortId': resortProvider.selectedResort?.id,
-      'IsCategoryIncluded': true
+    accidents = await accidentProvider.get(filter: {
+      'IsActive': true
     });
     _setMarkers();
     if (mounted) {
@@ -54,17 +53,16 @@ class _PoiScreenState extends State<PoiScreen> {
   void _setMarkers() async {
     Map<String, BitmapDescriptor> categoryIcons = await getCategoryIcons();
 
-    final Set<Marker> markers = pois!.result.where((poi) {
+    final Set<Marker> markers = accidents!.result.where((poi) {
       return poi.locationX != null &&
-          poi.locationY != null &&
-          poi.category != null;
+          poi.locationY != null;
     }).map((poi) {
-      BitmapDescriptor icon = categoryIcons[poi.category!.name] ??
+      BitmapDescriptor icon = categoryIcons['Accidents'] ??
           BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
       return Marker(
-        markerId: MarkerId('${poi.name}_${poi.id}'),
+        markerId: MarkerId('${poi.id}'),
         position: LatLng(poi.locationX!, poi.locationY!),
-        infoWindow: InfoWindow(title: poi.description),
+        infoWindow: const InfoWindow(title: 'Active Ski Accident'),
         icon: icon,
       );
     }).toSet();

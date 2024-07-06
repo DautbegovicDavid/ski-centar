@@ -58,6 +58,7 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
   }
 
   void _updateScreen() {
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -104,7 +105,7 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
       return Marker(
         markerId: MarkerId('${poi.id}'),
         position: LatLng(poi.locationX!, poi.locationY!),
-        infoWindow: const InfoWindow(title: "Ski accident Active"),
+        infoWindow: const InfoWindow(title: "Ski Accident"),
         icon: icon,
       );
     }).toSet();

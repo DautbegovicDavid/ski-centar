@@ -9,6 +9,7 @@ import 'package:skicentar_mobile/screens/manage_lift_screen.dart';
 import 'package:skicentar_mobile/screens/manage_track_screen.dart';
 import 'package:skicentar_mobile/screens/poi_screen.dart';
 import 'package:skicentar_mobile/screens/profile_screen.dart';
+import 'package:skicentar_mobile/screens/ski_accidents_screen.dart';
 import 'package:skicentar_mobile/screens/ski_map_screen.dart';
 
 class MasterScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _MasterScreenState extends State<MasterScreen> {
   ];
 
   final List<Widget> _employeeWidgetOptions = <Widget>[
+    SkiAccidentsScreen(),
     ManageLiftScreen(),
     ManageTracksScreen(),
     ProfileScreen(),
@@ -112,6 +114,10 @@ class _MasterScreenState extends State<MasterScreen> {
         showUnselectedLabels: false,
         items: isEmployee
             ? const <BottomNavigationBarItem>[
+               BottomNavigationBarItem(
+                  icon: Icon(Icons.emergency),
+                  label: 'Accidents',
+                ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.elevator),
                   label: 'Lifts',

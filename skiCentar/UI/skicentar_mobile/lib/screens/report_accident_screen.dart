@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:skicentar_mobile/components/dropdown_field.dart';
 import 'package:skicentar_mobile/components/input_field.dart';
 import 'package:skicentar_mobile/components/toggle_field.dart';
+import 'package:skicentar_mobile/models/lift.dart';
+import 'package:skicentar_mobile/models/search_result.dart';
+import 'package:skicentar_mobile/models/trail.dart';
+import 'package:skicentar_mobile/providers/lift_provider.dart';
+import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ski_accident_provider.dart';
+import 'package:skicentar_mobile/providers/trail_provider.dart';
 import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/utils/utils.dart';
 
@@ -17,27 +25,33 @@ class ReportAccidentScreen extends StatefulWidget {
 class _ReportAccidentScreenState extends State<ReportAccidentScreen> {
   late UserProvider userProvider;
   late SkiAccidentProvider skiAccidentProvider;
+  late TrailProvider trailProvider;
+  late ResortProvider resortProvider;
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
   LocationData? _locationData;
   bool _isLoading = false;
 
+  SearchResult<Trail>? trailResult;
+
   @override
   void initState() {
     userProvider = context.read<UserProvider>();
     skiAccidentProvider = context.read<SkiAccidentProvider>();
+    trailProvider = context.read<TrailProvider>();
+    resortProvider = context.read<ResortProvider>();
     super.initState();
     initForm();
     _getLocation();
   }
 
   Future<void> initForm() async {
-    setState(() {
-      _initialValue = {
-        'peopleInvolved': '',
-        'isReporterInjured': false,
-      };
-    });
+    _initialValue = {
+      'peopleInvolved': '',
+      'isReporterInjured': false,
+    };
+    trailResult = await trailProvider.get(filter:{"ResortId":resortProvider.selectedResort?.id});
+    setState(() {});
   }
 
   Future<void> _getLocation() async {
@@ -150,6 +164,17 @@ class _ReportAccidentScreenState extends State<ReportAccidentScreen> {
                   const ToggleField(
                     name: "isReporterInjured",
                     title: "Are you injured",
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownField(
+                    name: "trailId",
+                    labelText: "Trail",
+                    items: trailResult?.result
+                            .map((item) => DropdownMenuItem<String>(
+                                value: item.id.toString(),
+                                child: Text(item.name ?? "")))
+                            .toList() ??
+                        [],
                   ),
                   const SizedBox(height: 16),
                   Row(
