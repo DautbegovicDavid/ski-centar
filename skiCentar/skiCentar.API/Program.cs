@@ -29,6 +29,7 @@ builder.Services.AddTransient<ITicketTypeService, TicketTypeService>();
 builder.Services.AddTransient<IUserDetailService, UserDetailService>();
 builder.Services.AddTransient<ITicketService, TicketService>();
 builder.Services.AddTransient<IPaymentService, PaymentService>();
+builder.Services.AddTransient<ISkiAccidentService, SkiAccidentService>();
 
 // State machine
 builder.Services.AddTransient<BaseLiftState>();

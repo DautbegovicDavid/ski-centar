@@ -12,8 +12,6 @@ public class EmailConsumerService : BackgroundService
         _emailService = emailService;
         _rabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST")
                         ?? configuration["RabbitMQ:Host"];
-
-        Console.WriteLine(_rabbitMqHost);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

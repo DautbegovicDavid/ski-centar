@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace skiCentar.Services.Database;
+﻿namespace skiCentar.Services.Database;
 
 public partial class SkiAccident
 {
@@ -11,13 +8,19 @@ public partial class SkiAccident
 
     public int? TrailId { get; set; }
 
-    public decimal? LocationX { get; set; }
+    public int? PeopleInvolved { get; set; }
 
-    public decimal? LocationY { get; set; }
+    public bool? IsReporterInjured { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    public decimal LocationX { get; set; }
+
+    public decimal LocationY { get; set; }
 
     public DateTime? Timestamp { get; set; }
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
     public virtual Trail? Trail { get; set; }
 

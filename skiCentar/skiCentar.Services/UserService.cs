@@ -7,14 +7,14 @@ using skiCentar.Services.Database;
 
 namespace skiCentar.Services
 {
-    public class UserService : BaseCRUDService<Model.User, UserSearchObject, User, UserUpsertRequest, UserUpsertRequest>, IUserService
+    public class UserService : BaseCRUDService<Model.User, UserSearchObject, Database.User, UserUpsertRequest, UserUpsertRequest>, IUserService
     {
         ILogger<UserService> _logger;
         public UserService(SkiCenterContext context, IMapper mapper, ILogger<UserService> logger) : base(context, mapper)
         {
             _logger = logger;
         }
-        public override IQueryable<User> AddFilter(UserSearchObject searchObject, IQueryable<User> query)
+        public override IQueryable<Database.User> AddFilter(UserSearchObject searchObject, IQueryable<Database.User> query)
         {
             var filteredQuery = base.AddFilter(searchObject, query);
             if (searchObject.areUserDetailsIncluded)
@@ -57,7 +57,7 @@ namespace skiCentar.Services
         {
             _logger.LogInformation($"Adding employee {request.Email}");
 
-            User entity = Mapper.Map<User>(request);
+            Database.User entity = Mapper.Map<Database.User>(request);
 
             entity.UserRoleId = request.UserRoleId;
             entity.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -70,19 +70,33 @@ namespace skiCentar.Services
 
         public override Model.User GetById(int id)
         {
-            var entity = Context.Set<User>().Include(i => i.UserRole).Include(i => i.UserDetails).FirstOrDefault(f => f.Id == id);
+            var entity = Context.Set<Database.User>().Include(i => i.UserRole).Include(i => i.UserDetails).FirstOrDefault(f => f.Id == id);
 
             if (entity != null)
             {
-                return Mapper.Map<Model.User>(entity);
+                var response = Mapper.Map<Model.User>(entity);
+                response.HasActiveTicket = HasActiveTicket(id);
+                return response;
             }
             else
                 return null;
         }
+        public bool HasActiveTicket(int id)
+        {
+            var today = DateTime.Today;
+
+            var hasActiveTicket = Context.TicketPurchases.Where(w => w.UserId == id).Include(i => i.Ticket).Any(
+                ticket =>
+                ticket.Ticket.Active == true &&
+                ticket.Ticket.ValidFrom <= today &&
+                ticket.Ticket.ValidTo >= today);
+
+            return hasActiveTicket;
+        }
 
         public Model.User VerifyUser(int id)
         {
-            var set = Context.Set<User>();
+            var set = Context.Set<Database.User>();
 
             var entity = set.Find(id);
 

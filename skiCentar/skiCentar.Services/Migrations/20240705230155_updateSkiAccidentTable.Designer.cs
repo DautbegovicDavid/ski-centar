@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using skiCentar.Services.Database;
 
@@ -11,9 +12,11 @@ using skiCentar.Services.Database;
 namespace skiCentar.Services.Migrations
 {
     [DbContext(typeof(SkiCenterContext))]
-    partial class SkiCenterContextModelSnapshot : ModelSnapshot
+    [Migration("20240705230155_updateSkiAccidentTable")]
+    partial class updateSkiAccidentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,16 +351,11 @@ namespace skiCentar.Services.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(1000)
                         .IsUnicode(false)
                         .HasColumnType("varchar(1000)")
                         .HasColumnName("description");
-
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasColumnName("is_active")
-                        .HasDefaultValueSql("((1))");
 
                     b.Property<bool?>("IsReporterInjured")
                         .ValueGeneratedOnAdd()
@@ -365,17 +363,23 @@ namespace skiCentar.Services.Migrations
                         .HasColumnName("is_reporter_injured")
                         .HasDefaultValueSql("((0))");
 
-                    b.Property<decimal>("LocationX")
+                    b.Property<decimal?>("LocationX")
                         .HasColumnType("decimal(10, 6)")
                         .HasColumnName("location_x");
 
-                    b.Property<decimal>("LocationY")
+                    b.Property<decimal?>("LocationY")
                         .HasColumnType("decimal(10, 6)")
                         .HasColumnName("location_y");
 
                     b.Property<int?>("PeopleInvolved")
                         .HasColumnType("int")
                         .HasColumnName("people_involved");
+
+                    b.Property<bool?>("SsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasColumnName("is_active")
+                        .HasDefaultValueSql("((1))");
 
                     b.Property<DateTime?>("Timestamp")
                         .ValueGeneratedOnAdd()

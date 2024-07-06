@@ -22,5 +22,7 @@ namespace skiCentar.Model
 
         public virtual UserRole? UserRole { get; set; }
 
+        public bool? HasActiveTicket { get; set; }
+
     }
 }

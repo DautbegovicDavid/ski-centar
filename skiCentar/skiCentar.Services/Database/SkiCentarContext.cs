@@ -282,10 +282,23 @@ public partial class SkiCenterContext : DbContext
                 .HasMaxLength(1000)
                 .IsUnicode(false)
                 .HasColumnName("description");
+
+            entity.Property(e => e.IsActive)
+               .HasDefaultValueSql("((1))")
+               .HasColumnName("is_active");
+
+            entity.Property(e => e.IsReporterInjured)
+               .HasDefaultValueSql("((0))")
+               .HasColumnName("is_reporter_injured");
+
+            entity.Property(e => e.PeopleInvolved).HasColumnName("people_involved");
+
             entity.Property(e => e.LocationX)
+                .IsRequired()
                 .HasColumnType("decimal(10, 6)")
                 .HasColumnName("location_x");
             entity.Property(e => e.LocationY)
+                .IsRequired()
                 .HasColumnType("decimal(10, 6)")
                 .HasColumnName("location_y");
             entity.Property(e => e.Timestamp)
