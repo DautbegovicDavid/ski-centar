@@ -670,6 +670,15 @@ public partial class SkiCenterContext : DbContext
         });
 
         base.OnModelCreating(modelBuilder);
+        if (!modelBuilder.Model.FindEntityType(typeof(Resort)).GetNavigations().Any())
+        {
+            // Add default data for Resort
+            modelBuilder.Entity<Resort>().HasData(
+            new Resort { Id = 1, Elevation = 1500, Location = "Sarajevo", Name = "Jahorina", SkiWorkHours = "9 AM - 5 PM" },
+            new Resort { Id = 2, Elevation = 1500, Location = "Travnik", Name = "Vlasic", SkiWorkHours = "9 AM - 5 PM" }
+
+        );
+        }
 
         //
         if (!modelBuilder.Model.FindEntityType(typeof(LiftType)).GetNavigations().Any())
@@ -683,10 +692,6 @@ public partial class SkiCenterContext : DbContext
             new LiftType { Name = "Rukohvat" }
             );
         }
-        modelBuilder.Entity<UserPoiInteraction>().HasData(
-        new UserPoiInteraction { Id = 1, UserId = 1, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
-        new UserPoiInteraction { Id = 2, UserId = 2, PoiId = 2, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
-    );
 
         if (!modelBuilder.Model.FindEntityType(typeof(PoiCategory)).GetNavigations().Any())
         {
@@ -700,6 +705,13 @@ public partial class SkiCenterContext : DbContext
             new PoiCategory { Name = "Restoran" },
             new PoiCategory { Name = "Kafic" }
             );
+        }
+        if (!modelBuilder.Model.FindEntityType(typeof(PointOfInterest)).GetNavigations().Any())
+        {
+            // Add default data for PointOfInterest
+            modelBuilder.Entity<PointOfInterest>().HasData(
+            new PointOfInterest { Id = 1, CategoryId = 7, Description = "Restaurant 1", LocationX = 45.123456m, LocationY = 14.123456m, Name = "Restaurant 1", ResortId = 1 }
+        );
         }
 
         if (!modelBuilder.Model.FindEntityType(typeof(TrailDifficulty)).GetNavigations().Any())
@@ -716,10 +728,32 @@ public partial class SkiCenterContext : DbContext
         {
             modelBuilder.Entity<UserRole>().HasData(
             new UserRole { Name = "Admin" },
-            new UserRole { Name = "Uposlenik" },
-            new UserRole { Name = "Korisnik" }
+            new UserRole { Name = "Employee" },
+            new UserRole { Name = "User" }
             );
         }
+
+
+        if (!modelBuilder.Model.FindEntityType(typeof(User)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<User>().HasData(
+            new User { Id = 1, Email = "employee@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 2 },
+
+            new User { Id = 1, Email = "admin@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 1 },
+
+            new User { Id = 1, Email = "user@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 3 }
+);
+        }
+
+
+        if (!modelBuilder.Model.FindEntityType(typeof(UserPoiInteraction)).GetNavigations().Any())
+        {
+            modelBuilder.Entity<UserPoiInteraction>().HasData(
+new UserPoiInteraction { Id = 1, UserId = 1, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+new UserPoiInteraction { Id = 2, UserId = 2, PoiId = 2, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
+);
+        }
+
 
         OnModelCreatingPartial(modelBuilder);
     }
