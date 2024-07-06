@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/components/form_wrapper.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
@@ -57,16 +58,22 @@ class _ResortAddScreenState extends State<ResortAddScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               InputField(
                 name: "name",
                 labelText: "Name",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               InputField(
                 name: "location",
                 labelText: "Location - Near Town",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
             ],
           ),
@@ -78,12 +85,17 @@ class _ResortAddScreenState extends State<ResortAddScreen> {
                 labelText: "Elevation",
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
               const SizedBox(width: 10),
-              const InputField(
+              InputField(
                 name: "skiWorkHours",
                 labelText: "SKI work hours",
-                keyboardType: TextInputType.number,
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
             ],
           ),
@@ -99,28 +111,30 @@ class _ResortAddScreenState extends State<ResortAddScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: FilledButton(
-              onPressed: () async {
-                _formKey.currentState?.saveAndValidate();
-                try {
-                  if (widget.resort == null) {
-                    await resortProvider.insert(_formKey.currentState?.value);
-                  } else {
-                    await resortProvider.update(
-                        widget.resort!.id!, _formKey.currentState?.value);
-                  }
-                  if (!context.mounted) return;
-                  showCustomSnackBar(context, Icons.check, Colors.green,
-                      'Resort saved successfully!');
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  showCustomSnackBar(context, Icons.error, Colors.red,
-                      'Failed to save resort. Please try again.');
-                }
-              },
-              child: const Text("Save")),
+          child:
+              FilledButton(onPressed: _saveResort, child: const Text("Save")),
         ),
       ],
     );
+  }
+
+  Future _saveResort() async {
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      try {
+        if (widget.resort == null) {
+          await resortProvider.insert(_formKey.currentState?.value);
+        } else {
+          await resortProvider.update(
+              widget.resort!.id!, _formKey.currentState?.value);
+        }
+        if (!context.mounted) return;
+        showCustomSnackBar(
+            context, Icons.check, Colors.green, 'Resort saved successfully!');
+        Navigator.of(context).pop();
+      } catch (e) {
+        showCustomSnackBar(context, Icons.error, Colors.red,
+            'Failed to save resort. Please try again.');
+      }
+    }
   }
 }

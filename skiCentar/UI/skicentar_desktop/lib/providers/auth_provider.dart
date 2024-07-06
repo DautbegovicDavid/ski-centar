@@ -22,7 +22,7 @@ class AuthProvider {
       await AuthHelper.setToken(response);
       UserProvider userProvider = UserProvider();
       final user = await userProvider.getDetails();
-      if (user.userRole?.name == 'Admin' || user.userRole?.name == 'Korisnik') {
+      if (user.userRole?.name == 'Admin' || user.userRole?.name == 'Employee') {
         return true;
       } else {
         await AuthHelper.clearToken();

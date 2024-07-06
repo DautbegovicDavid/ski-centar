@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:latlng/latlng.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/components/form_wrapper.dart';
 import 'package:skicentar_desktop/components/input_field.dart';
+import 'package:skicentar_desktop/components/map_info_box.dart';
 import 'package:skicentar_desktop/components/toggle_field.dart';
 import 'package:skicentar_desktop/layouts/master_screen.dart';
 import 'package:skicentar_desktop/models/lift-type.dart';
@@ -94,28 +96,34 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
   }
 
   Future _saveLift() async {
-    _formKey.currentState?.saveAndValidate();
-    Map<String, dynamic> liftObj =
-        Map<String, dynamic>.from(_formKey.currentState?.value ?? {});
-    liftObj['liftLocations'] = addedLocations
-        .map((loc) => {
-              'locationX': loc.latitude.degrees,
-              'locationY': loc.longitude.degrees,
-            })
-        .toList();
-    try {
-      if (widget.lift == null) {
-        await liftProvider.insert(liftObj);
-      } else {
-        await liftProvider.update(widget.lift!.id!, liftObj);
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      if (addedLocations.length < 2) {
+        showCustomSnackBar(context, Icons.error, Colors.red,
+            'Failed to save lift. Lift has two marker point.');
+        return;
       }
-      if (!context.mounted) return;
-      showCustomSnackBar(
-          context, Icons.check, Colors.green, 'Lift saved successfully!');
-      Navigator.of(context).pop();
-    } catch (e) {
-      showCustomSnackBar(context, Icons.error, Colors.red,
-          'Failed to save lift. Please try again.');
+      Map<String, dynamic> liftObj =
+          Map<String, dynamic>.from(_formKey.currentState?.value ?? {});
+      liftObj['liftLocations'] = addedLocations
+          .map((loc) => {
+                'locationX': loc.latitude.degrees,
+                'locationY': loc.longitude.degrees,
+              })
+          .toList();
+      try {
+        if (widget.lift == null) {
+          await liftProvider.insert(liftObj);
+        } else {
+          await liftProvider.update(widget.lift!.id!, liftObj);
+        }
+        if (!context.mounted) return;
+        showCustomSnackBar(
+            context, Icons.check, Colors.green, 'Lift saved successfully!');
+        Navigator.of(context).pop();
+      } catch (e) {
+        showCustomSnackBar(context, Icons.error, Colors.red,
+            'Failed to save lift. Please try again.');
+      }
     }
   }
 
@@ -149,6 +157,9 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
               InputField(
                 name: "name",
                 labelText: "Name",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
               const SizedBox(width: 10),
               InputField(
@@ -156,6 +167,9 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
                 labelText: "Capacity",
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
             ],
           ),
@@ -165,6 +179,9 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
               DropdownField(
                 name: "liftTypeId",
                 labelText: "Lift type",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
                 items: liftTypesResult?.result
                         .map((item) => DropdownMenuItem<String>(
                             value: item.id.toString(),
@@ -176,6 +193,9 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
               DropdownField(
                 name: "resortId",
                 labelText: "Resort",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
                 items: resortsResult?.result
                         .map((item) => DropdownMenuItem(
                             value: item.id.toString(),
@@ -254,32 +274,10 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
   }
 
   Widget _buildInfoBox() {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      margin: const EdgeInsets.only(top: 8.0),
-      decoration: const BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8.0),
-          topRight: Radius.circular(8.0),
-        ),
-      ),
-      child: Row(
-        children: [
-          const Expanded(
-            child: Text(
-              'Lift has a starting and ending point. Maximum number of markers is two.',
-              style: TextStyle(color: Colors.white, fontSize: 14),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            'Markers added: ${addedLocations.length}/2',
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
+    return InfoBox(
+      markersAdded: addedLocations.length,
+      message:
+          'Lift has a starting and ending point. Maximum number of markers is two.',
     );
   }
 }

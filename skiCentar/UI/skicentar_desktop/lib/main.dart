@@ -6,6 +6,7 @@ import 'package:skicentar_desktop/providers/lift_type_provider.dart';
 import 'package:skicentar_desktop/providers/poi_category_provider.dart';
 import 'package:skicentar_desktop/providers/poi_provider.dart';
 import 'package:skicentar_desktop/providers/resort_provider.dart';
+import 'package:skicentar_desktop/providers/ski_accident_provider.dart';
 import 'package:skicentar_desktop/providers/theme_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
@@ -31,6 +32,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => TicketTypeProvider()),
       ChangeNotifierProvider(create: (_) => TicketTypeSeniorityProvider()),
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ChangeNotifierProvider(create: (_) => SkiAccidentProvider()),
     ],
     child: const MyApp(),
   ));

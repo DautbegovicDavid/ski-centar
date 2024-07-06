@@ -10,6 +10,7 @@ class InputField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? suffixText;
   final List<FormFieldValidator<String>>? validators;
+  final int? maxLines;
 
   const InputField({
     Key? key,
@@ -19,6 +20,7 @@ class InputField extends StatelessWidget {
     this.inputFormatters,
     this.suffixText,
     this.validators,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class InputField extends StatelessWidget {
         name: name,
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
+        maxLines: maxLines,
         decoration: InputDecoration(
           labelText: labelText,
           suffixText: suffixText,
@@ -36,12 +39,10 @@ class InputField extends StatelessWidget {
           filled: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
-
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(color: Theme.of(context).secondaryHeaderColor),
-
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),

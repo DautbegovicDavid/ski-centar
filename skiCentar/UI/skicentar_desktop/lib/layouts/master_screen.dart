@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/models/user.dart';
 import 'package:skicentar_desktop/providers/theme_provider.dart';
 import 'package:skicentar_desktop/providers/user_provider.dart';
+import 'package:skicentar_desktop/screens/accidents_add_screen.dart';
+import 'package:skicentar_desktop/screens/accidents_list_screen.dart';
 import 'package:skicentar_desktop/screens/daily_weather_add_screen.dart';
 import 'package:skicentar_desktop/screens/daily_weather_list_screen.dart';
 import 'package:skicentar_desktop/screens/lift_add_screen.dart';
@@ -34,7 +36,6 @@ class MasterScreen extends StatefulWidget {
 }
 
 class _MasterScreenState extends State<MasterScreen> {
-  
   late ThemeProvider themeProvider;
   User? user;
 
@@ -113,14 +114,15 @@ class _MasterScreenState extends State<MasterScreen> {
                               builder: (context) =>
                                   const DailyWeatherAddScreen()));
                         }
-                         if (widget.title == "Tickets") {
+                        if (widget.title == "Tickets") {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   const TicketTypeAddScreen()));
-                        } 
-                         else {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(builder: (context) => const MarkersPage()))
+                        }
+                        if (widget.title == "Accidents") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const AccidentsAddScreen()));
                         }
                       },
                       child: const Text("Add"))
@@ -212,6 +214,14 @@ class _MasterScreenState extends State<MasterScreen> {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.emergency),
+                title: const Text("Accidents"),
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const AccidentsListScreen()));
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.place),
                 title: const Text("Point of Interests"),
                 onTap: () {
@@ -227,7 +237,7 @@ class _MasterScreenState extends State<MasterScreen> {
                       builder: (context) => const DailyWeatherListScreen()));
                 },
               ),
-               ListTile(
+              ListTile(
                 leading: const Icon(Icons.confirmation_num_rounded),
                 title: const Text("Tickets"),
                 onTap: () {

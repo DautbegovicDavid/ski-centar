@@ -17,7 +17,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       ..registrationDate = json['registrationDate'] == null
           ? null
           : DateTime.parse(json['registrationDate'] as String)
-      ..isVerified = json['isVerified'] as bool?;
+      ..isVerified = json['isVerified'] as bool?
+      ..userDetails = json['userDetails'] == null
+          ? null
+          : UserDetail.fromJson(json['userDetails'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
@@ -26,4 +29,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'userRole': instance.userRole,
       'registrationDate': instance.registrationDate?.toIso8601String(),
       'isVerified': instance.isVerified,
+      'userDetails': instance.userDetails,
     };

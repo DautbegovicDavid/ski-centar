@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_desktop/components/dropdown_field.dart';
 import 'package:skicentar_desktop/components/form_wrapper.dart';
@@ -45,8 +46,7 @@ class _UserAddScreenState extends State<UserAddScreen> {
       'isVerified': widget.user?.isVerified ?? false,
     };
     userRolesResult = await userRoleProvider.get();
-        setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -67,16 +67,23 @@ class _UserAddScreenState extends State<UserAddScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               InputField(
                 name: "email",
                 labelText: "Email",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
+              if(widget.user == null)
               InputField(
                 name: "password",
                 labelText: "Password",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
               ),
             ],
           ),
@@ -86,6 +93,9 @@ class _UserAddScreenState extends State<UserAddScreen> {
               DropdownField(
                 name: "userRoleId",
                 labelText: "Role",
+                validators: [
+                  FormBuilderValidators.required(),
+                ],
                 items: userRolesResult?.result
                         .map((item) => DropdownMenuItem<String>(
                             value: item.id.toString(),
@@ -113,28 +123,30 @@ class _UserAddScreenState extends State<UserAddScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: FilledButton(
-              onPressed: () async {
-                _formKey.currentState?.saveAndValidate();
-                try {
-                  if (widget.user == null) {
-                    await userProvider
-                        .createEmployee(_formKey.currentState?.value);
-                  } else {
-                    await userProvider.update(
-                        widget.user!.id!, _formKey.currentState?.value);
-                  }
-                  if (!context.mounted) return;
-                  showCustomSnackBar(context, Icons.check, Colors.green,
-                      'Employee saved successfully!');
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  showCustomSnackBar(context, Icons.error, Colors.red,
-                      'Failed to save employee. Please try again.');
-                }
-              },
+              onPressed: _saveUser,
               child: const Text("Save")),
         ),
       ],
     );
+  }
+
+  Future _saveUser() async {
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      try {
+        if (widget.user == null) {
+          await userProvider.createEmployee(_formKey.currentState?.value);
+        } else {
+          await userProvider.update(
+              widget.user!.id!, _formKey.currentState?.value);
+        }
+        if (!context.mounted) return;
+        showCustomSnackBar(
+            context, Icons.check, Colors.green, 'Employee saved successfully!');
+        Navigator.of(context).pop();
+      } catch (e) {
+        showCustomSnackBar(context, Icons.error, Colors.red,
+            'Failed to save employee. Please try again.');
+      }
+    }
   }
 }
