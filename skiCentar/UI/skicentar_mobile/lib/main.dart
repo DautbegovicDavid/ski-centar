@@ -73,9 +73,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void openAppLink(Uri uri) {
+    String verificationToken = uri.queryParameters['id'] ?? '';
     _navigatorKey.currentState?.pushReplacement(
       MaterialPageRoute(
-        builder: (context) => const UserVerifiedPage(),
+        builder: (context) => UserVerifiedPage(verificationLink: verificationToken),
       ),
     );
   }
