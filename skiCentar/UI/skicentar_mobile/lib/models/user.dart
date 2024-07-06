@@ -13,7 +13,8 @@ class User{
   UserDetail? userDetails;
   DateTime? registrationDate;
   bool? isVerified;
-  
+  bool? hasActiveTicket;
+
   User({this.id,this.email,this.userRole});
 
   factory User.fromJson(Map<String,dynamic> json) => _$UserFromJson(json);

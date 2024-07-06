@@ -46,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final fetchedUser = await userProvider.getDetails();
       setState(() {
         user = fetchedUser;
+      userProvider.setUser(fetchedUser);
         initForm();
       });
     } catch (e) {
@@ -95,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Card(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
             elevation: 4,
             child: Padding(
               padding: const EdgeInsets.all(20.0),

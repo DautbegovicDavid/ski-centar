@@ -77,11 +77,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buy Ticket'),
-         backgroundColor: Theme.of(context).primaryColorLight,
-      ),
-      resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: const Text('Buy Ticket'),
+          backgroundColor: Theme.of(context).primaryColorLight,
+        ),
+        resizeToAvoidBottomInset: true,
         body: loaded == false
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
@@ -107,7 +107,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 DropdownField(
                   name: "ticketTypeId",
                   labelText: "Select Ticket",
-                   validators: [FormBuilderValidators.required()],
+                  validators: [FormBuilderValidators.required()],
                   items: ticketTypeResult?.result
                           .map((item) => DropdownMenuItem<String>(
                               value: item.id.toString(),
@@ -126,21 +126,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 InputField(
                   name: "name",
                   labelText: "Name",
-                   validators: [FormBuilderValidators.required()],
-
+                  validators: [FormBuilderValidators.required()],
                 ),
                 const SizedBox(height: 16),
                 InputField(
                   name: "lastName",
                   labelText: "Last name",
-                   validators: [FormBuilderValidators.required()],
+                  validators: [FormBuilderValidators.required()],
                 ),
                 const SizedBox(height: 16),
                 DatePickerField(
                   name: "dateOfBirth",
                   labelText: "Date of Birth",
-                   validators: [FormBuilderValidators.required()],
-
+                  validators: [FormBuilderValidators.required()],
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -161,17 +159,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-TicketType? _getSelectedTicketType(String ticketTypeId) {
-  try {
-    return ticketTypeResult?.result
-        .firstWhere(
-          (ticketType) => ticketType.id.toString() == ticketTypeId
-        );
-  } catch (e) {
-    return null; // Return null if no matching ticket type is found
+  TicketType? _getSelectedTicketType(String ticketTypeId) {
+    try {
+      return ticketTypeResult?.result
+          .firstWhere((ticketType) => ticketType.id.toString() == ticketTypeId);
+    } catch (e) {
+      return null;
+    }
   }
-}
-
 
   Future<void> _createTicketAndPay() async {
     try {
@@ -199,7 +194,8 @@ TicketType? _getSelectedTicketType(String ticketTypeId) {
 
         // Create a payment intent
         paymentIntent = await createPaymentIntent(
-          (selectedTicketType.price! * 100).toInt(), // Amount in cents as integer
+          (selectedTicketType.price! * 100)
+              .toInt(),
           'BAM',
         );
 
@@ -236,7 +232,7 @@ TicketType? _getSelectedTicketType(String ticketTypeId) {
 
         // Save the payment data
         final paymentData = {
-          'userId': userProvider.currentUser!.id, // Replace with actual user ID
+          'userId': userProvider.currentUser!.id,
           'ticketId': ticket.id,
           'purchaseDate': DateTime.now().toIso8601String(),
           'quantity': 1,
@@ -248,15 +244,13 @@ TicketType? _getSelectedTicketType(String ticketTypeId) {
         setState(() {
           paymentIntent = null;
         });
+        await _fetchUser();
       });
     } on stripe.StripeException catch (e) {
-      print('Error from Stripe ELOOOO: ${e.error.localizedMessage}');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(e.error.localizedMessage!)),
+        SnackBar(content: Text(e.error.localizedMessage!)),
       );
     } catch (e) {
-      print('Error: $e  ALOOOO');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -269,6 +263,15 @@ TicketType? _getSelectedTicketType(String ticketTypeId) {
       return await paymentProvider.createPaymentIntent(amount, currency);
     } catch (err) {
       throw Exception(err.toString());
+    }
+  }
+
+  Future<void> _fetchUser() async {
+    try {
+      final fetchedUser = await userProvider.getDetails();
+      userProvider.setUser(fetchedUser);
+    } catch (e) {
+      print('Failed to load user: $e');
     }
   }
 }

@@ -13,7 +13,7 @@ import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_type_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
 import 'package:skicentar_mobile/providers/weather_provider.dart';
-import 'package:skicentar_mobile/screens/deatiled_ski_tracks_screen.dart';
+import 'package:skicentar_mobile/screens/detailed_ski_tracks_screen.dart';
 import 'package:skicentar_mobile/screens/detailed_ski_lifts_screen.dart';
 import 'package:skicentar_mobile/screens/detailed_weather_screen.dart';
 import 'package:skicentar_mobile/screens/payment_screen.dart';

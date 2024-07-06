@@ -17,7 +17,6 @@ class UserProvider extends BaseProvider<User> {
   User? get currentUser => _currentUser;
 
   void setUser(User user) {
-    print("USER ->>>>> $user");
     _currentUser = user;
     notifyListeners();
   }

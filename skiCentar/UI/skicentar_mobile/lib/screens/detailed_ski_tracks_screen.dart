@@ -87,7 +87,7 @@ class DetailedSkiTracksScreen extends StatelessWidget {
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.blueGrey, // Change this to your desired color
+          color: Colors.blueGrey,
         ),
       ),
     );

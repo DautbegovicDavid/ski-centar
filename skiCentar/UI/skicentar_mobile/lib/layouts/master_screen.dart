@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/models/resort.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
+import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/screens/home_screen.dart';
+import 'package:skicentar_mobile/screens/manage_lift_screen.dart';
+import 'package:skicentar_mobile/screens/manage_track_screen.dart';
 import 'package:skicentar_mobile/screens/poi_screen.dart';
 import 'package:skicentar_mobile/screens/profile_screen.dart';
 import 'package:skicentar_mobile/screens/ski_map_screen.dart';
@@ -18,10 +21,16 @@ class _MasterScreenState extends State<MasterScreen> {
   late ResortProvider resortProvider;
   SearchResult<Resort>? resortResult;
 
-  final List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _endUserWidgetOptions = <Widget>[
     const HomeScreen(),
     PoiScreen(),
     SkiMapScreen(),
+    ProfileScreen(),
+  ];
+
+  final List<Widget> _employeeWidgetOptions = <Widget>[
+    ManageLiftScreen(),
+    ManageTracksScreen(),
     ProfileScreen(),
   ];
 
@@ -50,6 +59,9 @@ class _MasterScreenState extends State<MasterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
+    final isEmployee = userProvider.currentUser?.userRole?.name == 'Employee' || userProvider.currentUser?.userRole?.name == 'Admin';
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -89,31 +101,48 @@ class _MasterScreenState extends State<MasterScreen> {
           },
         ),
       ),
-      resizeToAvoidBottomInset: false, //li true
+      resizeToAvoidBottomInset: false,
       body: IndexedStack(
         index: _selectedIndex,
-        children: _widgetOptions,
+        children: isEmployee ? _employeeWidgetOptions : _endUserWidgetOptions,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: false,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'POI',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.downhill_skiing_outlined),
-            label: 'Ski Map',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: 'Profile', tooltip: "azza"),
-        ],
+        items: isEmployee
+            ? const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.elevator),
+                  label: 'Lifts',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.downhill_skiing),
+                  label: 'Tracks',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ]
+            : const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.explore),
+                  label: 'POI',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.downhill_skiing_outlined),
+                  label: 'Ski Map',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,

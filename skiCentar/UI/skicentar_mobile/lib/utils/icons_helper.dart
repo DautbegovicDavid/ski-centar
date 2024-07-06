@@ -57,5 +57,7 @@ Future<Map<String, BitmapDescriptor>> getCategoryIcons() async {
         Icons.medical_services_rounded,
         color: Colors.red,
         size: 80),
+    'Accidents': await getBitmapDescriptorFromIconData(Icons.emergency_sharp,
+        color: Colors.red, size: 80),
   };
 }

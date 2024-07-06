@@ -3,10 +3,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/models/lift.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
+import 'package:skicentar_mobile/models/ski_accident.dart';
 import 'package:skicentar_mobile/models/trail.dart';
 import 'package:skicentar_mobile/providers/lift_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
+import 'package:skicentar_mobile/providers/ski_accident_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
+import 'package:skicentar_mobile/providers/user_provider.dart';
+import 'package:skicentar_mobile/screens/report_accident_screen.dart';
+import 'package:skicentar_mobile/utils/icons_helper.dart';
+import 'package:skicentar_mobile/utils/utils.dart';
 
 class SkiMapScreen extends StatefulWidget {
   @override
@@ -22,8 +28,11 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
   late LiftProvider liftProvider;
   late TrailProvider trailProvider;
   late ResortProvider resortProvider;
+  late UserProvider userProvider;
+  late SkiAccidentProvider skiAccidentsProvider;
 
   SearchResult<Trail>? trails;
+  SearchResult<SkiAccident>? skiAccidents;
   SearchResult<Lift>? lifts;
 
   Set<Marker> _markers = {};
@@ -37,12 +46,19 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
     liftProvider = context.read<LiftProvider>();
     trailProvider = context.read<TrailProvider>();
     resortProvider = context.read<ResortProvider>();
+    userProvider = context.read<UserProvider>();
+    skiAccidentsProvider = context.read<SkiAccidentProvider>();
     resortProvider.addListener(_updateInfo);
+    userProvider.addListener(_updateScreen);
     _fetchData();
   }
 
   void _updateInfo() {
     _fetchData();
+  }
+
+  void _updateScreen() {
+    setState(() {});
   }
 
   Future<void> _fetchData() async {
@@ -58,19 +74,14 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
       'IsLiftTypeIncluded': true,
       'AreLiftLocationsIncluded': true,
     });
-    _setMarkersAndPolylines();
+    skiAccidents = await skiAccidentsProvider.get(filter: {'IsActive': true});
+    await _setMarkersAndPolylines();
     if (mounted) {
       setState(() {});
     }
   }
 
-  Set<Polyline> combinePolylines(Set<Polyline> set1, Set<Polyline> set2) {
-    final Set<Polyline> combinedSet = Set<Polyline>.from(set1);
-    combinedSet.addAll(set2);
-    return combinedSet;
-  }
-
-  void _setMarkersAndPolylines() {
+  Future<void> _setMarkersAndPolylines() async {
     final Set<Marker> markers = lifts!.result.expand((lift) {
       return lift.liftLocations!.map((location) {
         return Marker(
@@ -83,6 +94,22 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
         );
       });
     }).toSet();
+    Map<String, BitmapDescriptor> categoryIcons = await getCategoryIcons();
+
+    final Set<Marker> accidentMarkers = skiAccidents!.result.where((poi) {
+      return poi.locationX != null && poi.locationY != null;
+    }).map((poi) {
+      BitmapDescriptor icon = categoryIcons['Accidents'] ??
+          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+      return Marker(
+        markerId: MarkerId('${poi.id}'),
+        position: LatLng(poi.locationX!, poi.locationY!),
+        infoWindow: const InfoWindow(title: "Ski accident Active"),
+        icon: icon,
+      );
+    }).toSet();
+
+    Set<Marker> combinedMarkers = combineMarkers(markers, accidentMarkers);
 
     final Set<Polyline> liftPolylines = lifts!.result.map((lift) {
       return Polyline(
@@ -113,7 +140,7 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
         if (markers.isNotEmpty) {
           _center = markers.first.position;
         }
-        _markers = markers;
+        _markers = combinedMarkers;
         _polylines = combinedPolylines;
         if (mapLoaded) {
           mapController.animateCamera(
@@ -142,19 +169,42 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
     mapLoaded = true;
   }
 
+  void _navigateToReportAccidentScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ReportAccidentScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: resortProvider.selectedResort == null //provjeriti je li sve loadano
+      body: resortProvider.selectedResort == null ||
+              userProvider.currentUser == null
           ? const Center(child: Text('Please select a resort'))
-          : GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 14.0,
-              ),
-              markers: _markers,
-              polylines: _polylines,
+          : Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 14.0,
+                  ),
+                  markers: _markers,
+                  polylines: _polylines,
+                ),
+                if (userProvider.currentUser!.hasActiveTicket!)
+                  Positioned(
+                    bottom: 16.0,
+                    left: 16.0,
+                    child: FloatingActionButton(
+                      onPressed: _navigateToReportAccidentScreen,
+                      child: Icon(Icons.warning,
+                          color: Colors.white),
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+              ],
             ),
     );
   }
