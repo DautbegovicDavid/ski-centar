@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace skiCentar.Services.Migrations
 {
@@ -21,19 +24,6 @@ namespace skiCentar.Services.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__lift_typ__3213E83F09F8F725", x => x.id);
-                });
-
-            migrationBuilder.InsertData(
-                table: "lift_type",
-                columns: new[] { "name" },
-                values: new object[,]
-                {
-                    { "Sjedeznica" },
-                    { "Gondola" },
-                    { "Sidro" },
-                    { "Pokretna staza" },
-                    { "Tanjir" },
-                    { "Rukohvat" }
                 });
 
             migrationBuilder.CreateTable(
@@ -66,6 +56,19 @@ namespace skiCentar.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ticket_type_seniority",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    seniority = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__ticket_t__3213E83F6EE6FBB4", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "trail_difficulty",
                 columns: table => new
                 {
@@ -79,16 +82,6 @@ namespace skiCentar.Services.Migrations
                     table.PrimaryKey("PK__trail_di__3213E83F5DF5ADE9", x => x.id);
                 });
 
-            migrationBuilder.InsertData(
-                table: "trail_difficulty",
-                columns: new[] { "name", "color" },
-                values: new object[,]
-                {
-                    { "Beginner", "Green" },
-                    { "Intermediate", "Blue" },
-                    { "Advanced", "Black" }
-                });
-
             migrationBuilder.CreateTable(
                 name: "user_details",
                 columns: table => new
@@ -96,7 +89,8 @@ namespace skiCentar.Services.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
-                    last_name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false)
+                    last_name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    date_of_birth = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,23 +110,13 @@ namespace skiCentar.Services.Migrations
                     table.PrimaryKey("PK__user_rol__3213E83FD6D48D1E", x => x.id);
                 });
 
-            migrationBuilder.InsertData(
-              table: "user_role",
-              columns: new[] { "name" },
-              values: new object[,]
-              {
-                    { "Admin" },
-                    { "Uposlenik" },
-                    { "Korinsik" }
-              });
-
             migrationBuilder.CreateTable(
                 name: "daily_weather",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    date = table.Column<DateTime>(type: "date", nullable: true),
+                    date = table.Column<DateTime>(type: "datetime", nullable: true),
                     temperature = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
                     precipitation = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
                     wind_speed = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
@@ -161,7 +145,8 @@ namespace skiCentar.Services.Migrations
                     lift_type_id = table.Column<int>(type: "int", nullable: true),
                     capacity = table.Column<int>(type: "int", nullable: true),
                     resort_id = table.Column<int>(type: "int", nullable: true),
-                    is_functional = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))")
+                    is_functional = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))"),
+                    state_machine = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -207,6 +192,32 @@ namespace skiCentar.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ticket_type",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    full_day = table.Column<bool>(type: "bit", nullable: false),
+                    price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ticket_type_seniority_id = table.Column<int>(type: "int", nullable: true),
+                    resort_id = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__ticket_t__3213E83F8918DEA6", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ticket_type_resort",
+                        column: x => x.resort_id,
+                        principalTable: "resort",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_ticket_type_ticket_type_seniority",
+                        column: x => x.ticket_type_seniority_id,
+                        principalTable: "ticket_type_seniority",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "trail",
                 columns: table => new
                 {
@@ -214,7 +225,7 @@ namespace skiCentar.Services.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     difficulty_id = table.Column<int>(type: "int", nullable: true),
-                    length = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
+                    length = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
                     resort_id = table.Column<int>(type: "int", nullable: true),
                     is_functional = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))")
                 },
@@ -244,7 +255,8 @@ namespace skiCentar.Services.Migrations
                     registration_date = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
                     last_login_date = table.Column<DateTime>(type: "datetime", nullable: true),
                     user_role_id = table.Column<int>(type: "int", nullable: true),
-                    user_details_id = table.Column<int>(type: "int", nullable: true)
+                    user_details_id = table.Column<int>(type: "int", nullable: true),
+                    is_verified = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((0))")
                 },
                 constraints: table =>
                 {
@@ -303,6 +315,29 @@ namespace skiCentar.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ticket",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ticket_type_id = table.Column<int>(type: "int", nullable: false),
+                    total_price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    valid_from = table.Column<DateTime>(type: "date", nullable: false),
+                    valid_to = table.Column<DateTime>(type: "date", nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__ticket__3213E83FADDC681A", x => x.id);
+                    table.ForeignKey(
+                        name: "FK__ticket__ticket_t__2B0A656D",
+                        column: x => x.ticket_type_id,
+                        principalTable: "ticket_type",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "trail_location",
                 columns: table => new
                 {
@@ -351,10 +386,13 @@ namespace skiCentar.Services.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     user_id = table.Column<int>(type: "int", nullable: true),
                     trail_id = table.Column<int>(type: "int", nullable: true),
-                    location_x = table.Column<decimal>(type: "decimal(10,6)", nullable: true),
-                    location_y = table.Column<decimal>(type: "decimal(10,6)", nullable: true),
+                    people_involved = table.Column<int>(type: "int", nullable: true),
+                    is_reporter_injured = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((0))"),
+                    is_active = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((1))"),
+                    location_x = table.Column<decimal>(type: "decimal(10,6)", nullable: false),
+                    location_y = table.Column<decimal>(type: "decimal(10,6)", nullable: false),
                     timestamp = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    description = table.Column<string>(type: "varchar(1000)", unicode: false, maxLength: 1000, nullable: false)
+                    description = table.Column<string>(type: "varchar(1000)", unicode: false, maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -369,6 +407,34 @@ namespace skiCentar.Services.Migrations
                         column: x => x.user_id,
                         principalTable: "user",
                         principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_poi_interaction",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<int>(type: "int", nullable: false),
+                    poi_id = table.Column<int>(type: "int", nullable: false),
+                    interaction_type = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    interaction_timestamp = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__user_poi_interaction__3213E83F8DDADEE6", x => x.id);
+                    table.ForeignKey(
+                        name: "FK__user_poi_interaction__poi_id__267ABA7A",
+                        column: x => x.poi_id,
+                        principalTable: "point_of_interest",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK__user_poi_interaction__user_id__267ABA7A",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -391,6 +457,137 @@ namespace skiCentar.Services.Migrations
                         column: x => x.user_id,
                         principalTable: "user",
                         principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_verification",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    verification_code = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: false),
+                    email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    user_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__user_ver__3213E83DB5BAFCDC", x => x.id);
+                    table.ForeignKey(
+                        name: "FK__user_ver__user_id__2C3393D0",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ticket_purchase",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<int>(type: "int", nullable: false),
+                    ticket_id = table.Column<int>(type: "int", nullable: false),
+                    purchase_date = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    total_price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    stripe_payment_intent_id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__ticket_p__3213E83FF58BF17D", x => x.id);
+                    table.ForeignKey(
+                        name: "FK__ticket_pu__ticke__32AB8735",
+                        column: x => x.ticket_id,
+                        principalTable: "ticket",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK__ticket_pu__user___31B762FC",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "lift_type",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "Sjedeznica" },
+                    { 2, "Gondola" },
+                    { 3, "Sidro" },
+                    { 4, "Pokretna staza" },
+                    { 5, "Tanjir" },
+                    { 6, "Rukohvat" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "poi_category",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "Ski kasa" },
+                    { 2, "Ski skola" },
+                    { 3, "Ski Rental" },
+                    { 4, "Hitna" },
+                    { 5, "WC" },
+                    { 6, "Parking" },
+                    { 7, "Restoran" },
+                    { 8, "Kafic" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "resort",
+                columns: new[] { "id", "elevation", "location", "name", "ski_work_hours" },
+                values: new object[,]
+                {
+                    { 1, 1500, "Sarajevo", "Jahorina", "9 AM - 5 PM" },
+                    { 2, 1500, "Travnik", "Vlasic", "9 AM - 5 PM" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "trail_difficulty",
+                columns: new[] { "id", "color", "name" },
+                values: new object[,]
+                {
+                    { 1, "Green", "Pocetnicke staza" },
+                    { 2, "Blue", "Staze za srednje vjestine" },
+                    { 3, "Crvena", "Napredne staza" },
+                    { 4, "Black", "Ekspertne staze" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "user_role",
+                columns: new[] { "id", "name" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Employee" },
+                    { 3, "User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "point_of_interest",
+                columns: new[] { "id", "category_id", "description", "location_x", "location_y", "name", "resort_id" },
+                values: new object[] { 1, 7, "Restaurant 1", 45.123456m, 14.123456m, "Restaurant 1", 1 });
+
+            migrationBuilder.InsertData(
+                table: "user",
+                columns: new[] { "id", "email", "is_verified", "last_login_date", "password", "registration_date", "user_details_id", "user_role_id" },
+                values: new object[,]
+                {
+                    { 1, "employee@email.com", true, new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7035), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7093), null, 2 },
+                    { 2, "admin@email.com", true, new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7097), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7099), null, 1 },
+                    { 3, "user@email.com", true, new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7102), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7103), null, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "user_poi_interaction",
+                columns: new[] { "id", "interaction_timestamp", "interaction_type", "poi_id", "user_id" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 8, 23, 23, 43, 13, 10, DateTimeKind.Utc).AddTicks(7118), "view", 1, 3 },
+                    { 2, new DateTime(2024, 8, 23, 23, 43, 13, 10, DateTimeKind.Utc).AddTicks(7119), "view", 1, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -439,6 +636,31 @@ namespace skiCentar.Services.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ticket_ticket_type_id",
+                table: "ticket",
+                column: "ticket_type_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ticket_purchase_ticket_id",
+                table: "ticket_purchase",
+                column: "ticket_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ticket_purchase_user_id",
+                table: "ticket_purchase",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ticket_type_resort_id",
+                table: "ticket_type",
+                column: "resort_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ticket_type_ticket_type_seniority_id",
+                table: "ticket_type",
+                column: "ticket_type_seniority_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_trail_difficulty_id",
                 table: "trail",
                 column: "difficulty_id");
@@ -469,9 +691,24 @@ namespace skiCentar.Services.Migrations
                 column: "user_role_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_user_poi_interaction_poi_id",
+                table: "user_poi_interaction",
+                column: "poi_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_poi_interaction_user_id",
+                table: "user_poi_interaction",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_user_resort_resort_id",
                 table: "user_resort",
                 column: "resort_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_verification_user_id",
+                table: "user_verification",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -487,10 +724,10 @@ namespace skiCentar.Services.Migrations
                 name: "lift_maintenance");
 
             migrationBuilder.DropTable(
-                name: "point_of_interest");
+                name: "ski_accident");
 
             migrationBuilder.DropTable(
-                name: "ski_accident");
+                name: "ticket_purchase");
 
             migrationBuilder.DropTable(
                 name: "trail_location");
@@ -499,16 +736,25 @@ namespace skiCentar.Services.Migrations
                 name: "trail_maintenance");
 
             migrationBuilder.DropTable(
+                name: "user_poi_interaction");
+
+            migrationBuilder.DropTable(
                 name: "user_resort");
+
+            migrationBuilder.DropTable(
+                name: "user_verification");
 
             migrationBuilder.DropTable(
                 name: "lift");
 
             migrationBuilder.DropTable(
-                name: "poi_category");
+                name: "ticket");
 
             migrationBuilder.DropTable(
                 name: "trail");
+
+            migrationBuilder.DropTable(
+                name: "point_of_interest");
 
             migrationBuilder.DropTable(
                 name: "user");
@@ -517,16 +763,25 @@ namespace skiCentar.Services.Migrations
                 name: "lift_type");
 
             migrationBuilder.DropTable(
+                name: "ticket_type");
+
+            migrationBuilder.DropTable(
                 name: "trail_difficulty");
 
             migrationBuilder.DropTable(
-                name: "resort");
+                name: "poi_category");
 
             migrationBuilder.DropTable(
                 name: "user_details");
 
             migrationBuilder.DropTable(
                 name: "user_role");
+
+            migrationBuilder.DropTable(
+                name: "resort");
+
+            migrationBuilder.DropTable(
+                name: "ticket_type_seniority");
         }
     }
 }

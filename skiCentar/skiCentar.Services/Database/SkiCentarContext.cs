@@ -670,89 +670,60 @@ public partial class SkiCenterContext : DbContext
         });
 
         base.OnModelCreating(modelBuilder);
-        if (!modelBuilder.Model.FindEntityType(typeof(Resort)).GetNavigations().Any())
-        {
-            // Add default data for Resort
-            modelBuilder.Entity<Resort>().HasData(
-            new Resort { Id = 1, Elevation = 1500, Location = "Sarajevo", Name = "Jahorina", SkiWorkHours = "9 AM - 5 PM" },
-            new Resort { Id = 2, Elevation = 1500, Location = "Travnik", Name = "Vlasic", SkiWorkHours = "9 AM - 5 PM" }
+        modelBuilder.Entity<Resort>().HasData(
+    new Resort { Id = 1, Elevation = 1500, Location = "Sarajevo", Name = "Jahorina", SkiWorkHours = "9 AM - 5 PM" },
+    new Resort { Id = 2, Elevation = 1500, Location = "Travnik", Name = "Vlasic", SkiWorkHours = "9 AM - 5 PM" }
+);
 
+        modelBuilder.Entity<LiftType>().HasData(
+            new LiftType { Id = 1, Name = "Sjedeznica" },
+            new LiftType { Id = 2, Name = "Gondola" },
+            new LiftType { Id = 3, Name = "Sidro" },
+            new LiftType { Id = 4, Name = "Pokretna staza" },
+            new LiftType { Id = 5, Name = "Tanjir" },
+            new LiftType { Id = 6, Name = "Rukohvat" }
         );
-        }
 
-        //
-        if (!modelBuilder.Model.FindEntityType(typeof(LiftType)).GetNavigations().Any())
-        {
-            modelBuilder.Entity<LiftType>().HasData(
-            new LiftType { Name = "Sjedeznica" },
-            new LiftType { Name = "Gondola" },
-            new LiftType { Name = "Sidro" },
-            new LiftType { Name = "Pokretna staza" },
-            new LiftType { Name = "Tanjir" },
-            new LiftType { Name = "Rukohvat" }
-            );
-        }
+        modelBuilder.Entity<PoiCategory>().HasData(
+            new PoiCategory { Id = 1, Name = "Ski kasa" },
+            new PoiCategory { Id = 2, Name = "Ski skola" },
+            new PoiCategory { Id = 3, Name = "Ski Rental" },
+            new PoiCategory { Id = 4, Name = "Hitna" },
+            new PoiCategory { Id = 5, Name = "WC" },
+            new PoiCategory { Id = 6, Name = "Parking" },
+            new PoiCategory { Id = 7, Name = "Restoran" },
+            new PoiCategory { Id = 8, Name = "Kafic" }
+        );
 
-        if (!modelBuilder.Model.FindEntityType(typeof(PoiCategory)).GetNavigations().Any())
-        {
-            modelBuilder.Entity<PoiCategory>().HasData(
-            new PoiCategory { Name = "Ski kasa" },
-            new PoiCategory { Name = "Ski skola" },
-            new PoiCategory { Name = "Ski Rental" },
-            new PoiCategory { Name = "Hitna" },
-            new PoiCategory { Name = "WC" },
-            new PoiCategory { Name = "Parking" },
-            new PoiCategory { Name = "Restoran" },
-            new PoiCategory { Name = "Kafic" }
-            );
-        }
-        if (!modelBuilder.Model.FindEntityType(typeof(PointOfInterest)).GetNavigations().Any())
-        {
-            // Add default data for PointOfInterest
-            modelBuilder.Entity<PointOfInterest>().HasData(
+        modelBuilder.Entity<PointOfInterest>().HasData(
             new PointOfInterest { Id = 1, CategoryId = 7, Description = "Restaurant 1", LocationX = 45.123456m, LocationY = 14.123456m, Name = "Restaurant 1", ResortId = 1 }
         );
-        }
 
-        if (!modelBuilder.Model.FindEntityType(typeof(TrailDifficulty)).GetNavigations().Any())
-        {
-            modelBuilder.Entity<TrailDifficulty>().HasData(
-            new TrailDifficulty { Name = "Pocetnicke staza", Color = "Green" },
-            new TrailDifficulty { Name = "Staze za srednje vjestine", Color = "Blue" },
-            new TrailDifficulty { Name = "Napredne staza", Color = "Crvena" },
-            new TrailDifficulty { Name = "Ekspertne staze", Color = "Black" }
-            );
-        }
+        modelBuilder.Entity<TrailDifficulty>().HasData(
+            new TrailDifficulty { Id = 1, Name = "Pocetnicke staza", Color = "Green" },
+            new TrailDifficulty { Id = 2, Name = "Staze za srednje vjestine", Color = "Blue" },
+            new TrailDifficulty { Id = 3, Name = "Napredne staza", Color = "Crvena" },
+            new TrailDifficulty { Id = 4, Name = "Ekspertne staze", Color = "Black" }
+        );
 
-        if (!modelBuilder.Model.FindEntityType(typeof(UserRole)).GetNavigations().Any())
-        {
-            modelBuilder.Entity<UserRole>().HasData(
-            new UserRole { Name = "Admin" },
-            new UserRole { Name = "Employee" },
-            new UserRole { Name = "User" }
-            );
-        }
+        modelBuilder.Entity<UserRole>().HasData(
+            new UserRole { Id = 1, Name = "Admin" },
+            new UserRole { Id = 2, Name = "Employee" },
+            new UserRole { Id = 3, Name = "User" }
+        );
 
-
-        if (!modelBuilder.Model.FindEntityType(typeof(User)).GetNavigations().Any())
-        {
-            modelBuilder.Entity<User>().HasData(
+        modelBuilder.Entity<User>().HasData(
             new User { Id = 1, Email = "employee@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 2 },
+            new User { Id = 2, Email = "admin@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 1 },
+            new User { Id = 3, Email = "user@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 3 }
+        );
 
-            new User { Id = 1, Email = "admin@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 1 },
+        modelBuilder.Entity<UserPoiInteraction>().HasData(
+            new UserPoiInteraction { Id = 1, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 2, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
+        );
 
-            new User { Id = 1, Email = "user@email.com", IsVerified = true, LastLoginDate = DateTime.Now, Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", RegistrationDate = DateTime.Now, UserDetailsId = null, UserRoleId = 3 }
-);
-        }
 
-
-        if (!modelBuilder.Model.FindEntityType(typeof(UserPoiInteraction)).GetNavigations().Any())
-        {
-            modelBuilder.Entity<UserPoiInteraction>().HasData(
-new UserPoiInteraction { Id = 1, UserId = 1, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
-new UserPoiInteraction { Id = 2, UserId = 2, PoiId = 2, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
-);
-        }
 
 
         OnModelCreatingPartial(modelBuilder);

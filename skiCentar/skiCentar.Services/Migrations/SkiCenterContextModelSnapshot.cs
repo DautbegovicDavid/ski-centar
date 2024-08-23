@@ -225,6 +225,38 @@ namespace skiCentar.Services.Migrations
                         .HasName("PK__lift_typ__3213E83F09F8F725");
 
                     b.ToTable("lift_type", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Sjedeznica"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Gondola"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sidro"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Pokretna staza"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Tanjir"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Rukohvat"
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.PoiCategory", b =>
@@ -247,6 +279,48 @@ namespace skiCentar.Services.Migrations
                         .HasName("PK__poi_cate__3213E83FDA520F22");
 
                     b.ToTable("poi_category", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Ski kasa"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Ski skola"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Ski Rental"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Hitna"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "WC"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Parking"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Restoran"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Kafic"
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.PointOfInterest", b =>
@@ -296,6 +370,18 @@ namespace skiCentar.Services.Migrations
                     b.HasIndex(new[] { "ResortId" }, "IX_point_of_interest_resort_id");
 
                     b.ToTable("point_of_interest", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 7,
+                            Description = "Restaurant 1",
+                            LocationX = 45.123456m,
+                            LocationY = 14.123456m,
+                            Name = "Restaurant 1",
+                            ResortId = 1
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.Resort", b =>
@@ -336,6 +422,24 @@ namespace skiCentar.Services.Migrations
                         .HasName("PK__resort__3213E83F95FCDA33");
 
                     b.ToTable("resort", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Elevation = 1500,
+                            Location = "Sarajevo",
+                            Name = "Jahorina",
+                            SkiWorkHours = "9 AM - 5 PM"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Elevation = 1500,
+                            Location = "Travnik",
+                            Name = "Vlasic",
+                            SkiWorkHours = "9 AM - 5 PM"
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.SkiAccident", b =>
@@ -617,6 +721,32 @@ namespace skiCentar.Services.Migrations
                         .HasName("PK__trail_di__3213E83F5DF5ADE9");
 
                     b.ToTable("trail_difficulty", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Color = "Green",
+                            Name = "Pocetnicke staza"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Color = "Blue",
+                            Name = "Staze za srednje vjestine"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Color = "Crvena",
+                            Name = "Napredne staza"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Color = "Black",
+                            Name = "Ekspertne staze"
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.TrailLocation", b =>
@@ -738,6 +868,38 @@ namespace skiCentar.Services.Migrations
                     b.HasIndex(new[] { "UserRoleId" }, "IX_user_user_role_id");
 
                     b.ToTable("user", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "employee@email.com",
+                            IsVerified = true,
+                            LastLoginDate = new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7035),
+                            Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG",
+                            RegistrationDate = new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7093),
+                            UserRoleId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "admin@email.com",
+                            IsVerified = true,
+                            LastLoginDate = new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7097),
+                            Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG",
+                            RegistrationDate = new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7099),
+                            UserRoleId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "user@email.com",
+                            IsVerified = true,
+                            LastLoginDate = new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7102),
+                            Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG",
+                            RegistrationDate = new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7103),
+                            UserRoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.UserDetail", b =>
@@ -809,6 +971,24 @@ namespace skiCentar.Services.Migrations
                     b.HasIndex(new[] { "UserId" }, "IX_user_poi_interaction_user_id");
 
                     b.ToTable("user_poi_interaction", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            InteractionTimestamp = new DateTime(2024, 8, 23, 23, 43, 13, 10, DateTimeKind.Utc).AddTicks(7118),
+                            InteractionType = "view",
+                            PoiId = 1,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            InteractionTimestamp = new DateTime(2024, 8, 23, 23, 43, 13, 10, DateTimeKind.Utc).AddTicks(7119),
+                            InteractionType = "view",
+                            PoiId = 1,
+                            UserId = 3
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.UserRole", b =>
@@ -831,6 +1011,23 @@ namespace skiCentar.Services.Migrations
                         .HasName("PK__user_rol__3213E83FD6D48D1E");
 
                     b.ToTable("user_role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Employee"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "User"
+                        });
                 });
 
             modelBuilder.Entity("skiCentar.Services.Database.UserVerification", b =>
