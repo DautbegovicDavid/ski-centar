@@ -59,5 +59,9 @@ Future<Map<String, BitmapDescriptor>> getCategoryIcons() async {
         size: 80),
     'Accidents': await getBitmapDescriptorFromIconData(Icons.emergency_sharp,
         color: Colors.red, size: 80),
+    'Ski School': await getBitmapDescriptorFromIconData(Icons.school,
+        color: Colors.orange, size: 80),
+    'Ski Rent': await getBitmapDescriptorFromIconData(Icons.snowboarding,
+        color: Colors.teal, size: 80),
   };
 }

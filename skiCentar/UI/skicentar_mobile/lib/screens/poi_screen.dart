@@ -66,6 +66,7 @@ class _PoiScreenState extends State<PoiScreen> {
         position: LatLng(poi.locationX!, poi.locationY!),
         infoWindow: InfoWindow(title: poi.description),
         icon: icon,
+        onTap: () => _onMarkerTapped(poi),
       );
     }).toSet();
 
@@ -87,6 +88,11 @@ class _PoiScreenState extends State<PoiScreen> {
         }
       });
     }
+  }
+
+  void _onMarkerTapped(PointOfInterest poi) async {
+    // call api for user interaction - TODO
+    print("ALO ${poi.id}");
   }
 
   void _onMapCreated(GoogleMapController controller) {

@@ -219,25 +219,25 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 8),
         Padding(
           padding:
-              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+              const EdgeInsets.only(bottom: 2.0),
           child: Text(
-            weather.weatherCondition.toString(),
+            weather.weatherCondition?.toString() ?? 'N/A',
             style: const TextStyle(fontSize: 16),
           ),
         ),
         Padding(
           padding:
-              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+              const EdgeInsets.only(bottom: 2.0),
           child: Text(
-            "Wind Speed: ${weather.windSpeed.toString()}  km/h",
+            "Wind Speed: ${weather.windSpeed?.toString() ?? 'N/A'}  km/h",
             style: const TextStyle(fontSize: 16),
           ),
         ),
         Padding(
           padding:
-              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+              const EdgeInsets.only(bottom: 2.0),
           child: Text(
-            "Snow Height: ${weather.snowHeight.toString()} cm",
+            "Snow Height: ${weather.snowHeight?.toString() ?? 'N/A'} cm",
             style: const TextStyle(fontSize: 16),
           ),
         ),

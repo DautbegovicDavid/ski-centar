@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/components/date_picker_field.dart';
 import 'package:skicentar_mobile/components/input_field.dart';
@@ -46,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final fetchedUser = await userProvider.getDetails();
       setState(() {
         user = fetchedUser;
-      userProvider.setUser(fetchedUser);
+        userProvider.setUser(fetchedUser);
         initForm();
       });
     } catch (e) {
@@ -116,19 +117,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     enabled: false,
                   ),
                   const SizedBox(height: 20),
-                  const InputField(
+                  InputField(
                     name: "name",
                     labelText: "Name",
+                    validators: [FormBuilderValidators.required()],
                   ),
                   const SizedBox(height: 16),
-                  const InputField(
+                  InputField(
                     name: "lastName",
                     labelText: "Last name",
+                    validators: [FormBuilderValidators.required()],
                   ),
                   const SizedBox(height: 16),
-                  const DatePickerField(
+                  DatePickerField(
                     name: "dateOfBirth",
                     labelText: "Date of Birth",
+                    validators: [FormBuilderValidators.required()],
                   ),
                   const SizedBox(height: 16),
                   Row(

@@ -83,18 +83,30 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
   }
 
   Future<void> _setMarkersAndPolylines() async {
-    final Set<Marker> markers = lifts!.result.expand((lift) {
+    final filteredLifts =
+        lifts!.result.where((lift) => lift.stateMachine != 'hidden').toList();
+
+    final Set<Marker> markers = filteredLifts.expand((lift) {
       return lift.liftLocations!.map((location) {
+        BitmapDescriptor iconColor;
+        if (lift.stateMachine == 'draft') {
+          iconColor =
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+        } else {
+          iconColor = (lift.isFunctional ?? false)
+              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
+              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+        }
+
         return Marker(
           markerId: MarkerId('${lift.name}_${location.id}'),
           position: LatLng(location.locationX!, location.locationY!),
           infoWindow: InfoWindow(title: lift.name),
-          icon: (lift.isFunctional ?? false)
-              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
-              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          icon: iconColor,
         );
       });
     }).toSet();
+
     Map<String, BitmapDescriptor> categoryIcons = await getCategoryIcons();
 
     final Set<Marker> accidentMarkers = skiAccidents!.result.where((poi) {
@@ -112,24 +124,34 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
 
     Set<Marker> combinedMarkers = combineMarkers(markers, accidentMarkers);
 
-    final Set<Polyline> liftPolylines = lifts!.result.map((lift) {
+    final Set<Polyline> liftPolylines = filteredLifts.map((lift) {
+      Color polylineColor;
+      if (lift.stateMachine == 'draft') {
+        polylineColor = Colors.orange;
+      } else {
+        polylineColor =
+            (lift.isFunctional ?? false) ? Colors.green : Colors.red;
+      }
+
       return Polyline(
-        polylineId: PolylineId('${lift.name}_polyline'),
+        polylineId: PolylineId('${lift.name}_lift_polyline'),
         points: lift.liftLocations!
             .map((location) => LatLng(location.locationX!, location.locationY!))
             .toList(),
-        color: (lift.isFunctional ?? false) ? Colors.green : Colors.red,
+        color: polylineColor,
         width: 5,
       );
     }).toSet();
 
-    final Set<Polyline> trailPolylines = trails!.result.map((lift) {
+    final Set<Polyline> trailPolylines = trails!.result.map((trail) {
       return Polyline(
-        polylineId: PolylineId('${lift.name}_polyline'),
-        points: lift.trailLocations!
+        polylineId: PolylineId('${trail.name}_trail_polyline'),
+        points: trail.trailLocations!
             .map((location) => LatLng(location.locationX!, location.locationY!))
             .toList(),
-        color: (lift.isFunctional ?? false) ? Colors.green : Colors.red,
+        color: (trail.isFunctional ?? false)
+            ? const Color.fromARGB(255, 14, 121, 17)
+            : Colors.red,
         width: 3,
       );
     }).toSet();
@@ -200,9 +222,8 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
                     left: 16.0,
                     child: FloatingActionButton(
                       onPressed: _navigateToReportAccidentScreen,
-                      child: Icon(Icons.warning,
-                          color: Colors.white),
                       backgroundColor: Colors.red,
+                      child: const Icon(Icons.warning, color: Colors.white),
                     ),
                   ),
               ],

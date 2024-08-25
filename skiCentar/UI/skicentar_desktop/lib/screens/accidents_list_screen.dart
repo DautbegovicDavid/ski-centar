@@ -53,6 +53,7 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
       Column(
         children: [
           _buildSearch(),
+           if (result != null && result!.result.isNotEmpty)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

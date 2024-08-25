@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace skiCentar.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class initialcreate : Migration
+    public partial class initalCreateWithData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -526,14 +526,15 @@ namespace skiCentar.Services.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { 1, "Ski kasa" },
-                    { 2, "Ski skola" },
-                    { 3, "Ski Rental" },
-                    { 4, "Hitna" },
-                    { 5, "WC" },
+                    { 1, "Info" },
+                    { 2, "Ski School" },
+                    { 3, "Ski Rent" },
+                    { 4, "Hotel" },
+                    { 5, "Medical" },
                     { 6, "Parking" },
-                    { 7, "Restoran" },
-                    { 8, "Kafic" }
+                    { 7, "Restaurant" },
+                    { 8, "Coffee & Tea" },
+                    { 9, "Bar" }
                 });
 
             migrationBuilder.InsertData(
@@ -541,8 +542,18 @@ namespace skiCentar.Services.Migrations
                 columns: new[] { "id", "elevation", "location", "name", "ski_work_hours" },
                 values: new object[,]
                 {
-                    { 1, 1500, "Sarajevo", "Jahorina", "9 AM - 5 PM" },
+                    { 1, 2000, "Sarajevo", "Jahorina", "od 9 do 4" },
                     { 2, 1500, "Travnik", "Vlasic", "9 AM - 5 PM" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ticket_type_seniority",
+                columns: new[] { "id", "seniority" },
+                values: new object[,]
+                {
+                    { 1, "Junior" },
+                    { 2, "Adult" },
+                    { 3, "Senior" }
                 });
 
             migrationBuilder.InsertData(
@@ -567,18 +578,106 @@ namespace skiCentar.Services.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "daily_weather",
+                columns: new[] { "id", "date", "humidity", "precipitation", "resort_id", "snow_height", "temperature", "weather_condition", "wind_speed" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(7066), 3m, 0m, 2, 14m, -5m, "ok", 10m },
+                    { 2, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(7072), 45m, 10m, 1, 24m, 3m, "not recommended for beginners", 3m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "lift",
+                columns: new[] { "id", "capacity", "is_functional", "lift_type_id", "name", "resort_id", "state_machine" },
+                values: new object[,]
+                {
+                    { 1, 6, true, 1, "Ogorjelica", 1, "draft" },
+                    { 2, 2, true, 3, "Poljice", 1, "draft" },
+                    { 3, 2, true, 3, "Babanovac", 2, "draft" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "point_of_interest",
                 columns: new[] { "id", "category_id", "description", "location_x", "location_y", "name", "resort_id" },
-                values: new object[] { 1, 7, "Restaurant 1", 45.123456m, 14.123456m, "Restaurant 1", 1 });
+                values: new object[,]
+                {
+                    { 1, 1, "Info and Tickets shop", 43.732600m, 18.565900m, "Informacije", 1 },
+                    { 2, 2, "Ski School", 43.732700m, 18.566000m, "PRO SKI SCHOOL", 1 },
+                    { 3, 3, "Ski rental", 43.732800m, 18.566100m, "Vucko SKI rent", 1 },
+                    { 4, 4, "Hotel & Spa", 43.732900m, 18.566200m, "Hotel Vucko", 1 },
+                    { 5, 5, "Medic & Apotecary 0-24", 43.733000m, 18.566300m, "Hitna", 1 },
+                    { 6, 6, "PARKING 0-24", 43.733100m, 18.566400m, "Parking", 1 },
+                    { 7, 7, "Restaurant 1", 43.733200m, 18.566500m, "Restaurant 1", 1 },
+                    { 8, 8, "Coffeee & Tea", 43.733300m, 18.566600m, "Cafe bar 1", 1 },
+                    { 9, 9, "Bar", 43.733400m, 18.566700m, "Peggy", 1 },
+                    { 10, 1, "Info and Tickets shop", 44.302800m, 17.595000m, "Info Center Vlasic", 2 },
+                    { 11, 2, "Ski School Vlasic", 44.302900m, 17.595100m, "Vlasic SKI SCHOOL", 2 },
+                    { 12, 3, "Ski rental Vlasic", 44.303000m, 17.595200m, "Vlasic SKI rent", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ticket_type",
+                columns: new[] { "id", "full_day", "price", "resort_id", "ticket_type_seniority_id" },
+                values: new object[,]
+                {
+                    { 1, true, 100m, 1, 2 },
+                    { 2, false, 67m, 1, 2 },
+                    { 3, true, 50m, 1, 1 },
+                    { 4, false, 50m, 1, 1 },
+                    { 5, true, 67m, 1, 3 },
+                    { 6, true, 57m, 2, 2 },
+                    { 7, false, 37m, 2, 2 },
+                    { 8, true, 37m, 2, 1 },
+                    { 9, true, 47m, 2, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "trail",
+                columns: new[] { "id", "difficulty_id", "is_functional", "length", "name", "resort_id" },
+                values: new object[,]
+                {
+                    { 1, 2, true, 357m, "Babanovac", 2 },
+                    { 2, 3, true, 699m, "Poljice", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "user",
                 columns: new[] { "id", "email", "is_verified", "last_login_date", "password", "registration_date", "user_details_id", "user_role_id" },
                 values: new object[,]
                 {
-                    { 1, "employee@email.com", true, new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7035), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7093), null, 2 },
-                    { 2, "admin@email.com", true, new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7097), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7099), null, 1 },
-                    { 3, "user@email.com", true, new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7102), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 24, 1, 43, 13, 10, DateTimeKind.Local).AddTicks(7103), null, 3 }
+                    { 1, "employee@email.com", true, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6826), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6867), null, 2 },
+                    { 2, "admin@email.com", true, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6871), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6873), null, 1 },
+                    { 3, "user@email.com", true, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6876), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6878), null, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "lift_location",
+                columns: new[] { "id", "lift_id", "location_x", "location_y" },
+                values: new object[,]
+                {
+                    { 1, 1, 43.729465m, 18.565698m },
+                    { 2, 1, 43.732628m, 18.571362m },
+                    { 3, 2, 43.736905m, 18.566122m },
+                    { 4, 2, 43.732582m, 18.562523m },
+                    { 5, 3, 44.314474m, 17.573487m },
+                    { 6, 3, 44.311628m, 17.581339m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "trail_location",
+                columns: new[] { "id", "location_x", "location_y", "trail_id" },
+                values: new object[,]
+                {
+                    { 1, 44.314662m, 17.573635m, 1 },
+                    { 2, 44.313771m, 17.575462m, 1 },
+                    { 3, 44.313441m, 17.578091m, 1 },
+                    { 4, 44.312513m, 17.580054m, 1 },
+                    { 5, 44.311523m, 17.580822m, 1 },
+                    { 6, 43.736601m, 18.565749m, 2 },
+                    { 7, 43.734914m, 18.564499m, 2 },
+                    { 8, 43.733705m, 18.564546m, 2 },
+                    { 9, 43.732563m, 18.562966m, 2 },
+                    { 10, 43.732035m, 18.560514m, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -586,8 +685,8 @@ namespace skiCentar.Services.Migrations
                 columns: new[] { "id", "interaction_timestamp", "interaction_type", "poi_id", "user_id" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 8, 23, 23, 43, 13, 10, DateTimeKind.Utc).AddTicks(7118), "view", 1, 3 },
-                    { 2, new DateTime(2024, 8, 23, 23, 43, 13, 10, DateTimeKind.Utc).AddTicks(7119), "view", 1, 3 }
+                    { 1, new DateTime(2024, 8, 25, 13, 38, 39, 875, DateTimeKind.Utc).AddTicks(6896), "view", 1, 3 },
+                    { 2, new DateTime(2024, 8, 25, 13, 38, 39, 875, DateTimeKind.Utc).AddTicks(6897), "view", 1, 3 }
                 });
 
             migrationBuilder.CreateIndex(

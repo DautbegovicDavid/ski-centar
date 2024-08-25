@@ -5,6 +5,7 @@ import 'package:skicentar_mobile/models/lift.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/providers/lift_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
+import 'package:skicentar_mobile/utils/utils.dart';
 
 class ManageLiftScreen extends StatefulWidget {
   @override
@@ -14,8 +15,7 @@ class ManageLiftScreen extends StatefulWidget {
 class _ManageLiftScreenState extends State<ManageLiftScreen> {
   late GoogleMapController mapController;
 
-  LatLng _center =
-      const LatLng(43.820, 18.313);// Sarajevo
+  LatLng _center = const LatLng(43.820, 18.313); // Sarajevo
 
   late LiftProvider liftProvider;
   late ResortProvider resortProvider;
@@ -60,27 +60,46 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
   }
 
   void _setMarkersAndPolylines() {
-    final Set<Marker> markers = lifts!.result.expand((lift) {
+    final filteredLifts =
+        lifts!.result.where((lift) => lift.stateMachine != 'hidden').toList();
+
+    final Set<Marker> markers = filteredLifts.expand((lift) {
       return lift.liftLocations!.map((location) {
+        BitmapDescriptor iconColor;
+        if (lift.stateMachine == 'draft') {
+          iconColor =
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+        } else {
+          iconColor = (lift.isFunctional ?? false)
+              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
+              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+        }
+
         return Marker(
           markerId: MarkerId('${lift.name}_${location.id}'),
           position: LatLng(location.locationX!, location.locationY!),
           infoWindow: InfoWindow(title: lift.name),
-          icon: (lift.isFunctional ?? false)
-              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
-              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          icon: iconColor,
           onTap: () => _onMarkerTapped(lift),
         );
       });
     }).toSet();
 
-    final Set<Polyline> liftPolylines = lifts!.result.map((lift) {
+    final Set<Polyline> liftPolylines = filteredLifts.map((lift) {
+      Color polylineColor;
+      if (lift.stateMachine == 'draft') {
+        polylineColor = Colors.orange;
+      } else {
+        polylineColor =
+            (lift.isFunctional ?? false) ? Colors.green : Colors.red;
+      }
+
       return Polyline(
         polylineId: PolylineId('${lift.name}_polyline'),
         points: lift.liftLocations!
             .map((location) => LatLng(location.locationX!, location.locationY!))
             .toList(),
-        color: (lift.isFunctional ?? false) ? Colors.green : Colors.red,
+        color: polylineColor,
         width: 5,
         onTap: () => _onPolylineTapped(lift),
       );
@@ -112,7 +131,9 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
   }
 
   void _onPolylineTapped(Lift lift) {
-    _showStatusDialog(lift);
+    if (lift.stateMachine == 'draft') {
+      _showStatusDialog(lift);
+    }
   }
 
   void _showStatusDialog(Lift lift) {
@@ -121,7 +142,8 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Change Lift Status'),
-          content: Text('Do you want to mark this lift as ${lift.isFunctional! ? "inactive" : "active"}?'),
+          content: Text(
+              'Do you want to mark this lift as ${lift.isFunctional! ? "inactive" : "active"}?'),
           actions: [
             TextButton(
               onPressed: () {
@@ -143,9 +165,17 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
   }
 
   void _updateLiftStatus(Lift lift) async {
-    lift.isFunctional = !(lift.isFunctional ?? false);
-    await liftProvider.update(lift.id!, lift);
-    _fetchData();
+    if (lift.stateMachine != "active") {
+      lift.isFunctional = !(lift.isFunctional ?? false);
+      await liftProvider.update(lift.id!, lift);
+      // ignore: use_build_context_synchronously
+      showCustomSnackBar(context, Icons.check, Colors.green,
+          'Success, lift is marked as active.');
+      _fetchData();
+    } else {
+      showCustomSnackBar(
+          context, Icons.error, Colors.red, 'Error, lift state is active.');
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {

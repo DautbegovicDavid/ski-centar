@@ -670,10 +670,11 @@ public partial class SkiCenterContext : DbContext
         });
 
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Resort>().HasData(
-    new Resort { Id = 1, Elevation = 1500, Location = "Sarajevo", Name = "Jahorina", SkiWorkHours = "9 AM - 5 PM" },
-    new Resort { Id = 2, Elevation = 1500, Location = "Travnik", Name = "Vlasic", SkiWorkHours = "9 AM - 5 PM" }
-);
+            new Resort { Id = 1, Elevation = 2000, Location = "Sarajevo", Name = "Jahorina", SkiWorkHours = "od 9 do 4" },
+            new Resort { Id = 2, Elevation = 1500, Location = "Travnik", Name = "Vlasic", SkiWorkHours = "9 AM - 5 PM" }
+        );
 
         modelBuilder.Entity<LiftType>().HasData(
             new LiftType { Id = 1, Name = "Sjedeznica" },
@@ -685,18 +686,30 @@ public partial class SkiCenterContext : DbContext
         );
 
         modelBuilder.Entity<PoiCategory>().HasData(
-            new PoiCategory { Id = 1, Name = "Ski kasa" },
-            new PoiCategory { Id = 2, Name = "Ski skola" },
-            new PoiCategory { Id = 3, Name = "Ski Rental" },
-            new PoiCategory { Id = 4, Name = "Hitna" },
-            new PoiCategory { Id = 5, Name = "WC" },
+            new PoiCategory { Id = 1, Name = "Info" },
+            new PoiCategory { Id = 2, Name = "Ski School" },
+            new PoiCategory { Id = 3, Name = "Ski Rent" },
+            new PoiCategory { Id = 4, Name = "Hotel" },
+            new PoiCategory { Id = 5, Name = "Medical" },
             new PoiCategory { Id = 6, Name = "Parking" },
-            new PoiCategory { Id = 7, Name = "Restoran" },
-            new PoiCategory { Id = 8, Name = "Kafic" }
+            new PoiCategory { Id = 7, Name = "Restaurant" },
+            new PoiCategory { Id = 8, Name = "Coffee & Tea" },
+            new PoiCategory { Id = 9, Name = "Bar" }
         );
 
         modelBuilder.Entity<PointOfInterest>().HasData(
-            new PointOfInterest { Id = 1, CategoryId = 7, Description = "Restaurant 1", LocationX = 45.123456m, LocationY = 14.123456m, Name = "Restaurant 1", ResortId = 1 }
+            new PointOfInterest { Id = 1, CategoryId = 1, Description = "Info and Tickets shop", LocationX = 43.732600m, LocationY = 18.565900m, Name = "Informacije", ResortId = 1 },
+            new PointOfInterest { Id = 2, CategoryId = 2, Description = "Ski School", LocationX = 43.732700m, LocationY = 18.566000m, Name = "PRO SKI SCHOOL", ResortId = 1 },
+            new PointOfInterest { Id = 3, CategoryId = 3, Description = "Ski rental", LocationX = 43.732800m, LocationY = 18.566100m, Name = "Vucko SKI rent", ResortId = 1 },
+            new PointOfInterest { Id = 4, CategoryId = 4, Description = "Hotel & Spa", LocationX = 43.732900m, LocationY = 18.566200m, Name = "Hotel Vucko", ResortId = 1 },
+            new PointOfInterest { Id = 5, CategoryId = 5, Description = "Medic & Apotecary 0-24", LocationX = 43.733000m, LocationY = 18.566300m, Name = "Hitna", ResortId = 1 },
+            new PointOfInterest { Id = 6, CategoryId = 6, Description = "PARKING 0-24", LocationX = 43.733100m, LocationY = 18.566400m, Name = "Parking", ResortId = 1 },
+            new PointOfInterest { Id = 7, CategoryId = 7, Description = "Restaurant 1", LocationX = 43.733200m, LocationY = 18.566500m, Name = "Restaurant 1", ResortId = 1 },
+            new PointOfInterest { Id = 8, CategoryId = 8, Description = "Coffeee & Tea", LocationX = 43.733300m, LocationY = 18.566600m, Name = "Cafe bar 1", ResortId = 1 },
+            new PointOfInterest { Id = 9, CategoryId = 9, Description = "Bar", LocationX = 43.733400m, LocationY = 18.566700m, Name = "Peggy", ResortId = 1 },
+            new PointOfInterest { Id = 10, CategoryId = 1, Description = "Info and Tickets shop", LocationX = 44.302800m, LocationY = 17.595000m, Name = "Info Center Vlasic", ResortId = 2 },
+            new PointOfInterest { Id = 11, CategoryId = 2, Description = "Ski School Vlasic", LocationX = 44.302900m, LocationY = 17.595100m, Name = "Vlasic SKI SCHOOL", ResortId = 2 },
+            new PointOfInterest { Id = 12, CategoryId = 3, Description = "Ski rental Vlasic", LocationX = 44.303000m, LocationY = 17.595200m, Name = "Vlasic SKI rent", ResortId = 2 }
         );
 
         modelBuilder.Entity<TrailDifficulty>().HasData(
@@ -723,8 +736,61 @@ public partial class SkiCenterContext : DbContext
             new UserPoiInteraction { Id = 2, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
         );
 
+        modelBuilder.Entity<TicketTypeSeniority>().HasData(
+            new TicketTypeSeniority { Id = 1, Seniority = "Junior" },
+            new TicketTypeSeniority { Id = 2, Seniority = "Adult" },
+            new TicketTypeSeniority { Id = 3, Seniority = "Senior" }
+        );
 
+        modelBuilder.Entity<TicketType>().HasData(
+            new TicketType { Id = 1, FullDay = true, Price = 100, TicketTypeSeniorityId = 2, ResortId = 1 },
+            new TicketType { Id = 2, FullDay = false, Price = 67, TicketTypeSeniorityId = 2, ResortId = 1 },
+            new TicketType { Id = 3, FullDay = true, Price = 50, TicketTypeSeniorityId = 1, ResortId = 1 },
+            new TicketType { Id = 4, FullDay = false, Price = 50, TicketTypeSeniorityId = 1, ResortId = 1 },
+            new TicketType { Id = 5, FullDay = true, Price = 67, TicketTypeSeniorityId = 3, ResortId = 1 },
+            new TicketType { Id = 6, FullDay = true, Price = 57, TicketTypeSeniorityId = 2, ResortId = 2 },
+            new TicketType { Id = 7, FullDay = false, Price = 37, TicketTypeSeniorityId = 2, ResortId = 2 },
+            new TicketType { Id = 8, FullDay = true, Price = 37, TicketTypeSeniorityId = 1, ResortId = 2 },
+            new TicketType { Id = 9, FullDay = true, Price = 47, TicketTypeSeniorityId = 3, ResortId = 2 }
+        );
 
+        modelBuilder.Entity<Lift>().HasData(
+            new Lift { Id = 1, IsFunctional = true, Capacity = 6, ResortId = 1, StateMachine = "draft", LiftTypeId = 1, Name = "Ogorjelica" },
+            new Lift { Id = 2, IsFunctional = true, Capacity = 2, ResortId = 1, StateMachine = "draft", LiftTypeId = 3, Name = "Poljice" },
+            new Lift { Id = 3, IsFunctional = true, Capacity = 2, ResortId = 2, StateMachine = "draft", LiftTypeId = 3, Name = "Babanovac" }
+        );
+
+        modelBuilder.Entity<LiftLocation>().HasData(
+           new LiftLocation { Id = 1, LiftId = 1, LocationX = 43.729465m, LocationY = 18.565698m },
+           new LiftLocation { Id = 2, LiftId = 1, LocationX = 43.732628m, LocationY = 18.571362m },
+           new LiftLocation { Id = 3, LiftId = 2, LocationX = 43.736905m, LocationY = 18.566122m },
+           new LiftLocation { Id = 4, LiftId = 2, LocationX = 43.732582m, LocationY = 18.562523m },
+           new LiftLocation { Id = 5, LiftId = 3, LocationX = 44.314474m, LocationY = 17.573487m },
+           new LiftLocation { Id = 6, LiftId = 3, LocationX = 44.311628m, LocationY = 17.581339m }
+        );
+
+        modelBuilder.Entity<Trail>().HasData(
+            new Trail { Id = 1, IsFunctional = true, DifficultyId = 2, ResortId = 2, Name = "Babanovac", Length = 357 },
+            new Trail { Id = 2, IsFunctional = true, DifficultyId = 3, ResortId = 1, Name = "Poljice", Length = 699 }
+        );
+
+        modelBuilder.Entity<TrailLocation>().HasData(
+          new TrailLocation { Id = 1, TrailId = 1, LocationX = 44.314662m, LocationY = 17.573635m },
+          new TrailLocation { Id = 2, TrailId = 1, LocationX = 44.313771m, LocationY = 17.575462m },
+          new TrailLocation { Id = 3, TrailId = 1, LocationX = 44.313441m, LocationY = 17.578091m },
+          new TrailLocation { Id = 4, TrailId = 1, LocationX = 44.312513m, LocationY = 17.580054m },
+          new TrailLocation { Id = 5, TrailId = 1, LocationX = 44.311523m, LocationY = 17.580822m },
+          new TrailLocation { Id = 6, TrailId = 2, LocationX = 43.736601m, LocationY = 18.565749m },
+          new TrailLocation { Id = 7, TrailId = 2, LocationX = 43.734914m, LocationY = 18.564499m },
+          new TrailLocation { Id = 8, TrailId = 2, LocationX = 43.733705m, LocationY = 18.564546m },
+          new TrailLocation { Id = 9, TrailId = 2, LocationX = 43.732563m, LocationY = 18.562966m },
+          new TrailLocation { Id = 10, TrailId = 2, LocationX = 43.732035m, LocationY = 18.560514m }
+        );
+
+        modelBuilder.Entity<DailyWeather>().HasData(
+           new DailyWeather { Id = 1, Temperature = -5, Precipitation = 0, ResortId = 2, WindSpeed = 10, Humidity = 3, WeatherCondition = "ok", SnowHeight = 14, Date = DateTime.Now },
+           new DailyWeather { Id = 2, Temperature = 3, Precipitation = 10, ResortId = 1, WindSpeed = 3, Humidity = 45, WeatherCondition = "not recommended for beginners", SnowHeight = 24, Date = DateTime.Now }
+        );
 
         OnModelCreatingPartial(modelBuilder);
     }
