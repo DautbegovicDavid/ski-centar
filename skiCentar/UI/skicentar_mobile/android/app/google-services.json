@@ -1,0 +1,29 @@
+{
+    "project_info": {
+      "project_number": "1097602246152",
+      "project_id": "notifications-skicenter",
+      "storage_bucket": "notifications-skicenter.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:1097602246152:android:d8f74e06cfc19d968193bd",
+          "android_client_info": {
+            "package_name": "com.example.skicentar_mobile"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyAUd4yl9iP9VX5Z6UpUDtPPFAYYZFj_POk"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
