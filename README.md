@@ -16,7 +16,7 @@ Password: test
 **Employee Login**
 
 ```plaintext
-E-mail: user@email.com
+E-mail: employee@email.com
 Password: test
 ```
 
@@ -29,6 +29,13 @@ Password: test
 
 ```plaintext
 E-mail: user@email.com
+Password: test
+```
+
+**Employee Login**
+
+```plaintext
+E-mail: employee@email.com
 Password: test
 ```
 
@@ -94,4 +101,16 @@ To test user registration, follow these steps:
 - Register a new user account on the application.
 - Log in to the email account used for registration.
 - Check the **Inbox** and **Spam** folder for a confirmation email.
-- Open the email and click on the link inside to confirm the registration.
+- Open the email and click on the link inside to visit app and confirm the registration.
+
+  Notifications
+- either use notifications controller or create ski accident
+
+Ski accidents
+for user to be able to report ski accident he needs to have ski ticket purchased
+after succesfull purchase he will get red button on left bottom side on SKI MAP screen
+
+Tickets
+to but ticket user can go from home screen to "see more" section on ski tickets widget
+
+env files x2 and fcm conf file required for testing
