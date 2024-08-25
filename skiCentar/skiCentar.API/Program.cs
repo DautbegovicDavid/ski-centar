@@ -39,8 +39,9 @@ builder.Services.AddTransient<DraftLiftState>();
 builder.Services.AddTransient<ActiveLiftState>();
 builder.Services.AddTransient<HiddenLiftState>();
 
-// Register WeatherService using AddHttpClient
+// Register WeatherService and FirebaseService 
 builder.Services.AddHttpClient<WeatherService>();
+builder.Services.AddHttpClient<FirebaseService>();
 builder.Services.AddTransient<RecommendationsService>();
 
 // RabbitMQ

@@ -64,5 +64,14 @@ namespace skiCentar.Services
 
             return filteredQuery;
         }
+
+        public override Model.SkiAccident Insert(SkiAccidentUpsertRequest request)
+        {
+            var entity = base.Insert(request);
+
+            FirebaseService.SendNotificationToAllDevices("New Ski Accident Reported", "A new ski accident has been reported. Please check details.").Wait();
+
+            return entity;
+        }
     }
 }

@@ -5,6 +5,9 @@
 
 .env
 
+# Ignore Firebase service account key
+firebase-cred.json
+
 # User-specific files
 *.rsuser
 *.suo
