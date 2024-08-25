@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: pois.map((poi) {
         return Padding(
           padding:
-              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+              const EdgeInsets.only(bottom: 2.0),
           child: Text(
             poi.name.toString(),
             style: const TextStyle(fontSize: 16),
