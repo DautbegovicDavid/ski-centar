@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-// import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/utils/auth_helper.dart';
 
@@ -13,7 +12,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
     baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:5160/api/");
+        defaultValue: "http://10.0.2.2:49153/api/");
   }
 
   Future<SearchResult<T>> get({dynamic filter}) async {
@@ -123,7 +122,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 401) {
       throw Exception("Unauthorized");
     } else {
-      print(response.body);
       throw Exception("Something bad happened please try again");
     }
   }

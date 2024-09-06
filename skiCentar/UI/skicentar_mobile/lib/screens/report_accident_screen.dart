@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/components/dropdown_field.dart';
 import 'package:skicentar_mobile/components/input_field.dart';
 import 'package:skicentar_mobile/components/toggle_field.dart';
-import 'package:skicentar_mobile/models/lift.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/models/trail.dart';
-import 'package:skicentar_mobile/providers/lift_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ski_accident_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
@@ -18,6 +15,8 @@ import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/utils/utils.dart';
 
 class ReportAccidentScreen extends StatefulWidget {
+  const ReportAccidentScreen({super.key});
+
   @override
   State<ReportAccidentScreen> createState() => _ReportAccidentScreenState();
 }

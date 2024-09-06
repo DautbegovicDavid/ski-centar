@@ -8,12 +8,12 @@ class AuthProvider {
   static String? _baseUrl;
   AuthProvider() {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:5160/api/Authentication");
+        defaultValue: "http://10.0.2.2:49153/api/");
   }
 
-  static const String _loginEndpoint = '/login';
-  static const String _registerEndpoint = '/register';
-  static const String _verifyEndpoint = '/verifyUser';
+  static const String _loginEndpoint = 'Authentication/login';
+  static const String _registerEndpoint = 'Authentication/register';
+  static const String _verifyEndpoint = 'Authentication/verifyUser';
 
   Future<dynamic> login(String email, String password) async {
     final response = await ApiHelper.post(_baseUrl!, _loginEndpoint,
