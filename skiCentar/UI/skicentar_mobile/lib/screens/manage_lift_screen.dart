@@ -66,19 +66,19 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
     final Set<Marker> markers = filteredLifts.expand((lift) {
       return lift.liftLocations!.map((location) {
         BitmapDescriptor iconColor;
-        if (lift.stateMachine == 'draft') {
-          iconColor =
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
-        } else {
-          iconColor = (lift.isFunctional ?? false)
-              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
-              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
-        }
+
+        iconColor = (lift.isFunctional ?? false)
+            ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
+            : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
 
         return Marker(
           markerId: MarkerId('${lift.name}_${location.id}'),
           position: LatLng(location.locationX!, location.locationY!),
-          infoWindow: InfoWindow(title: lift.name),
+          infoWindow: InfoWindow(
+              title: lift.name,
+              snippet: (lift.isFunctional ?? false)
+                  ? "Functional"
+                  : "Non Functional"),
           icon: iconColor,
           onTap: () => _onMarkerTapped(lift),
         );
@@ -101,7 +101,6 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
             .toList(),
         color: polylineColor,
         width: 5,
-        onTap: () => _onPolylineTapped(lift),
       );
     }).toSet();
 
@@ -128,12 +127,6 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
 
   void _onMarkerTapped(Lift lift) {
     _showStatusDialog(lift);
-  }
-
-  void _onPolylineTapped(Lift lift) {
-    if (lift.stateMachine == 'draft') {
-      _showStatusDialog(lift);
-    }
   }
 
   void _showStatusDialog(Lift lift) {
@@ -170,7 +163,7 @@ class _ManageLiftScreenState extends State<ManageLiftScreen> {
       await liftProvider.update(lift.id!, lift);
       // ignore: use_build_context_synchronously
       showCustomSnackBar(context, Icons.check, Colors.green,
-          'Success, lift is marked as active.');
+          'Success, lift is marked as ${lift.isFunctional! ? "Active" : "Inactive"}.');
       _fetchData();
     } else {
       showCustomSnackBar(

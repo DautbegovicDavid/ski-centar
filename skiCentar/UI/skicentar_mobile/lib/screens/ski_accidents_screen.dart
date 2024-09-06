@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/models/ski_accident.dart';
@@ -15,8 +16,7 @@ class SkiAccidentsScreen extends StatefulWidget {
 class _SkiAccidentsScreenState extends State<SkiAccidentsScreen> {
   late GoogleMapController mapController;
 
-  LatLng _center =
-      const LatLng(43.820, 18.313);
+  LatLng _center = const LatLng(43.820, 18.313);
 
   late SkiAccidentProvider accidentProvider;
   late ResortProvider resortProvider;
@@ -41,9 +41,7 @@ class _SkiAccidentsScreenState extends State<SkiAccidentsScreen> {
   }
 
   Future<void> _fetchData() async {
-    accidents = await accidentProvider.get(filter: {
-      'IsActive': true
-    });
+    accidents = await accidentProvider.get(filter: {'IsActive': true});
     _setMarkers();
     if (mounted) {
       setState(() {});
@@ -53,16 +51,18 @@ class _SkiAccidentsScreenState extends State<SkiAccidentsScreen> {
   void _setMarkers() async {
     Map<String, BitmapDescriptor> categoryIcons = await getCategoryIcons();
 
-    final Set<Marker> markers = accidents!.result.where((poi) {
-      return poi.locationX != null &&
-          poi.locationY != null;
-    }).map((poi) {
+    final Set<Marker> markers = accidents!.result.where((accident) {
+      return accident.locationX != null && accident.locationY != null;
+    }).map((accident) {
       BitmapDescriptor icon = categoryIcons['Accidents'] ??
           BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
       return Marker(
-        markerId: MarkerId('${poi.id}'),
-        position: LatLng(poi.locationX!, poi.locationY!),
-        infoWindow: const InfoWindow(title: 'Active Ski Accident'),
+        markerId: MarkerId('${accident.id}'),
+        position: LatLng(accident.locationX!, accident.locationY!),
+        infoWindow: InfoWindow(
+            title: 'Active Ski Accident',
+            snippet:
+                "${accident.peopleInvolved != null ? "People involved: ${accident.peopleInvolved}," : ""} Time: ${accident.timestamp != null ? DateFormat('hh:mm bs').format(accident.timestamp!) : 'N/A'}}"),
         icon: icon,
       );
     }).toSet();

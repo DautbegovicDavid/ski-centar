@@ -17,9 +17,9 @@ SkiAccident _$SkiAccidentFromJson(Map<String, dynamic> json) => SkiAccident(
       ..userId = (json['userId'] as num?)?.toInt()
       ..trailId = (json['trailId'] as num?)?.toInt()
       ..peopleInvolved = (json['peopleInvolved'] as num?)?.toInt()
-      ..timeStamp = json['timeStamp'] == null
+      ..timestamp = json['timestamp'] == null
           ? null
-          : DateTime.parse(json['timeStamp'] as String)
+          : DateTime.parse(json['timestamp'] as String)
       ..trail = json['trail'] == null
           ? null
           : Trail.fromJson(json['trail'] as Map<String, dynamic>)
@@ -38,7 +38,7 @@ Map<String, dynamic> _$SkiAccidentToJson(SkiAccident instance) =>
       'peopleInvolved': instance.peopleInvolved,
       'locationX': instance.locationX,
       'locationY': instance.locationY,
-      'timeStamp': instance.timeStamp?.toIso8601String(),
+      'timestamp': instance.timestamp?.toIso8601String(),
       'trail': instance.trail,
       'user': instance.user,
     };

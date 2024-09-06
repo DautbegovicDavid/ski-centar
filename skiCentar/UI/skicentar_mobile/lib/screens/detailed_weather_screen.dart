@@ -27,16 +27,17 @@ class DetailedWeatherScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     _buildSectionHeader('Resort Data'),
+                    _buildSectionHeader('Resort Data'),
                     _buildWeatherRow('Last update', formatDate(weather.date!)),
                     _buildWeatherRow(
                         'Condition', weather.weatherCondition.toString()),
                     _buildWeatherRow('Wind Speed', '${weather.windSpeed} km/h'),
                     _buildWeatherRow('Snow Height', '${weather.snowHeight} cm'),
-                    _buildWeatherRow('Snow Height', '${weather.humidity} %'),
-                    _buildWeatherRow('Snow Height', '${weather.precipitation} mm'),
+                    _buildWeatherRow('Humidity', '${weather.humidity} %'),
+                    _buildWeatherRow(
+                        'Precipitation', '${weather.precipitation} mm'),
                     const Divider(),
-                     _buildSectionHeader('Live Data'),
+                    _buildSectionHeader('Live Data'),
                     _buildWeatherRow('Location', weatherData['name']),
                     _buildWeatherRow(
                         'Temperature', '${weatherData['main']['temp']}°C'),
@@ -87,5 +88,4 @@ class DetailedWeatherScreen extends StatelessWidget {
       ),
     );
   }
-
 }

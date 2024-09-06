@@ -15,7 +15,7 @@ class SkiAccident {
   int? peopleInvolved;
   double? locationX;
   double? locationY;
-  DateTime? timeStamp;
+  DateTime? timestamp;
 
   Trail? trail;
   User? user;

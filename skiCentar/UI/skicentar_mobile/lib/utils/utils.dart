@@ -12,22 +12,25 @@ void showCustomSnackBar(BuildContext context, IconData icon,
     SnackBar(
       content: Row(
         children: [
-          Icon(icon, color: Colors.white), // Icon with white color
+          Icon(icon, color: Colors.white),
           const SizedBox(width: 8),
-          Text(
-            message,
-            style: const TextStyle(color: Colors.white), // Text color
-          ),
+          Expanded(
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
+          )
         ],
       ),
-      backgroundColor: backgroundColor, // Background color
+      backgroundColor: backgroundColor,
     ),
   );
 }
 
 String formatDate(DateTime date) {
-  final DateFormat formatter =
-      DateFormat.yMMMMd().add_jm();
+  final DateFormat formatter = DateFormat.yMMMMd().add_jm();
   return formatter.format(date);
 }
 
