@@ -101,7 +101,10 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
         return Marker(
           markerId: MarkerId('${lift.name}_${location.id}'),
           position: LatLng(location.locationX!, location.locationY!),
-          infoWindow: InfoWindow(title: lift.name, snippet: lift.stateMachine != "active" ? "Under maintenance" : null),
+          infoWindow: InfoWindow(
+              title: lift.name,
+              snippet:
+                  lift.stateMachine != "active" ? "Under maintenance" : null),
           icon: iconColor,
         );
       });

@@ -10,12 +10,14 @@ namespace skiCentar.Services
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<FirebaseService> _logger;
+        private readonly HttpClient _httpClient;
         private string FCM_SEND_URL;
 
-        public FirebaseService(IConfiguration configuration, ILogger<FirebaseService> logger)
+        public FirebaseService(IConfiguration configuration, ILogger<FirebaseService> logger, HttpClient httpClient)
         {
             _configuration = configuration;
             _logger = logger;
+            _httpClient = httpClient;
             FCM_SEND_URL = Environment.GetEnvironmentVariable("FIREBASE_NOTIFICATIONS_URL")
                 ?? _configuration["Firebase:Url"];
         }
@@ -55,25 +57,22 @@ namespace skiCentar.Services
 
                 var jsonMessage = JsonConvert.SerializeObject(message);
 
-                using (var httpClient = new HttpClient())
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await credential.UnderlyingCredential.GetAccessTokenForRequestAsync());
+                var request = new HttpRequestMessage(HttpMethod.Post, FCM_SEND_URL)
                 {
-                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await credential.UnderlyingCredential.GetAccessTokenForRequestAsync());
-                    var request = new HttpRequestMessage(HttpMethod.Post, FCM_SEND_URL)
-                    {
-                        Content = new StringContent(jsonMessage, Encoding.UTF8, "application/json")
-                    };
+                    Content = new StringContent(jsonMessage, Encoding.UTF8, "application/json")
+                };
 
-                    var response = await httpClient.SendAsync(request);
+                var response = await _httpClient.SendAsync(request);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        _logger.LogInformation("Notification sent successfully.");
-                    }
-                    else
-                    {
-                        var responseBody = await response.Content.ReadAsStringAsync();
-                        _logger.LogError($"Error sending notification: {response.StatusCode} - {responseBody}");
-                    }
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("Notification sent successfully.");
+                }
+                else
+                {
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"Error sending notification: {response.StatusCode} - {responseBody}");
                 }
             }
             catch (Exception ex)

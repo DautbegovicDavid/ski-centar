@@ -8,8 +8,10 @@ namespace skiCentar.Services
 {
     public class SkiAccidentService : BaseCRUDService<Model.SkiAccident, SkiAccidentSearchObject, Database.SkiAccident, SkiAccidentUpsertRequest, SkiAccidentUpsertRequest>, ISkiAccidentService
     {
-        public SkiAccidentService(SkiCenterContext context, IMapper mapper) : base(context, mapper)
+        private readonly FirebaseService _firebaseService;
+        public SkiAccidentService(SkiCenterContext context, IMapper mapper, FirebaseService firebaseService) : base(context, mapper)
         {
+            _firebaseService = firebaseService;
         }
 
         public override IQueryable<SkiAccident> AddFilter(SkiAccidentSearchObject searchObject, IQueryable<SkiAccident> query)
@@ -69,7 +71,7 @@ namespace skiCentar.Services
         {
             var entity = base.Insert(request);
 
-            FirebaseService.SendNotificationToAllDevices("New Ski Accident Reported", "A new ski accident has been reported. Please check details.").Wait();
+            _firebaseService.SendNotificationToAllDevices("New Ski Accident Reported", "A new ski accident has been reported. Please check details.").Wait();
 
             return entity;
         }
