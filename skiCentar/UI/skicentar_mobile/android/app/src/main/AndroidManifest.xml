@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="skicentar_mobile"
+        android:label="SKI CENTRI BIH"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
                 

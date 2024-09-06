@@ -8,7 +8,7 @@ import 'package:skicentar_mobile/utils/auth_helper.dart';
 
 class UserProvider extends BaseProvider<User> {
   final String _baseUrl = const String.fromEnvironment("baseUrl",
-      defaultValue: "http://10.0.2.2:5160/api/");
+      defaultValue: "http://10.0.2.2:49153/api/");
 
   UserProvider() : super("User");
 
