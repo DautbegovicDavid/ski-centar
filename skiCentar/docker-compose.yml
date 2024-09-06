@@ -72,6 +72,8 @@ services:
       - skicentar-sql
     depends_on:
       - skicentar-sql
+    volumes:
+        - ./firebase-cred.json:/app/firebase-cred.json
       
 networks:
   skicentarnet:
