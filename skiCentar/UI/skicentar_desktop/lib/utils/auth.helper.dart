@@ -4,12 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthHelper {
 
-  static String? _baseUrl;
-  AuthHelper() {
-    _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5160/api/");
-  }
-
   static bool isValidResponse(Response response) {
     if (response.statusCode < 299) {
       return true;

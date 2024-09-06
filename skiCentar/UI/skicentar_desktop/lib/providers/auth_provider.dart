@@ -7,10 +7,10 @@ class AuthProvider {
   static String? _baseUrl;
   AuthProvider() {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5160/api/Authentication");
+        defaultValue: "http://localhost:49153/api/");
   }
 
-  static const String _loginEndpoint = '/login';
+  static const String _loginEndpoint = 'Authentication/login';
 
   Future<dynamic> login(String email, String password) async {
     final response = await ApiHelper.post(_baseUrl!, _loginEndpoint,
