@@ -105,6 +105,7 @@ To test user registration, follow these steps:
 
   Notifications
 - either use notifications controller or create ski accident
+- for Android 13+ enable notifications in settings -> https://github.com/llfbandit/app_links/blob/master/doc/README_android.md
 
 Ski accidents
 for user to be able to report ski accident he needs to have ski ticket purchased
