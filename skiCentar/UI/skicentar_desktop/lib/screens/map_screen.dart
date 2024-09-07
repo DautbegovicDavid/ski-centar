@@ -27,13 +27,15 @@ class MarkersPage extends StatefulWidget {
   final List<LatLng> initialMarkers;
   final Function(List<LatLng>) onLocationsAdded;
   final int maxNumberOfMarkers;
+  final bool enabled;
 
-  const MarkersPage(
-      {Key? key,
-      required this.onLocationsAdded,
-      required this.initialMarkers,
-      this.maxNumberOfMarkers = 10})
-      : super(key: key);
+  const MarkersPage({
+    Key? key,
+    required this.onLocationsAdded,
+    required this.initialMarkers,
+    this.maxNumberOfMarkers = 10,
+    this.enabled = true,
+  }) : super(key: key);
 
   @override
   MarkersPageState createState() => MarkersPageState();
@@ -51,11 +53,13 @@ class MarkersPageState extends State<MarkersPage> {
     markers = widget.initialMarkers;
     shape2.points.addAll(markers);
     if (widget.initialMarkers.isNotEmpty) {
-      controller.center = LatLng(markers.first.latitude,markers.first.longitude);
+      controller.center =
+          LatLng(markers.first.latitude, markers.first.longitude);
     }
   }
 
   void _onDoubleTap(MapTransformer transformer, Offset position) {
+    if (!widget.enabled) return;
     const delta = 0.5;
     final zoom = clamp(controller.zoom + delta, 2, 18);
 
@@ -96,6 +100,7 @@ class MarkersPageState extends State<MarkersPage> {
   }
 
   void _onMarkerTap(LatLng marker) {
+    if (!widget.enabled) return;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -164,22 +169,25 @@ class MarkersPageState extends State<MarkersPage> {
               transformer,
               details.localPosition,
             ),
-            onTapUp: (details) {
-              if (markers.length == widget.maxNumberOfMarkers) {
-                showCustomSnackBar(
-                    context,
-                    Icons.error_outline_rounded,
-                    Colors.red,
-                    'Maximum number of markers reached. Click on an existing marker to delete it.');
-                return;
-              }
-              final location = transformer.toLatLng(details.localPosition);
-              setState(() {
-                markers.add(location);
-                shape2.points.add(location);
-              });
-              widget.onLocationsAdded(markers);
-            },
+            onTapUp: widget.enabled
+                ? (details) {
+                    if (markers.length == widget.maxNumberOfMarkers) {
+                      showCustomSnackBar(
+                          context,
+                          Icons.error_outline_rounded,
+                          Colors.red,
+                          'Maximum number of markers reached. Click on an existing marker to delete it.');
+                      return;
+                    }
+                    final location =
+                        transformer.toLatLng(details.localPosition);
+                    setState(() {
+                      markers.add(location);
+                      shape2.points.add(location);
+                    });
+                    widget.onLocationsAdded(markers);
+                  }
+                : null,
             onScaleStart: _onScaleStart,
             onScaleUpdate: (details) => _onScaleUpdate(details, transformer),
             child: Listener(

@@ -137,7 +137,8 @@ class _LiftAddScreenState extends State<LiftAddScreen> {
           MarkersPage(
               onLocationsAdded: _onLocationsAdded,
               initialMarkers: addedLocations,
-              maxNumberOfMarkers: 2)
+              maxNumberOfMarkers: 2,
+              enabled: !hideSaveButton)
         ]),
         true,
         false);
