@@ -245,6 +245,7 @@ class _MasterScreenState extends State<MasterScreen> {
                       builder: (context) => const TicketTypeListScreen()));
                 },
               ),
+              if(user?.userRole?.name == 'Admin')
               ListTile(
                 leading: const Icon(Icons.people),
                 title: const Text("Users"),

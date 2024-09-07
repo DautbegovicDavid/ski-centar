@@ -13,6 +13,7 @@ import 'package:skicentar_desktop/providers/lift_provider.dart';
 import 'package:skicentar_desktop/providers/lift_type_provider.dart';
 import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/screens/lift_add_screen.dart';
+import 'package:skicentar_desktop/utils/utils.dart';
 
 class LiftListScreen extends StatefulWidget {
   const LiftListScreen({super.key});
@@ -107,11 +108,18 @@ class _LiftListScreenState extends State<LiftListScreen> {
                     .toList(),
               ),
               const Spacer(),
-              if (_formKey.currentState?.isDirty ?? false)
+              if (isFormDirty(_formKey, ['LiftTypeId', 'ResortId', 'NameGTE']))
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () async {
-                    _formKey.currentState?.reset();
+                    resetForm(
+                      _formKey,
+                      {
+                        'LiftTypeId': null,
+                        'ResortId': null,
+                        'NameGTE': '',
+                      },
+                    );
                     result = await provider.get(filter: filter);
                     setState(() {});
                   },

@@ -50,7 +50,7 @@ class _TicketTypeAddScreenState extends State<TicketTypeAddScreen> {
       'ticketTypeSeniorityId':
           widget.ticketType?.ticketTypeSeniorityId.toString(),
            'resortId':
-          widget.ticketType?.toString(),
+          widget.ticketType?.resortId.toString(),
       'fullDay': widget.ticketType?.fullDay ?? false,
     };
     seniorities = await seniorityProvider.get();

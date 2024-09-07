@@ -14,6 +14,7 @@ import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
 import 'package:skicentar_desktop/screens/ticket_type_add_screen.dart';
+import 'package:skicentar_desktop/utils/utils.dart';
 
 class TicketTypeListScreen extends StatefulWidget {
   const TicketTypeListScreen({super.key});
@@ -78,7 +79,7 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
           initialValue: _initialValue,
           child: Row(
             children: [
-               DropdownField(
+              DropdownField(
                 name: "resortId",
                 labelText: "Resort",
                 items: _resorts
@@ -112,11 +113,24 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               const Spacer(),
-              if (_formKey.currentState?.isDirty ?? false)
+              if (isFormDirty(_formKey, [
+                'TicketTypeSeniorityId',
+                'resortId',
+                'PriceFrom',
+                'PriceTo',
+              ]))
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () async {
-                    _formKey.currentState?.reset();
+                    resetForm(
+                      _formKey,
+                      {
+                        'resortId': null,
+                        'TicketTypeSeniorityId': null,
+                        'PriceFrom': null,
+                        'PriceTo': null,
+                      },
+                    );
                     result = await provider.get(filter: filter);
                     setState(() {});
                   },
@@ -144,7 +158,8 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
   void navigateToEditPage(BuildContext context, TicketType ticketType) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TicketTypeAddScreen(ticketType: ticketType)),
+      MaterialPageRoute(
+          builder: (context) => TicketTypeAddScreen(ticketType: ticketType)),
     );
   }
 

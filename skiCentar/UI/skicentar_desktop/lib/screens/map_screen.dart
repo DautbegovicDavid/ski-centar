@@ -155,7 +155,6 @@ class MarkersPageState extends State<MarkersPage> {
           shape2.points.addAll(markers);
           final markerWidgets = markerPositions.map((pos) {
             final index = markerPositions.indexOf(pos);
-            // shape2.points.add(markers[index]);
             return _buildMarkerWidget(pos, Colors.red, markers[index]);
           }).toList();
 

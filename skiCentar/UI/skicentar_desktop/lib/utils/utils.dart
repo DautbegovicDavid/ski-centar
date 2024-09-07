@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:latlng/latlng.dart';
 
@@ -40,4 +41,26 @@ void showCustomSnackBar(BuildContext context, IconData icon,
       backgroundColor: backgroundColor, // Background color
     ),
   );
+}
+
+void resetForm(
+    GlobalKey<FormBuilderState> formKey, Map<String, String?> fieldsToReset) {
+  formKey.currentState?.reset();
+  fieldsToReset.forEach((fieldName, defaultValue) {
+    formKey.currentState?.fields[fieldName]?.didChange(defaultValue);
+  });
+}
+
+bool isFormDirty(GlobalKey<FormBuilderState> formKey, List<String> fieldNames) {
+  final formState = formKey.currentState;
+
+  if (formState == null) return false;
+
+  for (var fieldName in fieldNames) {
+    var fieldValue = formState.fields[fieldName]?.value;
+    if (fieldValue != null && fieldValue.toString().isNotEmpty) {
+      return true;
+    }
+  }
+  return false;
 }

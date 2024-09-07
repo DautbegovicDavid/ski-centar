@@ -101,11 +101,24 @@ class _UserListScreenState extends State<UserListScreen> {
                 labelText: "Registered to",
               ),
               const Spacer(),
-              if (_formKey.currentState?.isDirty ?? false)
+              if (isFormDirty(_formKey, [
+                'emailGTE',
+                'userRoleId',
+                'dateRegisteredFrom',
+                'dateRegisteredTo'
+              ]))
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () async {
-                    _formKey.currentState?.reset();
+                    resetForm(
+                      _formKey,
+                      {
+                        'emailGTE': '',
+                        'userRoleId': null,
+                        'dateRegisteredFrom': null,
+                        'dateRegisteredTo': null,
+                      },
+                    );
                     result = await provider.get(filter: filter);
                     setState(() {});
                   },

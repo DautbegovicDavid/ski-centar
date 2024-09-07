@@ -13,6 +13,7 @@ import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/trail_difficulty.provider.dart';
 import 'package:skicentar_desktop/providers/trail_provider.dart';
 import 'package:skicentar_desktop/screens/trail_add_screen.dart';
+import 'package:skicentar_desktop/utils/utils.dart';
 
 class TrailListScreen extends StatefulWidget {
   const TrailListScreen({super.key});
@@ -119,11 +120,19 @@ class _TrailListScreenState extends State<TrailListScreen> {
                     .toList(),
               ),
               const Spacer(),
-              if (_formKey.currentState?.isDirty ?? false)
+              if (isFormDirty(
+                  _formKey, ['difficultyId', 'resortId', 'NameGTE']))
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () async {
-                    _formKey.currentState?.reset();
+                    resetForm(
+                      _formKey,
+                      {
+                        'difficultyId': null,
+                        'resortId': null,
+                        'NameGTE': '',
+                      },
+                    );
                     result = await provider.get(filter: filter);
                     setState(() {});
                   },

@@ -14,6 +14,7 @@ import 'package:skicentar_desktop/models/search_result.dart';
 import 'package:skicentar_desktop/providers/daily_weather_provider.dart';
 import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/screens/daily_weather_add_screen.dart';
+import 'package:skicentar_desktop/utils/utils.dart';
 
 class DailyWeatherListScreen extends StatefulWidget {
   const DailyWeatherListScreen({super.key});
@@ -73,7 +74,7 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
     return Card(
       margin: const EdgeInsets.all(10.0),
       elevation: 2.0,
-          surfaceTintColor: Colors.white,
+      surfaceTintColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: FormBuilder(
@@ -117,11 +118,26 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               const Spacer(),
-              if (_formKey.currentState?.isDirty ?? false)
+              if (isFormDirty(_formKey, [
+                'DateFrom',
+                'resortId',
+                'DateTo',
+                'TemperatureFrom',
+                'TemperatureTo'
+              ]))
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () async {
-                    _formKey.currentState?.reset();
+                    resetForm(
+                      _formKey,
+                      {
+                        'resortId': null,
+                        'DateFrom': null,
+                        'DateTo': null,
+                        'TemperatureFrom': null,
+                        'TemperatureTo': null
+                      },
+                    );
                     result = await provider.get(filter: filter);
                     setState(() {});
                   },

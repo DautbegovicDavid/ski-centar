@@ -13,6 +13,7 @@ import 'package:skicentar_desktop/providers/poi_category_provider.dart';
 import 'package:skicentar_desktop/providers/poi_provider.dart';
 import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/screens/poi_add_screen.dart';
+import 'package:skicentar_desktop/utils/utils.dart';
 
 class PoiListScreen extends StatefulWidget {
   const PoiListScreen({super.key});
@@ -106,11 +107,18 @@ class _PoiListScreenState extends State<PoiListScreen> {
                     .toList(),
               ),
               const Spacer(),
-              if (_formKey.currentState?.isDirty ?? false)
+              if (isFormDirty(_formKey, ['categoryId', 'resortId', 'NameGTE']))
                 IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () async {
-                    _formKey.currentState?.reset();
+                     resetForm(
+                      _formKey,
+                      {
+                        'categoryId': null,
+                        'resortId': null,
+                        'NameGTE': '',
+                      },
+                    );
                     result = await provider.get(filter: filter);
                     setState(() {});
                   },
