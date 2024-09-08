@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/providers/daily_weather_provider.dart';
 import 'package:skicentar_mobile/providers/lift_provider.dart';
@@ -21,6 +24,7 @@ import 'package:skicentar_mobile/providers/weather_provider.dart';
 import 'package:skicentar_mobile/screens/login_screen.dart';
 import 'package:skicentar_mobile/screens/user_verified_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:skicentar_mobile/utils/map_renderer_initializer.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -37,13 +41,22 @@ void main() async {
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  const InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  if (Platform.isAndroid) {
+    final GoogleMapsFlutterPlatform mapsImplementation =
+        GoogleMapsFlutterPlatform.instance;
+    if (mapsImplementation is GoogleMapsFlutterAndroid) {
+      mapsImplementation.useAndroidViewSurface = true;
+      initializeMapRenderer();
+    }
+  }
+
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure Flutter bindings are initialized
+
+  // Initialize the map renderer before running the app
+  await initializeMapRenderer();
 
   runApp(MultiProvider(
     providers: [
@@ -78,7 +91,6 @@ void requestNotificationPermission() async {
     badge: true,
     sound: true,
   );
-
 }
 
 class MyApp extends StatefulWidget {

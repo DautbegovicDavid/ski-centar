@@ -270,7 +270,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       final fetchedUser = await userProvider.getDetails();
       userProvider.setUser(fetchedUser);
     } catch (e) {
-      print('Failed to load user: $e');
+      throw Exception(e);
     }
   }
 }

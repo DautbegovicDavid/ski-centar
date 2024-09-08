@@ -48,6 +48,13 @@ class _PoiScreenState extends State<PoiScreen> {
     _fetchUser();
   }
 
+  @override
+  void dispose() {
+    mapController.dispose();
+    resortProvider.removeListener(_updateInfo);
+    super.dispose();
+  }
+
   Future<void> _fetchUser() async {
     try {
       final fetchedUser = await userProvider.getDetails();
@@ -142,13 +149,19 @@ class _PoiScreenState extends State<PoiScreen> {
     return Scaffold(
       body: resortProvider.selectedResort == null
           ? const Center(child: Text('Please select a resort'))
-          : GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 14.0,
-              ),
-              markers: _markers,
+          : Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 14.0,
+                  ),
+                  markers: _markers,
+                ),
+                if (!mapLoaded)
+                  const Center(child: CircularProgressIndicator()),
+              ],
             ),
     );
   }

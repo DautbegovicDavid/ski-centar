@@ -58,33 +58,49 @@ class _HomeScreenState extends State<HomeScreen> {
     _fetchData();
   }
 
+  @override
+  void dispose() {
+    resortProvider.removeListener(_updateInfo);
+    super.dispose();
+  }
+
   void _updateInfo() {
     _fetchData();
   }
 
   Future<void> _fetchData() async {
-    weatherResult = await dailyWeatherProvider
-        .get(filter: {'ResortId': resortProvider.selectedResort?.id});
-    ticketsResult = await ticketsProvider.get(filter: {
-      'resortId': resortProvider.selectedResort?.id,
-    });
-    poiResult = await poiProvider.get(filter: {
-      'isResortIncluded': true,
-      'isCategoryIncluded': true,
-      'resortId': resortProvider.selectedResort?.id,
-    });
-    trailResult = await trailProvider.get(filter: {
-      'resortId': resortProvider.selectedResort?.id,
-      'IsDifficultyIncluded': true
-    });
-    liftResult = await liftProvider.get(filter: {
-      'IsLiftTypeIncluded': true,
-      'resortId': resortProvider.selectedResort?.id,
-    });
-    await _fetchWeather();
-    loaded = true;
-    if (mounted) {
-      setState(() {});
+    final resortId = resortProvider.selectedResort?.id;
+    if (resortId == null) return;
+
+    try {
+      final results = await Future.wait([
+        dailyWeatherProvider.get(filter: {'ResortId': resortId}),
+        ticketsProvider.get(filter: {'resortId': resortId}),
+        poiProvider.get(filter: {
+          'isResortIncluded': true,
+          'isCategoryIncluded': true,
+          'resortId': resortId
+        }),
+        trailProvider
+            .get(filter: {'resortId': resortId, 'IsDifficultyIncluded': true}),
+        liftProvider
+            .get(filter: {'IsLiftTypeIncluded': true, 'resortId': resortId}),
+        _fetchWeather(),
+      ]);
+
+      weatherResult = results[0] as SearchResult<DailyWeather>?;
+      ticketsResult = results[1] as SearchResult<TicketType>?;
+      poiResult = results[2] as SearchResult<PoiCategory>?;
+      trailResult = results[3] as SearchResult<Trail>?;
+      liftResult = results[4] as SearchResult<Lift>?;
+
+      setState(() {
+        loaded = true;
+      });
+    } catch (e) {
+      setState(() {
+        loaded = false;
+      });
     }
   }
 
