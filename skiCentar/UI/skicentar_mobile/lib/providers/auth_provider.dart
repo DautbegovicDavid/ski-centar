@@ -28,9 +28,9 @@ class AuthProvider {
     }
   }
 
-  Future<dynamic> register(String email,String password) async {
-    final response = await ApiHelper.post(
-        _baseUrl!, _registerEndpoint, RegisterModel(email: email,password: password));
+  Future<dynamic> register(String email, String password) async {
+    final response = await ApiHelper.post(_baseUrl!, _registerEndpoint,
+        RegisterModel(email: email, password: password));
     var isValidResposne = AuthHelper.isValidResponse(response);
 
     if (isValidResposne && response.statusCode == 200) {
@@ -43,8 +43,8 @@ class AuthProvider {
   Future<bool> verifyUser(String code) async {
     final response = await ApiHelper.post(
         _baseUrl!, _verifyEndpoint, Verify(verificationCode: code));
-    var isValidResponse =  AuthHelper.isValidResponse(response);
-     if (isValidResponse && response.statusCode == 200) {
+    var isValidResponse = AuthHelper.isValidResponse(response);
+    if (isValidResponse && response.statusCode == 200) {
       return true;
     } else {
       return false;

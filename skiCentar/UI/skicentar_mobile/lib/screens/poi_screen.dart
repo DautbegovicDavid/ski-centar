@@ -12,6 +12,8 @@ import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/utils/icons_helper.dart';
 
 class PoiScreen extends StatefulWidget {
+  const PoiScreen({super.key});
+
   @override
   State<PoiScreen> createState() => _PoiScreenState();
 }
@@ -54,7 +56,7 @@ class _PoiScreenState extends State<PoiScreen> {
         userProvider.setUser(fetchedUser);
       });
     } catch (e) {
-      print('Failed to load user: $e');
+      throw Exception('Failed to load user: $e');
     }
   }
 

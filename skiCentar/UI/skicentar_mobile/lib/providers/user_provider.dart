@@ -7,9 +7,6 @@ import 'package:skicentar_mobile/utils/api_helper.dart';
 import 'package:skicentar_mobile/utils/auth_helper.dart';
 
 class UserProvider extends BaseProvider<User> {
-  final String _baseUrl = const String.fromEnvironment("baseUrl",
-      defaultValue: "http://10.0.2.2:5160/api/");
-
   UserProvider() : super("User");
 
   User? _currentUser;
@@ -21,18 +18,22 @@ class UserProvider extends BaseProvider<User> {
     notifyListeners();
   }
 
+  void clearUser() {
+    _currentUser = null;
+    notifyListeners();
+  }
+
   @override
   User fromJson(data) {
     return User.fromJson(data);
   }
 
   Future<User> getDetails() async {
-    var url = "${_baseUrl}User/info";
+    var url = "${BaseProvider.baseUrl}User/info";
     var uri = Uri.parse(url);
     String token = await AuthHelper.getToken();
 
     var response = await http.get(uri, headers: ApiHelper.createHeaders(token));
-    print(response.body);
     if (response.statusCode == 200) {
       return fromJson(json.decode(response.body));
     } else {

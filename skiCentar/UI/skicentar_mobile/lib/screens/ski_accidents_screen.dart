@@ -9,6 +9,8 @@ import 'package:skicentar_mobile/providers/ski_accident_provider.dart';
 import 'package:skicentar_mobile/utils/icons_helper.dart';
 
 class SkiAccidentsScreen extends StatefulWidget {
+  const SkiAccidentsScreen({super.key});
+
   @override
   State<SkiAccidentsScreen> createState() => _SkiAccidentsScreenState();
 }

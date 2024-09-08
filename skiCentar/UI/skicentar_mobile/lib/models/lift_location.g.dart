@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'lift-location.dart';
+part of 'lift_location.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

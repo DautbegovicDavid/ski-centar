@@ -89,15 +89,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchWeather() async {
-    try {
-      final data = await weatherProvider.fetchWeather(
-          resortProvider.selectedResort!.name!,
-          resortProvider.selectedResort!.location!);
-      setState(() {
-        _weatherData = data;
-      });
-    } catch (e) {
-      print('Error fetching weather: $e');
+    if (resortProvider.selectedResort != null) {
+      try {
+        final data = await weatherProvider.fetchWeather(
+            resortProvider.selectedResort!.name!,
+            resortProvider.selectedResort!.location!);
+        setState(() {
+          _weatherData = data;
+        });
+      } catch (e) {
+        throw Exception('Error fetching weather: $e');
+      }
     }
   }
 
@@ -218,24 +220,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 8),
         Padding(
-          padding:
-              const EdgeInsets.only(bottom: 2.0),
+          padding: const EdgeInsets.only(bottom: 2.0),
           child: Text(
             weather.weatherCondition?.toString() ?? 'N/A',
             style: const TextStyle(fontSize: 16),
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(bottom: 2.0),
+          padding: const EdgeInsets.only(bottom: 2.0),
           child: Text(
             "Wind Speed: ${weather.windSpeed?.toString() ?? 'N/A'}  km/h",
             style: const TextStyle(fontSize: 16),
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(bottom: 2.0),
+          padding: const EdgeInsets.only(bottom: 2.0),
           child: Text(
             "Snow Height: ${weather.snowHeight?.toString() ?? 'N/A'} cm",
             style: const TextStyle(fontSize: 16),
@@ -272,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
         () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PaymentScreen(),
+            builder: (context) => const PaymentScreen(),
           ),
         ),
       ),
@@ -296,8 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: pois.map((poi) {
         return Padding(
-          padding:
-              const EdgeInsets.only(bottom: 2.0),
+          padding: const EdgeInsets.only(bottom: 2.0),
           child: Text(
             poi.name.toString(),
             style: const TextStyle(fontSize: 16),

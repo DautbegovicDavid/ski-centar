@@ -135,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                               .pushAndRemoveUntil(
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          LoginPage()),
+                                                          const LoginPage()),
                                                   (Route<dynamic> route) =>
                                                       false),
                                           child: const Text("OK"),

@@ -11,7 +11,7 @@ class UserVerifiedPage extends StatelessWidget {
     AuthProvider provider = AuthProvider();
     try {
       return await provider.verifyUser(link);
-    } on Exception catch (e) {
+    } on Exception {
       return false;
     }
   }
@@ -48,7 +48,7 @@ class UserVerifiedPage extends StatelessWidget {
                       onPressed: () async {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => const LoginPage(),
                           ),
                         );
                       },
@@ -103,7 +103,7 @@ class UserVerifiedPage extends StatelessWidget {
                     onPressed: () async {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => LoginPage(),
+                          builder: (context) => const LoginPage(),
                         ),
                       );
                     },

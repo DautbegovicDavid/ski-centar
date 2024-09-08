@@ -9,7 +9,11 @@ class ResortProvider extends BaseProvider<Resort> {
 
   void selectResort(Resort resort) {
     _selectedResort = resort;
-    print(_selectedResort!.name.toString());
+    notifyListeners();
+  }
+
+  void clearResort() {
+    _selectedResort = null;
     notifyListeners();
   }
 

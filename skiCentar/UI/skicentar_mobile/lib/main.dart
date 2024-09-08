@@ -155,7 +155,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }

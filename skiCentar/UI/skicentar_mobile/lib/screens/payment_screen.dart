@@ -194,8 +194,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
         // Create a payment intent
         paymentIntent = await createPaymentIntent(
-          (selectedTicketType.price! * 100)
-              .toInt(),
+          (selectedTicketType.price! * 100).toInt(),
           'BAM',
         );
 
@@ -219,7 +218,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         await displayPaymentSheet(ticket);
       }
     } catch (err) {
-      print("Error: $err");
+      throw Exception("Error during payment: $err");
     }
   }
 

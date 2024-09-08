@@ -1,12 +1,12 @@
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:skicentar_mobile/models/lift-location.dart';
-import 'package:skicentar_mobile/models/lift-type.dart';
+import 'package:skicentar_mobile/models/lift_location.dart';
+import 'package:skicentar_mobile/models/lift_type.dart';
 import 'package:skicentar_mobile/models/resort.dart';
 
 part 'lift.g.dart';
+
 @JsonSerializable()
-class Lift{
+class Lift {
   int? id;
   String? name;
   bool? isFunctional;
@@ -17,10 +17,10 @@ class Lift{
   Resort? resort;
   LiftType? liftType;
   List<LiftLocation>? liftLocations;
-  
-  Lift({this.id,this.name});
 
-  factory Lift.fromJson(Map<String,dynamic> json) => _$LiftFromJson(json);
+  Lift({this.id, this.name});
 
-  Map<String,dynamic> toJson() => _$LiftToJson(this);
+  factory Lift.fromJson(Map<String, dynamic> json) => _$LiftFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LiftToJson(this);
 }

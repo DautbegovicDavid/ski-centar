@@ -12,6 +12,11 @@ class UserDetailProvider extends BaseProvider<UserDetail> {
     notifyListeners();
   }
 
+  void clearUserDetails() {
+    _userDetails = null;
+    notifyListeners();
+  }
+
   @override
   UserDetail fromJson(data) {
     return UserDetail.fromJson(data);

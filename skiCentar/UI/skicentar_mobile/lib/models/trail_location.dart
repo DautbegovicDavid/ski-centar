@@ -8,12 +8,15 @@ part 'trail_location.g.dart';
 
 class TrailLocation implements Location{
   int? id;
+  @override
   double? locationX;
+  @override
   double? locationY;
 
   TrailLocation({this.id,this.locationX,this.locationY});
 
   factory TrailLocation.fromJson(Map<String,dynamic> json) => _$TrailLocationFromJson(json);
 
+  @override
   Map<String,dynamic> toJson() => _$TrailLocationToJson(this);
 }

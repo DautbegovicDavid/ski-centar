@@ -7,6 +7,8 @@ import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
 
 class ManageTracksScreen extends StatefulWidget {
+  const ManageTracksScreen({super.key});
+
   @override
   State<ManageTracksScreen> createState() => _ManageTracksScreenState();
 }

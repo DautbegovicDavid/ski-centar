@@ -5,12 +5,15 @@ import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/components/date_picker_field.dart';
 import 'package:skicentar_mobile/components/input_field.dart';
 import 'package:skicentar_mobile/models/user.dart';
+import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/user_detail_provider.dart';
 import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/screens/login_screen.dart';
 import 'package:skicentar_mobile/utils/utils.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -18,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   User? user;
   late UserProvider userProvider;
+  late ResortProvider resortProvider;
   late UserDetailProvider userDetailProvider;
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
@@ -26,6 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     userProvider = context.read<UserProvider>();
     userDetailProvider = context.read<UserDetailProvider>();
+    resortProvider = context.read<ResortProvider>();
+
     super.initState();
     _fetchUser();
   }
@@ -51,14 +57,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         initForm();
       });
     } catch (e) {
-      print('Failed to load user: $e');
+      throw Exception('Failed to load user: $e');
     }
   }
 
   void _logout() {
+    resortProvider.clearResort();
+    userProvider.clearUser();
+    userDetailProvider.clearUserDetails();
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginPage()),
-        (Route<dynamic> route) => false);
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   Future _save() async {

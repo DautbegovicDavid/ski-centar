@@ -13,6 +13,8 @@ import 'package:skicentar_mobile/screens/ski_accidents_screen.dart';
 import 'package:skicentar_mobile/screens/ski_map_screen.dart';
 
 class MasterScreen extends StatefulWidget {
+  const MasterScreen({super.key});
+
   @override
   State<MasterScreen> createState() => _MasterScreenState();
 }
@@ -24,16 +26,16 @@ class _MasterScreenState extends State<MasterScreen> {
 
   final List<Widget> _endUserWidgetOptions = <Widget>[
     const HomeScreen(),
-    PoiScreen(),
-    SkiMapScreen(),
-    ProfileScreen(),
+    const PoiScreen(),
+    const SkiMapScreen(),
+    const ProfileScreen(),
   ];
 
   final List<Widget> _employeeWidgetOptions = <Widget>[
-    SkiAccidentsScreen(),
-    ManageLiftScreen(),
-    ManageTracksScreen(),
-    ProfileScreen(),
+    const SkiAccidentsScreen(),
+    const ManageLiftScreen(),
+    const ManageTracksScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -62,7 +64,8 @@ class _MasterScreenState extends State<MasterScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
-    final isEmployee = userProvider.currentUser?.userRole?.name == 'Employee' || userProvider.currentUser?.userRole?.name == 'Admin';
+    final isEmployee = userProvider.currentUser?.userRole?.name == 'Employee' ||
+        userProvider.currentUser?.userRole?.name == 'Admin';
 
     return Scaffold(
       appBar: AppBar(
@@ -114,7 +117,7 @@ class _MasterScreenState extends State<MasterScreen> {
         showUnselectedLabels: false,
         items: isEmployee
             ? const <BottomNavigationBarItem>[
-               BottomNavigationBarItem(
+                BottomNavigationBarItem(
                   icon: Icon(Icons.emergency),
                   label: 'Accidents',
                 ),

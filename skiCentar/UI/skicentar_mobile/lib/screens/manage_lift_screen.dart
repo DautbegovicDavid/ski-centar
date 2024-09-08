@@ -8,6 +8,8 @@ import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/utils/utils.dart';
 
 class ManageLiftScreen extends StatefulWidget {
+  const ManageLiftScreen({super.key});
+
   @override
   State<ManageLiftScreen> createState() => _ManageLiftScreenState();
 }

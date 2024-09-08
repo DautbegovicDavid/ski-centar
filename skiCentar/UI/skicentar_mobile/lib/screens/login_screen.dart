@@ -7,7 +7,7 @@ import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/screens/register_screen.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -71,8 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                       key: _formKey,
                       child: Column(children: [
                         ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(20), 
+                          borderRadius: BorderRadius.circular(20),
                           child: SizedBox.fromSize(
                             size: const Size.fromRadius(48),
                             child: Image.asset("assets/images/logo.png",
@@ -123,8 +122,8 @@ class _LoginPageState extends State<LoginPage> {
                                         : Colors.grey),
                                 foregroundColor:
                                     MaterialStateProperty.all(Colors.white),
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(200, 40))),
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(200, 40))),
                             onPressed: _isButtonEnabled
                                 ? () async {
                                     if (_formKey.currentState!.validate()) {
@@ -138,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    MasterScreen()));
+                                                    const MasterScreen()));
                                       } on Exception catch (e) {
                                         showDialog(
                                             context: context,
@@ -175,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                RegisterPage()));
+                                                const RegisterPage()));
                                   },
                               ),
                             ],
@@ -194,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
       final fetchedUser = await userProvider.getDetails();
       userProvider.setUser(fetchedUser);
     } catch (e) {
-      print('Failed to load user: $e');
+      throw Exception('Failed to load user: $e');
     }
   }
 }

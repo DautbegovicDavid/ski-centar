@@ -15,6 +15,8 @@ import 'package:skicentar_mobile/utils/icons_helper.dart';
 import 'package:skicentar_mobile/utils/utils.dart';
 
 class SkiMapScreen extends StatefulWidget {
+  const SkiMapScreen({super.key});
+
   @override
   State<SkiMapScreen> createState() => _SkiMapScreenState();
 }
@@ -198,7 +200,7 @@ class _SkiMapScreenState extends State<SkiMapScreen> {
   void _navigateToReportAccidentScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ReportAccidentScreen()),
+      MaterialPageRoute(builder: (context) => const ReportAccidentScreen()),
     );
   }
 
