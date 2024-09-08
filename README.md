@@ -46,6 +46,8 @@ CVC: 123
 ```
 ## Running the Applications
 
+IMPORTANT - version of flutter is 13.19.4
+
 1. Clone the repository
 ```plaintext
  https://github.com/DautbegovicDavid/ski-centar
@@ -64,7 +66,7 @@ CVC: 123
 
 - Open the UI folder
 
-- Choose the skicentar_admin folder f
+- Choose the skicentar_desktop folder 
 
 - Fetch dependencies
 ```plaintext
@@ -102,6 +104,7 @@ To test user registration, follow these steps:
 - Log in to the email account used for registration.
 - Check the **Inbox** and **Spam** folder for a confirmation email.
 - Open the email and click on the link inside to visit app and confirm the registration.
+- For registration link to work you need to click on it inside device (AVD) either log in to your email on simulator or copy link from email into virtual device and click on it 
 
   Notifications
 - either use notifications controller or create ski accident
