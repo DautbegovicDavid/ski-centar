@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding:
               const EdgeInsets.only(bottom: 2.0), // Add padding between items
           child: Text(
-            'Number of open tracks: $workingTracks',
+            'Number of opened tracks: $workingTracks',
             style: const TextStyle(fontSize: 16),
           ),
         ),
@@ -389,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding:
               const EdgeInsets.only(bottom: 2.0), // Add padding between items
           child: Text(
-            'Number of open tracks: $workingLifts',
+            'Number of opened lifts: $workingLifts',
             style: const TextStyle(fontSize: 16),
           ),
         ),
@@ -397,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding:
               const EdgeInsets.only(bottom: 2.0), // Add padding between items
           child: Text(
-            'Number of closed tracks: $nonWorkingLifts',
+            'Number of closed lifts: $nonWorkingLifts',
             style: const TextStyle(fontSize: 16),
           ),
         ),

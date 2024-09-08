@@ -18,41 +18,45 @@ class DetailedWeatherScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColorLight,
       ),
       body: Padding(
-          padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
           child: Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSectionHeader('Resort Data'),
-                    _buildWeatherRow('Last update', formatDate(weather.date!)),
-                    _buildWeatherRow(
-                        'Condition', weather.weatherCondition.toString()),
-                    _buildWeatherRow('Wind Speed', '${weather.windSpeed} km/h'),
-                    _buildWeatherRow('Snow Height', '${weather.snowHeight} cm'),
-                    _buildWeatherRow('Humidity', '${weather.humidity} %'),
-                    _buildWeatherRow(
-                        'Precipitation', '${weather.precipitation} mm'),
-                    const Divider(),
-                    _buildSectionHeader('Live Data'),
-                    _buildWeatherRow('Location', weatherData['name']),
-                    _buildWeatherRow(
-                        'Temperature', '${weatherData['main']['temp']}°C'),
-                    _buildWeatherRow('Description',
-                        weatherData['weather'][0]['description']),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: Image.network(
-                        'http://openweathermap.org/img/wn/${weatherData['weather'][0]['icon']}@2x.png',
-                        scale: 0.8,
-                      ),
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionHeader('Resort Data'),
+                  _buildWeatherRow('Last update', formatDate(weather.date!)),
+                  _buildWeatherRow(
+                      'Condition', weather.weatherCondition.toString()),
+                  _buildWeatherRow('Wind Speed', '${weather.windSpeed} km/h'),
+                  _buildWeatherRow('Snow Height', '${weather.snowHeight} cm'),
+                  _buildWeatherRow('Humidity', '${weather.humidity} %'),
+                  _buildWeatherRow(
+                      'Precipitation', '${weather.precipitation} mm'),
+                  const Divider(),
+                  _buildSectionHeader('Live Data'),
+                  _buildWeatherRow('Location', weatherData['name']),
+                  _buildWeatherRow(
+                      'Temperature', '${weatherData['main']['temp']}°C'),
+                  _buildWeatherRow(
+                      'Description', weatherData['weather'][0]['description']),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Image.network(
+                      'http://openweathermap.org/img/wn/${weatherData['weather'][0]['icon']}@2x.png',
+                      scale: 0.8,
                     ),
-                  ],
-                ),
-              ))),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

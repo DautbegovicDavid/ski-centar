@@ -19,8 +19,7 @@ class PoiScreen extends StatefulWidget {
 class _PoiScreenState extends State<PoiScreen> {
   late GoogleMapController mapController;
 
-  LatLng _center =
-      const LatLng(43.820, 18.313); 
+  LatLng _center = const LatLng(43.820, 18.313);
 
   User? user;
   late PoiProvider poiProvider;
