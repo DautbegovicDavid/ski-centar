@@ -11,7 +11,6 @@ class FormWrapper extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 800),
         child: Card(
-          // surfaceTintColor: Colors.blueGrey[300],
           surfaceTintColor: Colors.white,
           margin: const EdgeInsets.all(10.0),
           shape: RoundedRectangleBorder(
