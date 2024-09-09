@@ -7,8 +7,6 @@ import 'package:skicentar_desktop/utils/api.helper.dart';
 import 'package:skicentar_desktop/utils/auth.helper.dart';
 
 class UserProvider extends BaseProvider<User> {
-  final String _baseUrl = const String.fromEnvironment("baseUrl",
-      defaultValue: "http://localhost:5160/api/");
 
   UserProvider() : super("User");
 
@@ -18,7 +16,7 @@ class UserProvider extends BaseProvider<User> {
   }
 
   Future<User> getDetails() async {
-    var url = "${_baseUrl}User/info";
+    var url = "${BaseProvider.baseUrl}User/info";
     var uri = Uri.parse(url);
     String token = await AuthHelper.getToken();
 
