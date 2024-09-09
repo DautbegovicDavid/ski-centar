@@ -149,19 +149,13 @@ class _PoiScreenState extends State<PoiScreen> {
     return Scaffold(
       body: resortProvider.selectedResort == null
           ? const Center(child: Text('Please select a resort'))
-          : Stack(
-              children: [
-                GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 14.0,
-                  ),
-                  markers: _markers,
-                ),
-                if (!mapLoaded)
-                  const Center(child: CircularProgressIndicator()),
-              ],
+          : GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 14.0,
+              ),
+              markers: _markers,
             ),
     );
   }

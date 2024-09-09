@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-String formatDateTime(DateTime dateTime) {
+String formatDateTime(DateTime dateTime, {bool startOfDay = false}) {
+  if (startOfDay) {
+    dateTime = DateTime(dateTime.year, dateTime.month, dateTime.day);
+  }
   return DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(dateTime);
 }
 

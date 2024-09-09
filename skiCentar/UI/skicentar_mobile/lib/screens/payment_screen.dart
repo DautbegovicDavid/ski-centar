@@ -184,9 +184,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         // Create a ticket
         final ticketCreateRequest = {
           'ticketTypeId': obj['ticketTypeId'],
-          'validFrom': formatDateTime(obj['validFrom']),
-          'validTo': formatDateTime(obj['validFrom']),
-          'description': obj['name'] + obj['lastName'],
+          'validFrom': formatDateTime(obj['validFrom'], startOfDay: true),
+          'validTo': formatDateTime(obj['validFrom'], startOfDay: true),
+          'description': obj['name'] + " " + obj['lastName'],
           'totalPrice': selectedTicketType.price,
           'active': true,
         };

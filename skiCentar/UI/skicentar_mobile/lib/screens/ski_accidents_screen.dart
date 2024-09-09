@@ -64,7 +64,7 @@ class _SkiAccidentsScreenState extends State<SkiAccidentsScreen> {
         infoWindow: InfoWindow(
             title: 'Active Ski Accident',
             snippet:
-                "${accident.peopleInvolved != null ? "People involved: ${accident.peopleInvolved}," : ""} Time: ${accident.timestamp != null ? DateFormat('hh:mm bs').format(accident.timestamp!) : 'N/A'}}"),
+                "${accident.peopleInvolved != null ? "People involved: ${accident.peopleInvolved}," : ""} Time: ${accident.timestamp != null ? DateFormat('hh:mm').format(accident.timestamp!) : 'N/A'}"),
         icon: icon,
       );
     }).toSet();
