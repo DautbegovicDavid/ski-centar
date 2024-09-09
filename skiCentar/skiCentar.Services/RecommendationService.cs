@@ -33,24 +33,7 @@ public class RecommendationsService
     {
         public float Score { get; set; }
     }
-    public async Task<List<PointOfInterest>> GetPointsOfInterestAsync()
-    {
-        var x = await _context.PointOfInterests
-            .Include(p => p.Category)
-            .Include(p => p.Resort)
-            .ToListAsync();
-        return x;
-    }
 
-    public async Task<List<UserPoiInteraction>> GetUserInteractionsAsync(int userId)
-    {
-        var x = await _context.UserPoiInteractions
-            .Where(ui => ui.UserId == userId)
-            .Include(ui => ui.PointOfInterest)
-            .ThenInclude(p => p.Category)
-            .ToListAsync();
-        return x;
-    }
     static object isLocked = new object();
     static MLContext mlContext;
     static ITransformer model = null;

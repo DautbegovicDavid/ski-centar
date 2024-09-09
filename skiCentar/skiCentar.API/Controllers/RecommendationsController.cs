@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using skiCentar.Model;
 
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class RecommendationsController : ControllerBase
 {
     private readonly RecommendationsService _recommendationsService;
