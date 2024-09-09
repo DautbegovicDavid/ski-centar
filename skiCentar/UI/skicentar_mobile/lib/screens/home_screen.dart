@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skicentar_mobile/models/daily_weather.dart';
 import 'package:skicentar_mobile/models/lift.dart';
-import 'package:skicentar_mobile/models/poi_category.dart';
+import 'package:skicentar_mobile/models/point_of_interest.dart';
 import 'package:skicentar_mobile/models/search_result.dart';
 import 'package:skicentar_mobile/models/ticket_type.dart';
 import 'package:skicentar_mobile/models/trail.dart';
 import 'package:skicentar_mobile/providers/daily_weather_provider.dart';
 import 'package:skicentar_mobile/providers/lift_provider.dart';
-import 'package:skicentar_mobile/providers/poi_category_provider.dart';
+import 'package:skicentar_mobile/providers/poi_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_type_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
+import 'package:skicentar_mobile/providers/user_provider.dart';
 import 'package:skicentar_mobile/providers/weather_provider.dart';
-import 'package:skicentar_mobile/screens/detailed_ski_tracks_screen.dart';
 import 'package:skicentar_mobile/screens/detailed_ski_lifts_screen.dart';
+import 'package:skicentar_mobile/screens/detailed_ski_tracks_screen.dart';
 import 'package:skicentar_mobile/screens/detailed_weather_screen.dart';
 import 'package:skicentar_mobile/screens/payment_screen.dart';
 
@@ -28,17 +29,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late DailyWeatherProvider dailyWeatherProvider;
   late TicketTypeProvider ticketsProvider;
-  late PoiCategoryProvider poiProvider;
   late LiftProvider liftProvider;
   late TrailProvider trailProvider;
   late ResortProvider resortProvider;
   late WeatherProvider weatherProvider;
+  late PoiProvider userPoiProvider;
+  late UserProvider userProvider;
 
   SearchResult<DailyWeather>? weatherResult;
   SearchResult<TicketType>? ticketsResult;
-  SearchResult<PoiCategory>? poiResult;
   SearchResult<Trail>? trailResult;
   SearchResult<Lift>? liftResult;
+  List<PointOfInterest>? userRecommendedPois;
 
   Map<String, dynamic>? _weatherData;
 
@@ -47,13 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    userProvider = context.read<UserProvider>();
     dailyWeatherProvider = context.read<DailyWeatherProvider>();
     weatherProvider = context.read<WeatherProvider>();
     ticketsProvider = context.read<TicketTypeProvider>();
     liftProvider = context.read<LiftProvider>();
-    poiProvider = context.read<PoiCategoryProvider>();
     trailProvider = context.read<TrailProvider>();
     resortProvider = context.read<ResortProvider>();
+    userPoiProvider = context.read<PoiProvider>();
     resortProvider.addListener(_updateInfo);
     _fetchData();
   }
@@ -76,11 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final results = await Future.wait([
         dailyWeatherProvider.get(filter: {'ResortId': resortId}),
         ticketsProvider.get(filter: {'resortId': resortId}),
-        poiProvider.get(filter: {
-          'isResortIncluded': true,
-          'isCategoryIncluded': true,
-          'resortId': resortId
-        }),
+        userPoiProvider.getRecommendedPois(userProvider.currentUser!.id!),
         trailProvider
             .get(filter: {'resortId': resortId, 'IsDifficultyIncluded': true}),
         liftProvider
@@ -90,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       weatherResult = results[0] as SearchResult<DailyWeather>?;
       ticketsResult = results[1] as SearchResult<TicketType>?;
-      poiResult = results[2] as SearchResult<PoiCategory>?;
+      userRecommendedPois = results[2] as List<PointOfInterest>?;
       trailResult = results[3] as SearchResult<Trail>?;
       liftResult = results[4] as SearchResult<Lift>?;
 
@@ -141,10 +140,10 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildSkiTicketsSection(),
             ),
             _buildSectionCard(
-              title: 'POI',
-              icon: Icons.place,
-              content: _buildPOISection(),
-            ),
+                title: 'TOP LOCATIONS',
+                icon: Icons.place,
+                content: _buildPOISection(),
+                seeMore: false),
           ],
         ),
       ),
@@ -155,7 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
       {required String title,
       required IconData icon,
       required Widget content,
-      VoidCallback? onPressed}) {
+      VoidCallback? onPressed,
+      required bool seeMore}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader(title, icon, onPressed),
+            _buildSectionHeader(title, icon, onPressed, seeMore: seeMore),
             const SizedBox(height: 8),
             content,
           ],
@@ -188,7 +188,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSectionHeader(
-      String title, IconData icon, VoidCallback? onPressed) {
+      String title, IconData icon, VoidCallback? onPressed,
+      {bool seeMore = true}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -202,10 +203,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        TextButton(
-          onPressed: onPressed,
-          child: const Text('See more'),
-        ),
+        if (seeMore)
+          TextButton(
+            onPressed: onPressed,
+            child: const Text('See more'),
+          ),
       ],
     );
   }
@@ -301,11 +303,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPOISection() {
-    if (poiResult == null) {
+    if (userRecommendedPois == null) {
       return const CircularProgressIndicator();
     }
 
-    final pois = poiResult!.result;
+    final pois = userRecommendedPois!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,16 +402,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 8),
         Padding(
-          padding:
-              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          padding: const EdgeInsets.only(bottom: 2.0),
           child: Text(
             'Number of opened lifts: $workingLifts',
             style: const TextStyle(fontSize: 16),
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(bottom: 2.0), // Add padding between items
+          padding: const EdgeInsets.only(bottom: 2.0),
           child: Text(
             'Number of closed lifts: $nonWorkingLifts',
             style: const TextStyle(fontSize: 16),
