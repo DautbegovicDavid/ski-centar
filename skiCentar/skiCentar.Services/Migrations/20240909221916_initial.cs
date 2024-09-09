@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace skiCentar.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class initalCreateWithData : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -582,8 +582,8 @@ namespace skiCentar.Services.Migrations
                 columns: new[] { "id", "date", "humidity", "precipitation", "resort_id", "snow_height", "temperature", "weather_condition", "wind_speed" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(7066), 3m, 0m, 2, 14m, -5m, "ok", 10m },
-                    { 2, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(7072), 45m, 10m, 1, 24m, 3m, "not recommended for beginners", 3m }
+                    { 1, new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4844), 3m, 0m, 2, 14m, -5m, "ok", 10m },
+                    { 2, new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4849), 45m, 10m, 1, 24m, 3m, "not recommended for beginners", 3m }
                 });
 
             migrationBuilder.InsertData(
@@ -645,9 +645,9 @@ namespace skiCentar.Services.Migrations
                 columns: new[] { "id", "email", "is_verified", "last_login_date", "password", "registration_date", "user_details_id", "user_role_id" },
                 values: new object[,]
                 {
-                    { 1, "employee@email.com", true, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6826), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6867), null, 2 },
-                    { 2, "admin@email.com", true, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6871), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6873), null, 1 },
-                    { 3, "user@email.com", true, new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6876), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6878), null, 3 }
+                    { 1, "employee@email.com", true, new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4590), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4636), null, 2 },
+                    { 2, "admin@email.com", true, new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4640), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4642), null, 1 },
+                    { 3, "user@email.com", true, new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4645), "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG", new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4647), null, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -685,8 +685,20 @@ namespace skiCentar.Services.Migrations
                 columns: new[] { "id", "interaction_timestamp", "interaction_type", "poi_id", "user_id" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 8, 25, 13, 38, 39, 875, DateTimeKind.Utc).AddTicks(6896), "view", 1, 3 },
-                    { 2, new DateTime(2024, 8, 25, 13, 38, 39, 875, DateTimeKind.Utc).AddTicks(6897), "view", 1, 3 }
+                    { 1, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4664), "view", 1, 3 },
+                    { 2, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4665), "view", 1, 3 },
+                    { 3, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4666), "view", 2, 3 },
+                    { 4, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4668), "view", 2, 3 },
+                    { 5, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4669), "view", 3, 3 },
+                    { 6, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4670), "view", 1, 3 },
+                    { 7, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4671), "view", 3, 3 },
+                    { 8, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4672), "view", 3, 3 },
+                    { 9, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4673), "view", 3, 3 },
+                    { 10, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4674), "view", 12, 3 },
+                    { 11, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4675), "view", 12, 3 },
+                    { 12, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4676), "view", 10, 3 },
+                    { 13, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4677), "view", 12, 3 },
+                    { 14, new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4678), "view", 11, 3 }
                 });
 
             migrationBuilder.CreateIndex(
