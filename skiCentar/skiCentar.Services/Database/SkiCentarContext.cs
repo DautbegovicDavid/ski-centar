@@ -733,7 +733,20 @@ public partial class SkiCenterContext : DbContext
 
         modelBuilder.Entity<UserPoiInteraction>().HasData(
             new UserPoiInteraction { Id = 1, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
-            new UserPoiInteraction { Id = 2, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
+            new UserPoiInteraction { Id = 2, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 3, UserId = 3, PoiId = 2, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 4, UserId = 3, PoiId = 2, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 5, UserId = 3, PoiId = 3, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 6, UserId = 3, PoiId = 1, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 7, UserId = 3, PoiId = 3, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 8, UserId = 3, PoiId = 3, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 9, UserId = 3, PoiId = 3, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 10, UserId = 3, PoiId = 12, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 11, UserId = 3, PoiId = 12, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 12, UserId = 3, PoiId = 10, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 13, UserId = 3, PoiId = 12, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow },
+            new UserPoiInteraction { Id = 14, UserId = 3, PoiId = 11, InteractionType = "view", InteractionTimestamp = DateTime.UtcNow }
+
         );
 
         modelBuilder.Entity<TicketTypeSeniority>().HasData(

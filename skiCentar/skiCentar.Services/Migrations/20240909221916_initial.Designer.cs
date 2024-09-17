@@ -12,8 +12,8 @@ using skiCentar.Services.Database;
 namespace skiCentar.Services.Migrations
 {
     [DbContext(typeof(SkiCenterContext))]
-    [Migration("20240825133840_initalCreateWithData")]
-    partial class initalCreateWithData
+    [Migration("20240909221916_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,7 +97,7 @@ namespace skiCentar.Services.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(7066),
+                            Date = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4844),
                             Humidity = 3m,
                             Precipitation = 0m,
                             ResortId = 2,
@@ -109,7 +109,7 @@ namespace skiCentar.Services.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(7072),
+                            Date = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4849),
                             Humidity = 45m,
                             Precipitation = 10m,
                             ResortId = 1,
@@ -1278,9 +1278,9 @@ namespace skiCentar.Services.Migrations
                             Id = 1,
                             Email = "employee@email.com",
                             IsVerified = true,
-                            LastLoginDate = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6826),
+                            LastLoginDate = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4590),
                             Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG",
-                            RegistrationDate = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6867),
+                            RegistrationDate = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4636),
                             UserRoleId = 2
                         },
                         new
@@ -1288,9 +1288,9 @@ namespace skiCentar.Services.Migrations
                             Id = 2,
                             Email = "admin@email.com",
                             IsVerified = true,
-                            LastLoginDate = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6871),
+                            LastLoginDate = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4640),
                             Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG",
-                            RegistrationDate = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6873),
+                            RegistrationDate = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4642),
                             UserRoleId = 1
                         },
                         new
@@ -1298,9 +1298,9 @@ namespace skiCentar.Services.Migrations
                             Id = 3,
                             Email = "user@email.com",
                             IsVerified = true,
-                            LastLoginDate = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6876),
+                            LastLoginDate = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4645),
                             Password = "$2a$11$9gH.VB9K9HpmzPuSufzZD.f/LWqqqaXcO9TLn9NrzqQJa7XEZAlNG",
-                            RegistrationDate = new DateTime(2024, 8, 25, 15, 38, 39, 875, DateTimeKind.Local).AddTicks(6878),
+                            RegistrationDate = new DateTime(2024, 9, 10, 0, 19, 15, 803, DateTimeKind.Local).AddTicks(4647),
                             UserRoleId = 3
                         });
                 });
@@ -1379,7 +1379,7 @@ namespace skiCentar.Services.Migrations
                         new
                         {
                             Id = 1,
-                            InteractionTimestamp = new DateTime(2024, 8, 25, 13, 38, 39, 875, DateTimeKind.Utc).AddTicks(6896),
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4664),
                             InteractionType = "view",
                             PoiId = 1,
                             UserId = 3
@@ -1387,9 +1387,105 @@ namespace skiCentar.Services.Migrations
                         new
                         {
                             Id = 2,
-                            InteractionTimestamp = new DateTime(2024, 8, 25, 13, 38, 39, 875, DateTimeKind.Utc).AddTicks(6897),
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4665),
                             InteractionType = "view",
                             PoiId = 1,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4666),
+                            InteractionType = "view",
+                            PoiId = 2,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4668),
+                            InteractionType = "view",
+                            PoiId = 2,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4669),
+                            InteractionType = "view",
+                            PoiId = 3,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4670),
+                            InteractionType = "view",
+                            PoiId = 1,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4671),
+                            InteractionType = "view",
+                            PoiId = 3,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4672),
+                            InteractionType = "view",
+                            PoiId = 3,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4673),
+                            InteractionType = "view",
+                            PoiId = 3,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4674),
+                            InteractionType = "view",
+                            PoiId = 12,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4675),
+                            InteractionType = "view",
+                            PoiId = 12,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4676),
+                            InteractionType = "view",
+                            PoiId = 10,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 13,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4677),
+                            InteractionType = "view",
+                            PoiId = 12,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            InteractionTimestamp = new DateTime(2024, 9, 9, 22, 19, 15, 803, DateTimeKind.Utc).AddTicks(4678),
+                            InteractionType = "view",
+                            PoiId = 11,
                             UserId = 3
                         });
                 });
