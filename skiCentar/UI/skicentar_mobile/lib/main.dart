@@ -129,12 +129,13 @@ class _MyAppState extends State<MyApp> {
       channelDescription: 'Notifications for ski updates and alerts',
       importance: Importance.max,
       priority: Priority.high,
+      icon: '@mipmap/ic_launcher',
       showWhen: false,
     );
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
-      0,
+      1,
       message.notification?.title,
       message.notification?.body,
       notificationDetails,
