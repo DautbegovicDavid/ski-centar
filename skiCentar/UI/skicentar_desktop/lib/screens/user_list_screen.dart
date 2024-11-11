@@ -167,7 +167,6 @@ class _UserListScreenState extends State<UserListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Email")),
         DataColumn(label: Text("Registration Date")),
         DataColumn(label: Text("Role")),
@@ -176,7 +175,6 @@ class _UserListScreenState extends State<UserListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.email!)),
                     DataCell(Text(formatter.format(m.registrationDate!))),
                     DataCell(Text(m.userRole?.name ?? "")),

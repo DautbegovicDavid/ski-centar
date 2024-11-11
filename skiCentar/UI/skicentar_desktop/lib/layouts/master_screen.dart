@@ -260,7 +260,7 @@ class _MasterScreenState extends State<MasterScreen> {
                 title: const Text("Log out"),
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
                       (Route<dynamic> route) => false);
                 },
               ),

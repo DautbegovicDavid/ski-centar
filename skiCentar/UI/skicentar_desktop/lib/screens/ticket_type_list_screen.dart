@@ -166,7 +166,6 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Resort")),
         DataColumn(label: Text("Price")),
         DataColumn(label: Text("Seniority")),
@@ -175,7 +174,6 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.resort?.name ?? "")),
                     DataCell(Text(m.price.toString())),
                     DataCell(Text(m.ticketTypeSeniority?.seniority ?? "")),

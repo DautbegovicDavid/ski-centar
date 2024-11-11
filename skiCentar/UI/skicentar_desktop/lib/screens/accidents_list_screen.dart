@@ -38,7 +38,6 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
   final DateFormat formatter = DateFormat('dd MMM yyyy HH:mm');
 
   final Map<String, bool> _selectedColumns = {
-    'Id': true,
     'Date': true,
     'Active': true,
     'People involved': true,
@@ -194,7 +193,6 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       var formValues = _formKey.currentState?.value ?? {};
       result = await provider.get(filter: formValues);
-      print(result);
       setState(() {});
     }
   }
@@ -210,7 +208,6 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Date")),
         DataColumn(label: Text("Active")),
         DataColumn(label: Text("People involved")),
@@ -220,7 +217,6 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.timestamp != null
                         ? formatter.format(m.timestamp!)
                         : 'No data')),
@@ -257,7 +253,6 @@ class _AccidentsListScreenState extends State<AccidentsListScreen> {
 
     final selectedData = result?.result.map((m) {
           final data = [];
-          if (_selectedColumns['Id'] ?? false) data.add(m.id.toString());
           if (_selectedColumns['Date'] ?? false) {
             data.add(m.timestamp != null
                 ? formatter.format(m.timestamp!)

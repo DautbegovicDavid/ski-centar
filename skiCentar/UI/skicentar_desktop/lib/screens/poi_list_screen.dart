@@ -158,7 +158,6 @@ class _PoiListScreenState extends State<PoiListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Name")),
         DataColumn(label: Text("Resort")),
         DataColumn(label: Text("Category")),
@@ -167,7 +166,6 @@ class _PoiListScreenState extends State<PoiListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.name!)),
                     DataCell(Text(m.resort?.name ?? m.resortId.toString())),
                     DataCell(Text(m.category?.name ?? m.category!.toString())),

@@ -158,7 +158,6 @@ class _TrailListScreenState extends State<TrailListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Name")),
         DataColumn(label: Text("Resort")),
         DataColumn(label: Text("Difficulty")),
@@ -168,7 +167,6 @@ class _TrailListScreenState extends State<TrailListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.name!)),
                     DataCell(Text(m.resort?.name ?? m.resortId.toString())),
                     DataCell(

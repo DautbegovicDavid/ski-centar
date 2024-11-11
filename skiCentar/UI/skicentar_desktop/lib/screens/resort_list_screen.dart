@@ -120,7 +120,6 @@ class _ResortListScreenState extends State<ResortListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Name")),
         DataColumn(label: Text("Location - City")),
         DataColumn(label: Text("Elevation (m)")),
@@ -129,7 +128,6 @@ class _ResortListScreenState extends State<ResortListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.name!)),
                     DataCell(Text(m.location!)),
                     DataCell(Text(m.elevation!.toString())),

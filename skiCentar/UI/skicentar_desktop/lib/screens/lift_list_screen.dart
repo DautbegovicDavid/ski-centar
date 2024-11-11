@@ -157,7 +157,6 @@ class _LiftListScreenState extends State<LiftListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Name")),
         DataColumn(label: Text("Resort")),
         DataColumn(label: Text("Lift Type")),
@@ -166,7 +165,6 @@ class _LiftListScreenState extends State<LiftListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(m.name!)),
                     DataCell(Text(m.resort?.name ?? m.resortId.toString())),
                     DataCell(

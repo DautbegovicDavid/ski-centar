@@ -173,7 +173,6 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
   Widget _buildResultView() {
     return TableWrapper(
       columns: const [
-        DataColumn(label: Text("Id"), numeric: true),
         DataColumn(label: Text("Date")),
         DataColumn(label: Text("Temperature")),
         DataColumn(label: Text("Snow Height")),
@@ -183,7 +182,6 @@ class _DailyWeatherListScreenState extends State<DailyWeatherListScreen> {
       ],
       rows: result?.result
               .map((m) => DataRow(cells: [
-                    DataCell(Text(m.id.toString())),
                     DataCell(Text(formatter.format(m.date!))),
                     DataCell(Text(
                         m.temperature != null ? '${m.temperature} °C' : '')),

@@ -55,6 +55,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         themeMode: themeProvider.themeMode,
-        home: LoginPage());
+        home: const LoginPage());
   }
 }
