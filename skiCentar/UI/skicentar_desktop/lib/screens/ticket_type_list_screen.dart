@@ -14,6 +14,9 @@ import 'package:skicentar_desktop/providers/resort_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_provider.dart';
 import 'package:skicentar_desktop/providers/ticket_type_seniority_provider.dart';
 import 'package:skicentar_desktop/screens/ticket_type_add_screen.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:skicentar_desktop/utils/utils.dart';
 
 class TicketTypeListScreen extends StatefulWidget {
@@ -35,15 +38,44 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
   var filter = {};
   final Map<String, dynamic> _initialValue = {};
 
+  final Map<String, bool> _selectedColumns = {
+    'Resort': true,
+    'Price': true,
+    'Seniority': true,
+    'Full day': true,
+  };
+
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
-        "Tickets",
-        Column(
-          children: [_buildSearch(), _buildResultView()],
-        ),
-        false,
-        true);
+      "Tickets",
+      Column(
+        children: [
+          _buildSearch(),
+          if (result != null && result!.result.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  const Text("GENERATE REPORT"),
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    onPressed: _showColumnSelectionDialog,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.picture_as_pdf),
+                    onPressed: _generatePdfReport,
+                  ),
+                ],
+              ),
+            ),
+          _buildResultView(),
+        ],
+      ),
+      false,
+      true,
+    );
   }
 
   @override
@@ -65,6 +97,44 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _showColumnSelectionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select Columns'),
+          content: SingleChildScrollView(
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  children: _selectedColumns.keys.map((String key) {
+                    return CheckboxListTile(
+                      title: Text(key),
+                      value: _selectedColumns[key],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _selectedColumns[key] = value ?? false;
+                        });
+                      },
+                    );
+                  }).toList(),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildSearch() {
@@ -146,21 +216,52 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
     );
   }
 
-  Future<void> _search() async {
-    if (_formKey.currentState?.saveAndValidate() ?? false) {
-      var formValues =
-          Map<String, dynamic>.from(_formKey.currentState?.value ?? {});
-      result = await provider.get(filter: formValues);
-      setState(() {});
-    }
-  }
+  Future<void> _generatePdfReport() async {
+    final pdf = pw.Document();
 
-  void navigateToEditPage(BuildContext context, TicketType ticketType) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => TicketTypeAddScreen(ticketType: ticketType)),
+    final selectedHeaders = _selectedColumns.entries
+        .where((entry) => entry.value)
+        .map((entry) => entry.key)
+        .toList();
+
+    final selectedData = result?.result.map((m) {
+          final data = [];
+          if (_selectedColumns['Resort'] ?? false) {
+            data.add(m.resort?.name ?? '');
+          }
+          if (_selectedColumns['Price'] ?? false) {
+            data.add(m.price.toString());
+          }
+          if (_selectedColumns['Seniority'] ?? false) {
+            data.add(m.ticketTypeSeniority?.seniority ?? '');
+          }
+          if (_selectedColumns['Full day'] ?? false) {
+            data.add(m.fullDay! ? "Yes" : "No");
+          }
+          return data;
+        }).toList() ??
+        [];
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            children: [
+              pw.Text('Tickets Report',
+                  style: const pw.TextStyle(fontSize: 24)),
+              pw.SizedBox(height: 20),
+              pw.TableHelper.fromTextArray(
+                headers: selectedHeaders,
+                data: selectedData,
+              ),
+            ],
+          );
+        },
+      ),
     );
+
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
   }
 
   Widget _buildResultView() {
@@ -189,5 +290,22 @@ class _TicketTypeListScreenState extends State<TicketTypeListScreen> {
               .cast<DataRow>() ??
           [],
     );
+  }
+
+  void navigateToEditPage(BuildContext context, TicketType ticketType) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => TicketTypeAddScreen(ticketType: ticketType)),
+    );
+  }
+
+  Future<void> _search() async {
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      var formValues =
+          Map<String, dynamic>.from(_formKey.currentState?.value ?? {});
+      result = await provider.get(filter: formValues);
+      setState(() {});
+    }
   }
 }

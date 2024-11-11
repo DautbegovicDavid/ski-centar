@@ -30,7 +30,7 @@ void showCustomSnackBar(BuildContext context, IconData icon,
     SnackBar(
       content: Row(
         children: [
-          Icon(icon, color: Colors.white), // Icon with white color
+          Icon(icon, color: Colors.white),
           const SizedBox(width: 8),
           Text(
             message,
@@ -38,7 +38,7 @@ void showCustomSnackBar(BuildContext context, IconData icon,
           ),
         ],
       ),
-      backgroundColor: backgroundColor, // Background color
+      backgroundColor: backgroundColor,
     ),
   );
 }
