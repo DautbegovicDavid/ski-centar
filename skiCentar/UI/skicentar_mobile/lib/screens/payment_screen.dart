@@ -14,6 +14,7 @@ import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_type_provider.dart';
 import 'package:skicentar_mobile/providers/user_provider.dart';
+import 'package:skicentar_mobile/screens/ticket_history_screen.dart';
 import 'package:skicentar_mobile/utils/utils.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -86,7 +87,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Column(
-                  children: [_buildForm()],
+                  children: [
+                    _buildForm(),
+                    const SizedBox(height: 20.0),
+                    FilledButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TicketHistoryScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.history),
+                      label: const Text('Tickets History'),
+                    ),
+                  ],
                 ),
               ));
   }

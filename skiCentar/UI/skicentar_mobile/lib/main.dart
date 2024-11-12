@@ -15,6 +15,7 @@ import 'package:skicentar_mobile/providers/poi_provider.dart';
 import 'package:skicentar_mobile/providers/resort_provider.dart';
 import 'package:skicentar_mobile/providers/ski_accident_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_provider.dart';
+import 'package:skicentar_mobile/providers/ticket_purchase_provider.dart';
 import 'package:skicentar_mobile/providers/ticket_type_provider.dart';
 import 'package:skicentar_mobile/providers/trail_provider.dart';
 import 'package:skicentar_mobile/providers/user_detail_provider.dart';
@@ -74,6 +75,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => TicketProvider()),
       ChangeNotifierProvider(create: (_) => SkiAccidentProvider()),
       ChangeNotifierProvider(create: (_) => UserPoiProvider()),
+      ChangeNotifierProvider(create: (_) => TicketPurchaseProvider()),
     ],
     child: const MyApp(),
   ));

@@ -37,6 +37,11 @@ String formatDate(DateTime date) {
   return formatter.format(date);
 }
 
+String formatTime(DateTime dateTime) {
+  final timeFormat = DateFormat('hh:mm a');
+  return timeFormat.format(dateTime);
+}
+
 Set<Polyline> combinePolylines(Set<Polyline> set1, Set<Polyline> set2) {
   final Set<Polyline> combinedSet = Set<Polyline>.from(set1);
   combinedSet.addAll(set2);
